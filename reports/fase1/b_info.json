@@ -1,0 +1,40 @@
+{
+  "schema": "finestra espandibile, ristima a ogni passo (M4: ultime 520 settimane)",
+  "min_train_settimane": 260,
+  "riferimento": "M1",
+  "n_test_holm": 21,
+  "arma": {
+    "stime": 1037,
+    "non_convergenti": 13,
+    "fallite": 0,
+    "ristima": "a ogni origine",
+    "metodo": "massima verosimiglianza esatta (spazio degli stati, statsmodels ARIMA)"
+  },
+  "etichette_a_posteriori": {
+    "dopo_picco": "origine tra 0 e 12 settimane dopo il picco di un episodio (chiusura >= 30)",
+    "periodo_calmo": "origine dentro un periodo con chiusura < 15 per almeno 8 settimane"
+  },
+  "per_orizzonte": {
+    "1": {
+      "n_previsioni": 1037,
+      "prima_data_obiettivo": "2004-12-31",
+      "ultima_data_obiettivo": "2024-11-08",
+      "n_dopo_picco": 179,
+      "n_periodo_calmo": 334
+    },
+    "4": {
+      "n_previsioni": 1034,
+      "prima_data_obiettivo": "2005-01-21",
+      "ultima_data_obiettivo": "2024-11-08",
+      "n_dopo_picco": 179,
+      "n_periodo_calmo": 334
+    },
+    "12": {
+      "n_previsioni": 1026,
+      "prima_data_obiettivo": "2005-03-18",
+      "ultima_data_obiettivo": "2024-11-08",
+      "n_dopo_picco": 179,
+      "n_periodo_calmo": 334
+    }
+  }
+}
