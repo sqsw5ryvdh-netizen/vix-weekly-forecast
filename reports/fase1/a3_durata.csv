@@ -1,0 +1,7 @@
+definizione,classe_durata,n_settimane,n_periodi,prob_fine_entro_4,ci_lo,ci_hi
+sotto15,8-12,84,22,0.333333,0.184783,0.506671
+sotto15,13-25,93,13,0.365591,0.215385,0.558147
+sotto15,>=26,10,2,0.8,0.666667,1
+escursione_bassa,1-4,113,35,0.681416,0.545436,0.813725
+escursione_bassa,5-12,50,15,0.62,0.410658,0.913075
+escursione_bassa,>=13,6,2,0.833333,0.8,1

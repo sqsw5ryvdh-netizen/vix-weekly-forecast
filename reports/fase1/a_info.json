@@ -1,0 +1,20 @@
+{
+  "repliche_bootstrap": 2000,
+  "blocco_settimane": 26,
+  "intervallo": "percentile 95%",
+  "definizioni_episodio": {
+    "soglia30": "chiusura >= 30 (Fase 0)",
+    "relativa": "chiusura >= 1,5 x mediana delle 26 settimane precedenti"
+  },
+  "definizioni_periodo_calmo": {
+    "sotto15": "chiusura < 15 per almeno 8 settimane consecutive",
+    "escursione_bassa": "escursione del log-VIX su 12 settimane nel 20% più basso della storia"
+  },
+  "salita_minima_punti": 3.0,
+  "divisione_a5": "2013-01-01",
+  "campione": [
+    "2000-01-07",
+    "2024-11-08"
+  ],
+  "n_settimane": 1297
+}

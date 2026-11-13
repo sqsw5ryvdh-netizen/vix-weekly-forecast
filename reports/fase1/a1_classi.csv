@@ -1,0 +1,8 @@
+definizione,classe,n_episodi,quota_definita
+relativa,30-40,4,4
+relativa,40-50,4,4
+relativa,<30,12,12
+relativa,>=50,2,2
+soglia30,30-40,14,13
+soglia30,40-50,4,4
+soglia30,>=50,2,2
