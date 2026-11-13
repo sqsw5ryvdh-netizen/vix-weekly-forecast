@@ -1,0 +1,19 @@
+{
+  "seed": 12345,
+  "python": "3.12.2",
+  "pacchetti": {
+    "numpy": "2.5.4",
+    "pandas": "3.1.1",
+    "scipy": "1.18.1",
+    "statsmodels": "0.15.0",
+    "matplotlib": "3.11.2"
+  },
+  "file_dati_letto": "vix_weekly_dev.csv",
+  "guardia_holdout_attiva": true,
+  "repliche_bootstrap": 2000,
+  "orizzonti": [
+    1,
+    4,
+    12
+  ]
+}
