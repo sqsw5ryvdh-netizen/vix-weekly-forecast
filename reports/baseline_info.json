@@ -1,0 +1,17 @@
+{
+  "min_train_settimane": 260,
+  "schema": "finestra espandibile, ristima a ogni passo",
+  "benchmark": "random_walk",
+  "per_orizzonte": {
+    "1": {
+      "n_previsioni": 1037,
+      "prima_data_obiettivo": "2004-12-31",
+      "ultima_data_obiettivo": "2024-11-08"
+    },
+    "4": {
+      "n_previsioni": 1034,
+      "prima_data_obiettivo": "2005-01-21",
+      "ultima_data_obiettivo": "2024-11-08"
+    }
+  }
+}
