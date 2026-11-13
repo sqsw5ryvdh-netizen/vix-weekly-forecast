@@ -1,0 +1,242 @@
+{
+  "file": "VIX_settimanale_2000-2026.csv",
+  "sha256": "bf67b3f19ef38827dd84ba1f2a4008cc439651a93328b9a42b6aab10dcbb76b5",
+  "formato": "CSV, separatore virgola, intestazione alla prima riga, codifica ASCII",
+  "colonne": {
+    "week_start": "str",
+    "last_trading_day": "str",
+    "open": "float64",
+    "high": "float64",
+    "low": "float64",
+    "close": "float64",
+    "trading_days": "int64",
+    "note": "str"
+  },
+  "tipo_valore": "OHLC settimanale (open, high, low, close) + numero di sedute della settimana",
+  "n_righe": 1402,
+  "valori_mancanti": {
+    "week_start": 0,
+    "last_trading_day": 0,
+    "open": 0,
+    "high": 0,
+    "low": 0,
+    "close": 0,
+    "trading_days": 0,
+    "note": 1401
+  },
+  "prima_week_start": "2000-01-03",
+  "ultima_week_start": "2026-11-09",
+  "primo_last_trading_day": "2000-01-07",
+  "ultimo_last_trading_day": "2026-11-12",
+  "giorno_week_start": {
+    "lun": 1402
+  },
+  "giorno_last_trading_day": {
+    "lun": 1,
+    "gio": 43,
+    "ven": 1358
+  },
+  "trading_days": {
+    "1": 1,
+    "3": 2,
+    "4": 211,
+    "5": 1188
+  },
+  "ordinato_per_data": true,
+  "duplicati_week_start": 0,
+  "duplicati_righe": 0,
+  "settimane_mancanti": 0,
+  "passo_settimanale_giorni": {
+    "7": 1401
+  },
+  "valori_non_positivi": 0,
+  "decimali_max": 2,
+  "min_max": {
+    "open": [
+      2.58,
+      79.13
+    ],
+    "high": [
+      10.18,
+      89.53
+    ],
+    "low": [
+      8.56,
+      65.1
+    ],
+    "close": [
+      9.14,
+      79.13
+    ]
+  },
+  "n_ohlc_incoerenti": 1,
+  "righe_ohlc_incoerenti": [
+    {
+      "week_start": "2004-11-08",
+      "last_trading_day": "2004-11-12",
+      "open": 2.58,
+      "high": 14.48,
+      "low": 12.64,
+      "close": 13.33,
+      "trading_days": 5,
+      "note": null
+    }
+  ],
+  "n_settimane_parziali": 1,
+  "righe_settimane_parziali": [
+    {
+      "week_start": "2026-11-09",
+      "last_trading_day": "2026-11-12",
+      "open": 25.08,
+      "high": 25.08,
+      "low": 17.33,
+      "close": 17.6,
+      "trading_days": 4,
+      "note": "Settimana in corso (dati fino a gio 12/11/2026)"
+    }
+  ],
+  "n_settimane_corte": 3,
+  "righe_settimane_corte": [
+    {
+      "week_start": "2001-09-10",
+      "last_trading_day": "2001-09-10",
+      "open": 33.11,
+      "high": 33.34,
+      "low": 31.84,
+      "close": 31.84,
+      "trading_days": 1,
+      "note": null
+    },
+    {
+      "week_start": "2007-01-01",
+      "last_trading_day": "2007-01-05",
+      "open": 12.16,
+      "high": 12.75,
+      "low": 11.28,
+      "close": 12.14,
+      "trading_days": 3,
+      "note": null
+    },
+    {
+      "week_start": "2012-10-29",
+      "last_trading_day": "2012-11-02",
+      "open": 17.68,
+      "high": 18.84,
+      "low": 16.05,
+      "close": 17.59,
+      "trading_days": 3,
+      "note": null
+    }
+  ],
+  "variazioni_estreme_regola": "|z robusto| > 5 su dlog(close), z = (x - mediana) / (1.4826 * MAD)",
+  "n_variazioni_estreme": 6,
+  "righe_variazioni_estreme": [
+    {
+      "week_start": "2007-02-26",
+      "last_trading_day": "2007-03-02",
+      "open": 10.59,
+      "high": 19.4,
+      "low": 10.52,
+      "close": 18.61,
+      "trading_days": 5,
+      "note": null,
+      "dlog_close": 0.5647,
+      "z_robusto": 5.1506
+    },
+    {
+      "week_start": "2010-05-03",
+      "last_trading_day": "2010-05-07",
+      "open": 22.41,
+      "high": 42.15,
+      "low": 19.61,
+      "close": 40.95,
+      "trading_days": 5,
+      "note": null,
+      "dlog_close": 0.619,
+      "z_robusto": 5.6378
+    },
+    {
+      "week_start": "2014-12-08",
+      "last_trading_day": "2014-12-12",
+      "open": 13.05,
+      "high": 23.06,
+      "low": 12.55,
+      "close": 21.08,
+      "trading_days": 5,
+      "note": null,
+      "dlog_close": 0.5785,
+      "z_robusto": 5.2744
+    },
+    {
+      "week_start": "2015-08-17",
+      "last_trading_day": "2015-08-21",
+      "open": 14.32,
+      "high": 28.38,
+      "low": 13.01,
+      "close": 28.03,
+      "trading_days": 5,
+      "note": null,
+      "dlog_close": 0.7815,
+      "z_robusto": 7.0952
+    },
+    {
+      "week_start": "2020-02-24",
+      "last_trading_day": "2020-02-28",
+      "open": 22.25,
+      "high": 49.48,
+      "low": 22.0,
+      "close": 40.11,
+      "trading_days": 5,
+      "note": null,
+      "dlog_close": 0.8537,
+      "z_robusto": 7.7433
+    },
+    {
+      "week_start": "2025-03-31",
+      "last_trading_day": "2025-04-04",
+      "open": 24.11,
+      "high": 45.61,
+      "low": 20.68,
+      "close": 45.31,
+      "trading_days": 5,
+      "note": null,
+      "dlog_close": 0.7385,
+      "z_robusto": 6.7098
+    }
+  ],
+  "gap_apertura": {
+    "descrizione": "ln(open_t / close_{t-1}): salto tra chiusura settimanale e apertura successiva",
+    "mediana": 0.03120121736497359,
+    "quota_positivi": 0.8002853067047075,
+    "min": -1.6797735512559975,
+    "max": 0.30511713427388243
+  },
+  "dataset": {
+    "clean": {
+      "file": "vix_weekly_clean.csv",
+      "n": 1401,
+      "da": "2000-01-07",
+      "a": "2026-11-06"
+    },
+    "dev": {
+      "file": "vix_weekly_dev.csv",
+      "n": 1297,
+      "da": "2000-01-07",
+      "a": "2024-11-08"
+    },
+    "holdout": {
+      "file": "vix_weekly_holdout.csv",
+      "n": 104,
+      "da": "2024-11-15",
+      "a": "2026-11-06"
+    }
+  },
+  "trasformazioni": [
+    "T1. Lettura del CSV grezzo senza modifiche; `week_start` e `last_trading_day` convertite in date.",
+    "T2. Rimozione delle righe con `note` valorizzata che indicano una settimana incompleta (settimana in corso): la chiusura non e' una chiusura settimanale definitiva.",
+    "T3. Colonna `date` = `last_trading_day` (data in cui la chiusura settimanale e' osservabile); e' la data di riferimento di ogni osservazione.",
+    "T4. Colonne derivate: `log_close` = ln(close); `dlog_close` = differenza prima di `log_close`.",
+    "T5. Colonne di segnalazione (nessun valore viene corretto): `flag_ohlc_incoerente` (high < max(open, close) oppure low > min(open, close)); `flag_settimana_corta` (trading_days <= 3).",
+    "T6. Divisione temporale: le ultime 104 settimane complete -> holdout (file separato, bloccato); tutte le precedenti -> dev. Il file clean e' l'unione dei due."
+  ]
+}
