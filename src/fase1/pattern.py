@@ -483,7 +483,7 @@ def fig_a4(A4: dict) -> None:
                     val, nn = tab.iloc[a, b], cnt.iloc[a, b]
                     if np.isfinite(val):
                         ax.text(b, a, fmt.format(val) + ("*" if i == 0 and nn < 20 else ""), ha="center", va="center", fontsize=8,
-                                color="white" if (i == 1 and val > 0.6 * np.nanmax(cnt.to_numpy())) else "black")
+                                color="white" if ((i == 1 and val > 0.6 * np.nanmax(cnt.to_numpy())) or (i == 0 and abs(val) > 0.6 * lim)) else "black")
             ax.set_title(("Mediana della variazione log" if i == 0 else "Numero di casi") + f", h = {h}", fontsize=9)
             if j == 0:
                 ax.set_ylabel("fascia di livello")
