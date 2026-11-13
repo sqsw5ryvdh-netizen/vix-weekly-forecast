@@ -5,3 +5,4 @@ statsmodels==0.15.0
 matplotlib==3.11.2
 tabulate==0.10.0
 pytest==9.2.0
+arch==9.0.0

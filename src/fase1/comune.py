@@ -45,10 +45,15 @@ _FORBIDDEN = {C.HOLDOUT_FILE.name, C.CLEAN_FILE.name, C.RAW_FILE.name}
 _guard = {"attiva": False, "installata": False}
 
 
+# Dalla Fase 2: sono vietati anche i file originali dei dati esterni e le loro parti di holdout.
+_FORBIDDEN_DIRS = tuple(str(C.ROOT / "data" / "external" / d) + os.sep for d in ("raw", "holdout"))
+
+
 def _hook(event, args):
     if _guard["attiva"] and event == "open" and args and isinstance(args[0], (str, bytes, os.PathLike)):
-        if os.path.basename(os.fsdecode(args[0])) in _FORBIDDEN:
-            raise PermissionError(f"Fase 1: accesso vietato a {os.fsdecode(args[0])}")
+        path = os.fsdecode(args[0])
+        if os.path.basename(path) in _FORBIDDEN or os.path.abspath(path).startswith(_FORBIDDEN_DIRS):
+            raise PermissionError(f"accesso vietato a {path} (holdout o dati non ammessi in questa fase)")
 
 
 @contextmanager

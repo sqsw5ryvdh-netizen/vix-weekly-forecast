@@ -4,3 +4,6 @@ __pycache__/
 .pytest_cache/
 .DS_Store
 .ipynb_checkpoints/
+
+# Dati esterni (Fase 2, Parte C): rigenerabili con `python -m src.fetch_external`; non pubblicati nel repository
+data/external/
