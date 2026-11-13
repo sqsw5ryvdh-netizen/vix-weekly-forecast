@@ -1,0 +1,13 @@
+{
+  "seed": 12345,
+  "python": "3.12.2",
+  "pacchetti": {
+    "numpy": "2.5.4",
+    "pandas": "3.1.1",
+    "scipy": "1.18.1",
+    "statsmodels": "0.15.0",
+    "matplotlib": "3.11.2"
+  },
+  "holdout_settimane": 104,
+  "min_train_settimane": 260
+}
