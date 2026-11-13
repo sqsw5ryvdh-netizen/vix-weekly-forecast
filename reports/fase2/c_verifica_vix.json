@@ -1,0 +1,77 @@
+{
+  "periodo": [
+    "2000-01-03",
+    "2024-11-08"
+  ],
+  "settimane_confrontate": 1297,
+  "settimane_senza_dato_ufficiale": 0,
+  "tolleranza": 0.006,
+  "close": {
+    "uguali": 1297,
+    "diversi": 0,
+    "differenza_massima": 0.0,
+    "differenza_mediana_tra_i_diversi": 0.0
+  },
+  "high": {
+    "uguali": 1297,
+    "diversi": 0,
+    "differenza_massima": 0.0,
+    "differenza_mediana_tra_i_diversi": 0.0
+  },
+  "low": {
+    "uguali": 1297,
+    "diversi": 0,
+    "differenza_massima": 0.0,
+    "differenza_mediana_tra_i_diversi": 0.0
+  },
+  "open": {
+    "uguali": 1297,
+    "diversi": 0,
+    "differenza_massima": 0.0,
+    "differenza_mediana_tra_i_diversi": 0.0
+  },
+  "last_trading_day_uguali": 1297,
+  "trading_days_uguali": 1297,
+  "ipotesi_open": {
+    "apertura ufficiale del primo giorno della settimana": {
+      "uguali": 1297,
+      "differenza_mediana": 0.0
+    },
+    "chiusura ufficiale della settimana precedente": {
+      "uguali": 42,
+      "differenza_mediana": 0.6000000000000014
+    },
+    "massimo ufficiale del primo giorno": {
+      "uguali": 86,
+      "differenza_mediana": 0.3899999999999988
+    },
+    "minimo ufficiale del primo giorno": {
+      "uguali": 55,
+      "differenza_mediana": 0.5700000000000003
+    },
+    "chiusura ufficiale del primo giorno": {
+      "uguali": 11,
+      "differenza_mediana": 0.6000000000000014
+    }
+  },
+  "open_grezzo_meno_ufficiale": {
+    "mediana": 0.0,
+    "quota_grezzo_maggiore": 0.0,
+    "quota_grezzo_minore": 0.0
+  },
+  "salto_apertura_ufficiale": {
+    "descrizione": "ln(apertura ufficiale / chiusura ufficiale della settimana precedente)",
+    "mediana": 0.030655103722830243,
+    "quota_positivi": 0.8018504240555128
+  },
+  "settimane_ufficiali_ohlc_incoerenti": [
+    {
+      "week_start": "2004-11-08",
+      "open_ufficiale": 2.58,
+      "high_ufficiale": 14.48,
+      "low_ufficiale": 12.64,
+      "close_ufficiale": 13.33,
+      "open_file_grezzo": 2.58
+    }
+  ]
+}
