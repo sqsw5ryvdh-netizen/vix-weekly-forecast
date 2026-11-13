@@ -133,13 +133,13 @@ def figures(fc: pd.DataFrame, tabs: dict[str, pd.DataFrame]) -> None:
     cal = tabs["prob_calibrazione"]
     fig, axes = plt.subplots(1, 2, figsize=(10, 4.4))
     for ax, h in zip(axes, C.HORIZONS):
-        c = cal[cal["h"] == h]
+        c = cal[(cal["h"] == h) & (cal["n"] >= 5)]      # le classi con meno di 5 previsioni restano solo nel CSV
         ax.plot([0, 1], [0, 1], color="#7f8c8d", ls="--", lw=0.8, label="calibrazione perfetta")
         ax.errorbar(c["prob_media"], c["freq_osservata"], yerr=1.96 * c["se_binomiale"], fmt="o-", color="#1f4e79",
                     capsize=2, ms=4, label="catena di Markov sulle fasce")
         for _, r in c.iterrows():
             ax.annotate(int(r["n"]), (r["prob_media"], r["freq_osservata"]), xytext=(4, -9), textcoords="offset points", fontsize=7)
-        ax.set(title=f"Calibrazione P(VIX > {C.EVENT_THRESHOLD:.0f}), h = {h} (numeri = previsioni per classe)",
+        ax.set(title=f"Calibrazione P(VIX > {C.EVENT_THRESHOLD:.0f}), h = {h} (etichette = n. previsioni)",
                xlabel="probabilità prevista", ylabel="frequenza osservata", xlim=(-0.02, 1.02), ylim=(-0.02, 1.02))
         ax.legend(frameon=False, loc="upper left")
     fig.tight_layout()
@@ -155,7 +155,7 @@ def figures(fc: pd.DataFrame, tabs: dict[str, pd.DataFrame]) -> None:
             ax.plot(pd.to_datetime(g["data_obiettivo"]), ((g["y"] - g["f_bench"]) ** 2 - (g["y"] - g["f"]) ** 2).cumsum(),
                     label=name, color=col, lw=1)
         ax.axhline(0, color="black", lw=0.6)
-        ax.set_title(f"Σ (e²_RW − e²_modello), h = {h}: sopra zero = meglio del random walk")
+        ax.set_title(f"Σ (e²_RW − e²_modello), h = {h} (sopra zero: meglio del RW)")
         ax.legend(frameon=False)
     axes[0].set_ylim(-3, None)
     axes[1].set_ylim(-6, None)
