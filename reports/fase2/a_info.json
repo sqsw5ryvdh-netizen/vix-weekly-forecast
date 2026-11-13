@@ -1,0 +1,122 @@
+{
+  "centro": "M1 (tipo HAR)",
+  "griglia_quantili": [
+    0.05,
+    0.1,
+    0.15,
+    0.2,
+    0.25,
+    0.3,
+    0.35,
+    0.4,
+    0.45,
+    0.5,
+    0.55,
+    0.6,
+    0.65,
+    0.7,
+    0.75,
+    0.8,
+    0.85,
+    0.9,
+    0.95
+  ],
+  "quantili_riportati": [
+    0.05,
+    0.1,
+    0.25,
+    0.5,
+    0.75,
+    0.9,
+    0.95
+  ],
+  "crps": "2 x media della perdita quantilica sulla griglia di 19 quantili",
+  "min_errori_passati": 104,
+  "regola_casi": 20,
+  "d5_orizzonti": [
+    1
+  ],
+  "garch": {
+    "stime": 933,
+    "fallite": 0
+  },
+  "arma_m7": {
+    "stime": 1038,
+    "non_convergenti": 13,
+    "fallite": 0
+  },
+  "logit_ridge": 1.0,
+  "scelta_per_orizzonte": {
+    "1": "D4",
+    "4": "D4",
+    "12": "D4"
+  },
+  "regola_scelta": "CRPS medio piu' basso tra D1-D6 sull'intero walk-forward del campione di sviluppo",
+  "per_orizzonte": {
+    "1": {
+      "prima_origine": "2006-12-22",
+      "prima_data_obiettivo": "2006-12-29",
+      "ultima_data_obiettivo": "2024-11-08",
+      "n_previsioni": 933,
+      "incroci": {
+        "D1": 0,
+        "D2": 0,
+        "D3": 0,
+        "D4": 118,
+        "D5": 0,
+        "D6": 0,
+        "D1b": 0
+      },
+      "n_dopo_picco": 179,
+      "n_periodo_calmo": 246,
+      "eventi": [
+        "VIX>20",
+        "VIX>25",
+        "VIX>30",
+        "rialzo>20%"
+      ]
+    },
+    "4": {
+      "prima_origine": "2007-01-12",
+      "prima_data_obiettivo": "2007-02-09",
+      "ultima_data_obiettivo": "2024-11-08",
+      "n_previsioni": 927,
+      "incroci": {
+        "D1": 0,
+        "D2": 0,
+        "D3": 0,
+        "D4": 67,
+        "D6": 0,
+        "D1b": 0
+      },
+      "n_dopo_picco": 179,
+      "n_periodo_calmo": 243,
+      "eventi": [
+        "VIX>20",
+        "VIX>25",
+        "VIX>30"
+      ]
+    },
+    "12": {
+      "prima_origine": "2007-03-09",
+      "prima_data_obiettivo": "2007-06-01",
+      "ultima_data_obiettivo": "2024-11-08",
+      "n_previsioni": 911,
+      "incroci": {
+        "D1": 0,
+        "D2": 0,
+        "D3": 0,
+        "D4": 55,
+        "D6": 0,
+        "D1b": 0
+      },
+      "n_dopo_picco": 179,
+      "n_periodo_calmo": 236,
+      "eventi": [
+        "VIX>20",
+        "VIX>25",
+        "VIX>30"
+      ]
+    }
+  }
+}
