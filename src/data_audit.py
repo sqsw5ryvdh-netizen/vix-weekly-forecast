@@ -48,13 +48,16 @@ def audit_raw(raw: pd.DataFrame) -> dict:
     ohlc_bad = (h < np.maximum(o, c)) | (l > np.minimum(o, c)) | (h < l)
     partial = raw["note"].notna()
 
-    dlog = np.log(c).diff()
+    # I controlli strutturali (date, duplicati, mancanti, coerenza OHLC) coprono tutto il file.
+    # I controlli sui VALORI (estremi, min/max, gap) escludono l'holdout, che resta non analizzato.
+    is_dev = pd.Series(np.arange(len(raw)) < int((~partial).sum()) - C.HOLDOUT_WEEKS, index=raw.index)
+    dlog = np.log(c).diff().where(is_dev)
     med = dlog.median()
     mad = (dlog - med).abs().median() * 1.4826
     rz = (dlog - med) / mad
     extreme = rz.abs() > 5
 
-    gap_open = np.log(o / c.shift())
+    gap_open = np.log(o / c.shift()).where(is_dev)
 
     def rows(mask, extra=None):
         out = raw.loc[mask].copy()
@@ -84,20 +87,20 @@ def audit_raw(raw: pd.DataFrame) -> dict:
         "passo_settimanale_giorni": {str(int(k)): int(v) for k, v in gaps.dropna().value_counts().items()},
         "valori_non_positivi": int((raw[price_cols] <= 0).sum().sum()),
         "decimali_max": int(max(len(str(v).split(".")[-1]) for v in raw[price_cols].to_numpy().ravel())),
-        "min_max": {k: [float(raw[k].min()), float(raw[k].max())] for k in price_cols},
+        "min_max_escluso_holdout": {k: [float(raw.loc[is_dev, k].min()), float(raw.loc[is_dev, k].max())] for k in price_cols},
         "n_ohlc_incoerenti": int(ohlc_bad.sum()),
         "righe_ohlc_incoerenti": rows(ohlc_bad),
         "n_settimane_parziali": int(partial.sum()),
         "righe_settimane_parziali": rows(partial),
         "n_settimane_corte": int((raw["trading_days"] <= 3).sum()),
         "righe_settimane_corte": rows(raw["trading_days"] <= 3),
-        "variazioni_estreme_regola": "|z robusto| > 5 su dlog(close), z = (x - mediana) / (1.4826 * MAD)",
+        "variazioni_estreme_regola": "escluso holdout: |z robusto| > 5 su dlog(close), z = (x - mediana) / (1.4826 * MAD)",
         "n_variazioni_estreme": int(extreme.sum()),
         "righe_variazioni_estreme": rows(extreme, {"dlog_close": dlog, "z_robusto": rz}),
         "gap_apertura": {
             "descrizione": "ln(open_t / close_{t-1}): salto tra chiusura settimanale e apertura successiva",
             "mediana": float(gap_open.median()),
-            "quota_positivi": float((gap_open > 0).mean()),
+            "quota_positivi": float((gap_open.dropna() > 0).mean()),
             "min": float(gap_open.min()),
             "max": float(gap_open.max()),
         },

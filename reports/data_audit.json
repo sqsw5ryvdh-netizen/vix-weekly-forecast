@@ -51,7 +51,7 @@
   },
   "valori_non_positivi": 0,
   "decimali_max": 2,
-  "min_max": {
+  "min_max_escluso_holdout": {
     "open": [
       2.58,
       79.13
@@ -128,8 +128,8 @@
       "note": null
     }
   ],
-  "variazioni_estreme_regola": "|z robusto| > 5 su dlog(close), z = (x - mediana) / (1.4826 * MAD)",
-  "n_variazioni_estreme": 6,
+  "variazioni_estreme_regola": "escluso holdout: |z robusto| > 5 su dlog(close), z = (x - mediana) / (1.4826 * MAD)",
+  "n_variazioni_estreme": 5,
   "righe_variazioni_estreme": [
     {
       "week_start": "2007-02-26",
@@ -141,7 +141,7 @@
       "trading_days": 5,
       "note": null,
       "dlog_close": 0.5647,
-      "z_robusto": 5.1506
+      "z_robusto": 5.1792
     },
     {
       "week_start": "2010-05-03",
@@ -153,7 +153,7 @@
       "trading_days": 5,
       "note": null,
       "dlog_close": 0.619,
-      "z_robusto": 5.6378
+      "z_robusto": 5.6692
     },
     {
       "week_start": "2014-12-08",
@@ -165,7 +165,7 @@
       "trading_days": 5,
       "note": null,
       "dlog_close": 0.5785,
-      "z_robusto": 5.2744
+      "z_robusto": 5.3037
     },
     {
       "week_start": "2015-08-17",
@@ -177,7 +177,7 @@
       "trading_days": 5,
       "note": null,
       "dlog_close": 0.7815,
-      "z_robusto": 7.0952
+      "z_robusto": 7.1351
     },
     {
       "week_start": "2020-02-24",
@@ -189,25 +189,13 @@
       "trading_days": 5,
       "note": null,
       "dlog_close": 0.8537,
-      "z_robusto": 7.7433
-    },
-    {
-      "week_start": "2025-03-31",
-      "last_trading_day": "2025-04-04",
-      "open": 24.11,
-      "high": 45.61,
-      "low": 20.68,
-      "close": 45.31,
-      "trading_days": 5,
-      "note": null,
-      "dlog_close": 0.7385,
-      "z_robusto": 6.7098
+      "z_robusto": 7.7868
     }
   ],
   "gap_apertura": {
     "descrizione": "ln(open_t / close_{t-1}): salto tra chiusura settimanale e apertura successiva",
-    "mediana": 0.03120121736497359,
-    "quota_positivi": 0.8002853067047075,
+    "mediana": 0.030655103722830243,
+    "quota_positivi": 0.8024691358024691,
     "min": -1.6797735512559975,
     "max": 0.30511713427388243
   },
