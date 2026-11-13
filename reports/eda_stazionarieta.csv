@@ -1,0 +1,4 @@
+serie,adf_stat,adf_p,adf_ritardi,adf_rifiuta_radice_unitaria_5pct,kpss_stat,kpss_p_troncato_0.01_0.10,kpss_ritardi,kpss_rifiuta_stazionarieta_5pct
+livello,-4.33599,0.000384606,13,True,0.387241,0.0826547,20,False
+log,-4.62751,0.000114901,6,True,0.462133,0.0503739,20,False
+dlog,-13.8958,5.85516e-26,10,True,0.013947,0.1,15,False

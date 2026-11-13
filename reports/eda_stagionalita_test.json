@@ -1,0 +1,11 @@
+{
+  "kruskal_wallis_stat": 6.364919818949004,
+  "kruskal_wallis_p": 0.8479405404535949,
+  "anova_f": 0.6461676023934627,
+  "anova_p": 0.7898557773094275,
+  "levene_varianza_stat": 0.7867534932399184,
+  "levene_varianza_p": 0.6536627518822846,
+  "n_mesi_con_t_oltre_1.96": 0,
+  "soglia_t_bonferroni_12_test": 2.8652602385321337,
+  "n_mesi_significativi_bonferroni": 0
+}

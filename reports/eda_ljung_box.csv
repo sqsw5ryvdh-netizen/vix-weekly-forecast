@@ -1,0 +1,10 @@
+serie,lag,ljung_box_q,p_value
+dlog,4,46.2119,2.22505e-09
+dlog,12,61.943,9.96304e-09
+dlog,26,73.8522,1.79496e-06
+dlog_quadrato,4,25.8417,3.40567e-05
+dlog_quadrato,12,32.7138,0.00107268
+dlog_quadrato,26,39.7108,0.0416356
+dlog_assoluto,4,58.8126,5.1518e-12
+dlog_assoluto,12,67.6957,8.62074e-10
+dlog_assoluto,26,74.7336,1.32514e-06
