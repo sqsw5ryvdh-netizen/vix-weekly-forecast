@@ -6,7 +6,7 @@ Tutti i numeri vengono da `reports/fase4/`.*
 ## Sintesi
 
 1. **Candele (Parte A).** La regola sceglie **A1 media su 260 settimane, regressione su 520**: a 1 settimana il corpo previsto passa dall'85,6% al 91,0% di quello reale e l'escursione dal 79,6% all'89,3%; a 4 settimane corpo 83,5%, escursione 83,4%.
-2. **Da confermare:** A1 e A2 sono in parità esatta sul criterio (stesso corpo a +1); è stata presa A1 per una regola di spareggio fissata nel codice prima dei risultati (sezione 1.3).
+2. **Spareggio confermato il 2026-11-16:** A1 e A2 sono in parità esatta sul criterio (stesso corpo a +1); è stata presa A1 per una regola di spareggio fissata nel codice prima dei risultati (sezione 1.3).
 3. **Gradient boosting (N2, N3): verdetto negativo.** N2 è peggiore di M1 (significativo dopo Holm a h = 1) (R² -13,1% a h = 1, -7,0% a h = 4); N3, con i dati di mercato, è significativamente peggiore di M1 a tutti e due gli orizzonti (-21,3% e -17,3%). Anche sulla direzione fanno peggio della logistica di base.
 4. **Modello a regimi (N1), chiusura: nessun guadagno.** h = 1: +0,2% [-1,3%; +1,5%], nessuna differenza distinguibile da zero; h = 4: +0,5% [-2,4%; +3,5%], nessuna differenza distinguibile da zero.
 5. **Modello a regimi (N1), direzione:** h = 1: +1,6% [+0,5%; +2,7%], significativamente migliore dopo Holm; h = 4: -0,8% [-3,2%; +1,7%], nessuna differenza distinguibile da zero. **Passa la regola** (significativo dopo Holm a un orizzonte) ed entra tra i finalisti come F3.
@@ -85,7 +85,7 @@ Ampiezze in logaritmi. DM positivo = la variante ha errore quadratico più basso
 
 - Rapporto del corpo a h = 1: A0 0,856; A1 0,910; A2 0,910. Candidata: A1; errore quadratico sulle ampiezze a h = 1: 0,01761 contro 0,01785 di A0 (DM = 2,40, p = 0,017): non peggiore, anzi significativamente più basso.
 - **Scelta: A1 media su 260 settimane, regressione su 520.** A1 ha il rapporto del corpo più vicino a 1 a h = 1 e un errore quadratico sulle ampiezze non significativamente peggiore di A0.
-- **Parità esatta tra A1 e A2 a h = 1** (rapporto 0,910): a +1 il corpo è previsto dalla stessa regressione su 520 settimane, quindi le due varianti danno lo stesso corpo. La regola non dice come sciogliere la parità: nel codice era fissato, prima di guardare i risultati, che vince la prima dell'elenco (A1, la finestra più lunga e più vicina ad A0). Con uno spareggio diverso, per esempio il rapporto medio su h = 1-4 (A1 0,863; A2 0,877), la scelta sarebbe A2. **Scelta da confermare.**
+- **Parità esatta tra A1 e A2 a h = 1** (rapporto 0,910): a +1 il corpo è previsto dalla stessa regressione su 520 settimane, quindi le due varianti danno lo stesso corpo. La regola non dice come sciogliere la parità: nel codice era fissato, prima di guardare i risultati, che vince la prima dell'elenco (A1, la finestra più lunga e più vicina ad A0). Con uno spareggio diverso, per esempio il rapporto medio su h = 1-4 (A1 0,863; A2 0,877), la scelta sarebbe A2. **Spareggio confermato il 2026-11-16: fa parte della regola, e la variante congelata resta A1.**
 - Le candele restano un po' più piccole di quelle reali (corpo 91,0%, escursione 89,3% a 1 settimana), ma il ritardo della media espandibile è in gran parte recuperato.
   L'errore sulla chiusura della candela aumenta (2,41 punti contro 2,35 di A0 a 1 settimana):
   una candela più grande in una direzione fissa si allontana di più dal centro. La previsione centrale resta la chiusura centrale, non la chiusura della candela.
@@ -407,7 +407,7 @@ Chiusura reale a 4 settimane dentro la fascia al 50%: 6 pannelli su 12; dentro l
 
 ## 5. Problemi e ambiguità
 
-1. **Parità tra A1 e A2 (da confermare).** **Parità esatta tra A1 e A2 a h = 1** (rapporto 0,910): a +1 il corpo è previsto dalla stessa regressione su 520 settimane, quindi le due varianti danno lo stesso corpo. La regola non dice come sciogliere la parità: nel codice era fissato, prima di guardare i risultati, che vince la prima dell'elenco (A1, la finestra più lunga e più vicina ad A0). Con uno spareggio diverso, per esempio il rapporto medio su h = 1-4 (A1 0,863; A2 0,877), la scelta sarebbe A2. **Scelta da confermare.**
+1. **Parità tra A1 e A2 (spareggio confermato).** **Parità esatta tra A1 e A2 a h = 1** (rapporto 0,910): a +1 il corpo è previsto dalla stessa regressione su 520 settimane, quindi le due varianti danno lo stesso corpo. La regola non dice come sciogliere la parità: nel codice era fissato, prima di guardare i risultati, che vince la prima dell'elenco (A1, la finestra più lunga e più vicina ad A0). Con uno spareggio diverso, per esempio il rapporto medio su h = 1-4 (A1 0,863; A2 0,877), la scelta sarebbe A2. **Spareggio confermato il 2026-11-16: fa parte della regola, e la variante congelata resta A1.**
 2. **Che cosa cambia tra le varianti.** La consegna dà le finestre; è stato tenuto fermo quale componente usa la regressione e quale la media (corpo a +1 e +2: regressione), come in A0.
 3. **«Errore quadratico sulle ampiezze».** Letto come somma degli errori quadratici di corpo e due ombre a h = 1. La tabella 1.2 riporta anche le singole componenti e h = 4.
 4. **N1: definizione di stima valida e ripiego iniziale.** La prima stima (2004-12-23) non è valida; non esistendo una stima precedente, per le prime 26 origini è stato usato un AR(1) (fissato prima).

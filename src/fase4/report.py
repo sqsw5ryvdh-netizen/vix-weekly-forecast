@@ -15,6 +15,7 @@ from . import valuta_b as VB4
 from . import versioni as VS
 
 R = C.REPORTS_DIR / "fase4"
+SPAREGGIO_CONFERMATO = "2026-11-16"      # data in cui lo spareggio A1/A2 (a parita' vince la prima dell'elenco) e' stato confermato
 ETICHETTE = {"n": "previsioni", "mae_centrale": "chiusura centrale: errore assoluto medio (punti)", "rmse_log_centrale": "chiusura centrale: RMSE in log",
              "entro_10": "chiusura centrale entro il 10% dal reale", "entro_20": "chiusura centrale entro il 20% dal reale",
              "mae_centro": "centro: errore assoluto medio (punti)", "rmse_log_centro": "centro: RMSE in log",
@@ -74,7 +75,7 @@ def run() -> None:
         f_pari = (f"**Parità esatta tra {' e '.join(pari)} a h = 1** (rapporto {n(rap[pari[0]], 3)}): a +1 il corpo è previsto dalla stessa regressione su 520 settimane, quindi le due varianti danno lo stesso corpo. "
                   f"La regola non dice come sciogliere la parità: nel codice era fissato, prima di guardare i risultati, che vince la prima dell'elenco ({sc['candidata']}, la finestra più lunga e più vicina ad A0). "
                   f"Con uno spareggio diverso, per esempio il rapporto medio su h = 1-4 ({'; '.join(f'{v} {n(medio[v], 3)}' for v in pari)}), "
-                  f"la scelta {'sarebbe ' + altra if abs(medio[altra] - 1) < abs(medio[sc['candidata']] - 1) else 'non cambierebbe'}. **Scelta da confermare.**")
+                  f"la scelta {'sarebbe ' + altra if abs(medio[altra] - 1) < abs(medio[sc['candidata']] - 1) else 'non cambierebbe'}. **Spareggio confermato il {SPAREGGIO_CONFERMATO}: fa parte della regola, e la variante congelata resta {sc['scelta']}.**")
     else:
         f_pari = "Nessuna parità tra le varianti a h = 1."
     f_dm = (f"errore quadratico sulle ampiezze a h = 1: {n(sc['mse_candidata'], 5)} contro {n(sc['mse_a0'], 5)} di A0 (DM = {n(sc['dm_stat'], 2)}, p = {n(sc['p'], 3)}): "
@@ -198,7 +199,7 @@ def run() -> None:
         f"**Candele (Parte A).** La regola sceglie **{KA.DESCRIZIONI[V]}**: a 1 settimana il corpo previsto passa dall'{pc(rap['A0'])} al {pc(rap[V])} di quello reale e l'escursione dal "
         f"{pc(P.loc[('A0', 1), 'rapporto_escursione'])} all'{pc(P.loc[(V, 1), 'rapporto_escursione'])}; a 4 settimane corpo {pc(P.loc[(V, 4), 'rapporto_corpo'])}, escursione {pc(P.loc[(V, 4), 'rapporto_escursione'])}." if V != "A0"
         else f"**Candele (Parte A).** La regola lascia A0: {sc['motivo']}.",
-        (f"**Da confermare:** {' e '.join(pari)} sono in parità esatta sul criterio (stesso corpo a +1); è stata presa {sc['candidata']} per una regola di spareggio fissata nel codice prima dei risultati (sezione 1.3)."
+        (f"**Spareggio confermato il {SPAREGGIO_CONFERMATO}:** {' e '.join(pari)} sono in parità esatta sul criterio (stesso corpo a +1); è stata presa {sc['candidata']} per una regola di spareggio fissata nel codice prima dei risultati (sezione 1.3)."
          if len(pari) > 1 else "**Parte A, regola:** nessuna parità tra le varianti; " + sc["motivo"] + "."),
         f"**Gradient boosting (N2, N3): verdetto negativo.** N2 è {gb_verdetto['N2']} (R² {pct(A1.loc[('N2', 1), 'r2_vs_m1'])} a h = 1, {pct(A1.loc[('N2', 4), 'r2_vs_m1'])} a h = 4); "
         f"N3, con i dati di mercato, è {gb_verdetto['N3']} ({pct(A1.loc[('N3', 1), 'r2_vs_m1'])} e {pct(A1.loc[('N3', 4), 'r2_vs_m1'])}). Anche sulla direzione fanno peggio della logistica di base.",
@@ -408,7 +409,7 @@ Confronti con p < 0,05 (non corretto) tra tutti gli orizzonti 1-4: {', '.join(si
 
 ## 5. Problemi e ambiguità
 
-1. **Parità tra A1 e A2 (da confermare).** {f_pari}
+1. **Parità tra A1 e A2 (spareggio confermato).** {f_pari}
 2. **Che cosa cambia tra le varianti.** La consegna dà le finestre; è stato tenuto fermo quale componente usa la regressione e quale la media (corpo a +1 e +2: regressione), come in A0.
 3. **«Errore quadratico sulle ampiezze».** Letto come somma degli errori quadratici di corpo e due ombre a h = 1. La tabella 1.2 riporta anche le singole componenti e h = 4.
 4. **N1: definizione di stima valida e ripiego iniziale.** La prima stima ({', '.join(n1['date_non_valide']) or 'nessuna'}) non è valida; non esistendo una stima precedente, per le prime {n1['origini_con_ripiego_ar1']} origini è stato usato un AR(1) (fissato prima).
