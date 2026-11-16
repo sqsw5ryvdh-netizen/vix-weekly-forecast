@@ -8,8 +8,12 @@ settimanale completa (o dall'origine indicata) e stima i modelli sulla storia fi
 
 E' L'UNICO comando autorizzato a leggere i dati successivi al confine di sviluppo, e solo come storia da cui
 prevedere. Errori e coperture «storici» mostrati accanto alla previsione sono quelli misurati sul campione di
-sviluppo da `run_phase2b` e `run_phase2c`, e qui vengono solo letti. Unica eccezione, esplicita: con `--verifica`
-le previsioni gia' scritte nel registro vengono confrontate con le settimane nel frattempo completate.
+sviluppo da `run_phase2b` e `run_phase3` (Parte 0), e qui vengono solo letti. Unica eccezione, esplicita: con
+`--verifica` le previsioni gia' scritte nel registro vengono confrontate con le settimane nel frattempo completate.
+
+Dalla Fase 3 (Parte 0) le candele sono K2 con ampiezze medie e direzione del corpo dalla frequenza storica;
+l'etichetta sopra ogni candela e' la direzione della chiusura rispetto all'origine (probabilita' D1). I modelli con
+dati giornalieri e di mercato misurati nella Fase 3 NON sono usati qui.
 """
 from __future__ import annotations
 
@@ -28,12 +32,13 @@ from .fase2b import grafici
 from .fase2b import lettura as LE
 from .fase2b import modello as MO
 from .fase2b import testo as T2B
-from .fase2c import candele as KA
 from .fase2c import registro as RG
 from .fase2c import settimana as SE
-from .fase2c import testo
+from .fase3 import candele as KA
+from .fase3 import registro as RG3
+from .fase3 import testo
 
-STAT_2B, STAT_2C = C.REPORTS_DIR / "fase2b", C.REPORTS_DIR / "fase2c"
+STAT_2B, STAT_3 = C.REPORTS_DIR / "fase2b", C.REPORTS_DIR / "fase3"
 OUT_DIR = C.REPORTS_DIR / "previsione"
 COLONNE_FILE = ["week_start", "last_trading_day", "open", "high", "low", "close", "trading_days", "note"]
 CAMPI = ("apertura", "massimo", "minimo", "chiusura")
@@ -77,42 +82,43 @@ def indice_origine(df: pd.DataFrame, origine: str | None) -> int:
 
 
 def statistiche_sviluppo() -> dict:
-    """Misure del walk-forward di sviluppo (prodotte da run_phase2b e run_phase2c). Qui vengono solo lette."""
+    """Misure del walk-forward di sviluppo (prodotte da run_phase2b e run_phase3). Qui vengono solo lette."""
     try:
         ch = pd.read_csv(STAT_2B / "chiusura_metriche.csv").set_index("h")
-        info_c = json.loads((STAT_2C / "info.json").read_text())
-        pg = pd.read_csv(STAT_2C / "pagella.csv")
-        dr = pd.read_csv(STAT_2C / "direzione.csv")
+        info = json.loads((STAT_3 / "p0_info.json").read_text())
+        pg = pd.read_csv(STAT_3 / "p0_pagella.csv")
+        et = pd.read_csv(STAT_3 / "p0_etichetta.csv").set_index("h")
     except FileNotFoundError:
-        raise SystemExit("Mancano le misure del walk-forward di sviluppo: eseguire prima `python -m src.run_phase2b` e `python -m src.run_phase2c`.")
-    costr = info_c["scelta"]["costruzione"]
-    mod = {int(h): m for h, m in info_c["modello_direzione"].items()}
-    pg = pg[pg["costruzione"] == costr].set_index("h")
-    dr = dr.set_index(["h", "modello"])
+        raise SystemExit("Mancano le misure del walk-forward di sviluppo: eseguire prima `python -m src.run_phase2b`, `python -m src.run_phase2c` "
+                         "e `python -m src.run_phase3`.")
+    pg = pg[pg["costruzione"] == info["costruzione"]].set_index("h")
+    scelte = {c: {int(h): v for h, v in d.items()} for c, d in info["scelte"].items()}
     return {"chiusura": {h: ch.loc[h].to_dict() for h in MO.ORIZZONTI}, "pagella": {h: pg.loc[h].to_dict() for h in MO.ORIZZONTI},
-            "candele": {"costruzione": costr, "modello_direzione": mod, "rapporto_apertura": info_c["rapporto_apertura"]["ultimo"],
-                        "frequenza_rialzo": float(dr.loc[(1, "L0"), "frequenza_rialzo"]),
-                        "accuratezza_direzione": {h: float(dr.loc[(h, mod[h]), "accuratezza"]) for h in MO.ORIZZONTI},
-                        "accuratezza_riferimento": {h: float(dr.loc[(h, "L0"), "accuratezza"]) for h in MO.ORIZZONTI}},
-            "g3": info_c["g3"]}
+            "etichetta": {h: et.loc[h].to_dict() for h in MO.ORIZZONTI},
+            "candele": {"costruzione": info["costruzione"], "nome": info["nome"], "scelte": scelte, "rapporto_apertura": info["rapporto_apertura_ultimo"],
+                        "frequenza_rialzo": info["frequenza_rialzo_corpo_ultima"]},
+            "g3": info["g3"]}
 
 
 def calcola(df: pd.DataFrame, t: int, st: dict) -> tuple[dict, list[dict], dict]:
-    """Previsione (mediane, fasce, probabilita'), candele della costruzione scelta e lettura: solo df.iloc[: t + 1]."""
-    prev, cand = KA.prevedi_candele(df, t, st["candele"]["costruzione"], st["candele"]["modello_direzione"])
+    """Previsione (mediane, fasce, probabilita'), candele della nuova definizione e lettura: solo df.iloc[: t + 1]."""
+    prev, cand = KA.prevedi_candele(df, t, st["candele"]["scelte"])
     return prev, cand, LE.lettura(df, t)
 
 
 def vista_grafico(prev: dict, cand: list[dict]) -> dict:
     """Previsione con le candele scelte al posto di quelle della Fase 2b (fasce e mediane restano quelle di D4)."""
-    return prev | {"settimane": [s | {k: c[k] for k in CAMPI} | {"direzione": c["direzione"], "prob_direzione": c["prob_direzione"]}
-                                 for s, c in zip(prev["settimane"], cand)]}
+    return prev | {"settimane": [s | {k: c[k] for k in CAMPI} | {"etichetta": "chiusura:\n" + c["etichetta"]} for s, c in zip(prev["settimane"], cand)]}
 
 
 def scrivi_md(path: Path, prev: dict, cand: list[dict], L: dict, tab: pd.DataFrame, st: dict, info: dict, g1: Path, g3: Path, nota_origine: str) -> None:
     rel = lambda p: os.path.relpath(p, path.parent)
     n = T2B.n
-    c4, k = st["chiusura"][4], st["candele"]
+    c4, k, e1, e4 = st["chiusura"][4], st["candele"], st["etichetta"][1], st["etichetta"][4]
+    amp = "; ".join(f"{KA.NOMI_COMPONENTI[c]}: " + ("regressione" if len(set(v.values())) == 1 and "regressione" in v.values() else
+                                                  "media storica" if len(set(v.values())) == 1 else
+                                                  "regressione per le settimane " + ", ".join(f"+{h}" for h, x in v.items() if x == "regressione") + ", media storica per le altre")
+                    for c, v in k["scelte"].items())
     t_cand, t_fasce = testo.tabella_md(tab)
     md = f"""# Previsione del VIX settimanale — origine {T2B.data_it(prev['data_origine'])}
 
@@ -132,7 +138,8 @@ Progetto universitario: non è un consiglio di investimento.*
 
 Valori in punti VIX. Due livelli, da leggere insieme.
 
-**Candele previste** (costruzione {KA.NOMI[k['costruzione']]}): la settimana più probabile per direzione e ampiezza.
+**Candele previste** (costruzione {k['nome']}): una settimana di dimensioni medie. La colonna «chiusura rispetto all'origine»
+è l'etichetta scritta sopra le candele nel grafico: direzione della chiusura rispetto alla chiusura dell'origine, «neutra» tra 40% e 60%.
 
 {t_cand}
 
@@ -141,8 +148,11 @@ cioè la frequenza con cui la chiusura reale vi è caduta nel walk-forward di sv
 
 {t_fasce}
 
-- La **probabilità della direzione** viene dal modello {k['modello_direzione'][1]}. Nel walk-forward di sviluppo la direzione del corpo è stata indovinata nel {n(100 * k['accuratezza_direzione'][1], 1)}% dei casi a 1 settimana,
-  contro il {n(100 * k['accuratezza_riferimento'][1], 1)}% di chi prevede sempre la direzione più frequente: **il modello non aggiunge capacità di previsione sulla direzione**.
+- L'**etichetta della chiusura** usa la probabilità del modello D1 (lo stesso delle probabilità di superare 20, 25 e 30). Nel walk-forward di sviluppo è stata «neutra» nel
+  {n(100 * e1['quota_neutra'], 0)}% dei casi a 1 settimana e nel {n(100 * e4['quota_neutra'], 0)}% a 4; quando non era neutra è stata corretta nel {n(100 * e1['accuratezza_non_neutre'], 0)}% dei casi a 1 settimana
+  ({int(e1['n_non_neutre'])} casi) e nel {n(100 * e4['accuratezza_non_neutre'], 0)}% a 4 ({int(e4['n_non_neutre'])} casi).
+- Il **corpo** della candela è disegnato nella direzione storicamente più frequente (chiusura sotto l'apertura nel {n(100 * (1 - k['frequenza_rialzo']), 0)}% delle settimane passate):
+  è una frequenza, non una previsione. Ampiezze: {amp}.
 - Gli errori storici sono errori assoluti medi in punti VIX misurati sul campione di sviluppo. Le date sono indicative (origine + 7 giorni per settimana).
 
 ## 3. Grafico
@@ -161,14 +171,15 @@ di previsione sono troppo strette per ospitarli).
 ![Verifica sul passato]({rel(g3)})
 
 Dodici origini scelte con regola fissa ({st['g3']['regola']}), tutte nel campione di sviluppo. {st['g3']['riga']}
-Dodici casi sono pochi: servono a vedere come si comporta la previsione, non a misurarla. Le misure sono in `fase2c_report.md`.
+Dodici casi sono pochi: servono a vedere come si comporta la previsione, non a misurarla. Le misure sono in `fase3_report.md` (Parte 0).
 
 ## 5. Avvertenze
 
-- Le candele previste sono più piccole di quelle reali: nel walk-forward il corpo medio previsto è il {n(100 * st['pagella'][1]['rapporto_corpo'], 0)}% di quello reale e l'escursione il {n(100 * st['pagella'][1]['rapporto_escursione'], 0)}% (a 1 settimana). Mostrano valori tipici, e le settimane estreme non sono tipiche.
+- Le candele previste restano un po' più piccole di quelle reali: nel walk-forward, a 1 settimana, il rapporto tra corpo medio previsto e reale è {n(100 * st['pagella'][1]['rapporto_corpo'], 0)}% e quello tra escursione prevista e reale è {n(100 * st['pagella'][1]['rapporto_escursione'], 0)}%. Le ampiezze sono medie del passato, e negli ultimi anni corpi e ombre sono stati più ampi della media di tutta la storia.
+- La chiusura della candela **non** è la previsione centrale della chiusura: quella è la mediana D4 (linea viola).
 - Le fasce coprono meno del nominale: a 4 settimane quella al 50% ha contenuto la chiusura reale nel {n(100 * c4['copertura_50'], 0)}% dei casi, quella all'80% nel {n(100 * c4['copertura_80'], 0)}%, quella al 90% nel {n(100 * c4['copertura_90'], 0)}%.
 - Candele, fasce (D4) e probabilità (D1) vengono da modelli diversi e possono non essere perfettamente coerenti tra loro.
-- Il modello non anticipa i picchi e usa solo lo storico del VIX.
+- Il modello non anticipa i picchi e usa solo lo storico settimanale del VIX. I modelli con dati giornalieri e di mercato misurati nella Fase 3 non sono usati qui.
 - Ogni esecuzione senza `--origine` viene scritta in `reports/registro_previsioni.csv`; `python -m src.forecast --verifica` confronta il registro con le settimane completate.
 """
     path.write_text(md)
@@ -180,7 +191,7 @@ def esegui_verifica(df: pd.DataFrame, reg_path: Path, out: Path) -> dict:
         print(f"Il registro {reg_path} non esiste ancora: esegui prima `python -m src.forecast`.")
         return {"dettaglio": pd.DataFrame(), "pagella": pd.DataFrame()}
     reg = pd.read_csv(reg_path, dtype={"data_origine": str, "data_esecuzione": str})
-    det, pag = RG.verifica(reg, df)
+    det, pag = RG3.verifica(reg, df)
     print(f"\nPAGELLA DAL VIVO — registro: {reg['data_origine'].nunique()} origini, {len(reg)} settimane previste; settimane completate e confrontabili: {len(det)}")
     if det.empty:
         print("Nessuna settimana prevista è ancora stata completata nel file: non c'è nulla da verificare.")
@@ -225,25 +236,26 @@ def main(argv: list[str] | None = None, out_dir: Path | None = None, oggi: str |
     (out / f"previsione_{d0}.json").write_text(json.dumps({"file": info, "lettura": L, "sintesi": frasi, "previsione": prev, "candele": cand}, indent=2, ensure_ascii=False))
     storia, vista = df.iloc[: t + 1], vista_grafico(prev, cand)
     g1, g2 = out / f"g1_{d0}.png", out / f"g2_{d0}.png"
-    grafici.g1(storia, vista, L, g1, mediana=True)
-    grafici.g2(storia, vista, g2, mediana=True)
+    grafici.g1(storia, vista, L, g1, mediana=True, recente=True)
+    grafici.g2(storia, vista, g2, mediana=True, recente=True)
     corrente = a.origine is None and out_dir is None
     md = (C.REPORTS_DIR / "previsione_corrente.md") if corrente else (out / f"previsione_{d0}.md")
-    scrivi_md(md, prev, cand, L, tab, st, info, g1, C.FIG_DIR / "fase2c" / "g3_verifica_passato.png", nota)
+    scrivi_md(md, prev, cand, L, tab, st, info, g1, C.FIG_DIR / "fase3" / "g3_verifica_passato.png", nota)
     msg_reg = "Registro: non aggiornato (con --origine la previsione non è una previsione dal vivo)."
     registrata = False
     if a.origine is None:
-        registrata, msg_reg = RG.aggiungi(reg_path, RG.righe(prev, cand, oggi or datetime.now().strftime("%Y-%m-%d")))
+        registrata, msg_reg = RG.aggiungi(reg_path, RG3.righe(prev, cand, oggi or datetime.now().strftime("%Y-%m-%d")))
 
     print(f"\nPREVISIONE DEL VIX — origine {T2B.data_it(d0)} (chiusura {T2B.n(prev['chiusura_origine'])}); storia: {L['settimane_di_storia']} settimane")
     print("\n" + "\n".join("  " + f for f in frasi) + "\n")
     with pd.option_context("display.width", 250, "display.max_columns", 30):
-        vis = tab[["settimana", "data", "apertura", "massimo", "minimo", "chiusura", "direzione", "prob_direzione", "mediana_d4", "fascia_50_inf", "fascia_50_sup",
+        vis = tab[["settimana", "data", "apertura", "massimo", "minimo", "chiusura", "etichetta_chiusura", "p_chiusura_sopra_origine", "mediana_d4", "fascia_50_inf", "fascia_50_sup",
                    "fascia_80_inf", "fascia_80_sup", "fascia_90_inf", "fascia_90_sup", "p_vix_sopra_20", "p_vix_sopra_25", "p_vix_sopra_30"]].round(2)
         print(vis.to_string(index=False))
-        print(f"\nCandele: costruzione {KA.NOMI[st['candele']['costruzione']]}. Misure storiche (walk-forward di sviluppo):")
+        print(f"\nCandele: costruzione {st['candele']['nome']}. Etichetta: chiusura rispetto all'origine (neutra tra 40% e 60%). Misure storiche (walk-forward di sviluppo):")
         print(tab[["settimana", "copertura_storica_50", "copertura_storica_80", "copertura_storica_90", "mae_storico_mediana_d4", "mae_storico_apertura", "mae_storico_massimo",
-                   "mae_storico_minimo", "mae_storico_chiusura", "direzione_corpo_storica", "n_previsioni_walk_forward"]].round(3).to_string(index=False))
+                   "mae_storico_minimo", "mae_storico_chiusura", "etichetta_quota_neutra_storica", "etichetta_accuratezza_storica_non_neutre",
+                   "n_previsioni_walk_forward"]].round(3).to_string(index=False))
     print(f"\n{msg_reg}")
     print(f"Scheda: {md}\nTabella: {out / f'tabella_{d0}.csv'}\nLettura e previsione (JSON): {out / f'previsione_{d0}.json'}\nGrafici: {g1}, {g2}")
     return {"previsione": prev, "candele": cand, "lettura": L, "tabella": tab, "md": md, "info": info, "registrata": registrata}

@@ -21,6 +21,7 @@ SU_T, GIU_T = "#d98880", "#7fa8cf"          # previste: toni piu' tenui
 FASCIA = "#8e7cc3"
 MEDIANA = "#4a2d82"
 GRIGIO = "#7f8c8d"
+RECENTE = "#d68910"                         # media a 12 settimane («livello recente»)
 MESI = ["gen", "feb", "mar", "apr", "mag", "giu", "lug", "ago", "set", "ott", "nov", "dic"]
 STILE = {"figure.dpi": 110, "savefig.dpi": 150, "axes.grid": True, "grid.alpha": 0.25, "axes.spines.top": False,
          "axes.spines.right": False, "font.size": 9}
@@ -80,13 +81,17 @@ def linea_mediana(ax, prev: dict, x0, x) -> None:
             marker="o", ms=3.2, zorder=6)
 
 
-def legenda(ax, percorsi: bool = False, riferimenti: bool = True, mediana: bool = False, **kw) -> None:
+def legenda(ax, percorsi: bool = False, riferimenti: bool = True, mediana: bool = False, recente: bool = False, **kw) -> None:
     h = [Patch(facecolor=SU, edgecolor=SU, label="reale: settimana in rialzo"), Patch(facecolor=GIU, edgecolor=GIU, label="reale: settimana in ribasso"),
          Patch(facecolor="white", edgecolor=SU, ls="--", hatch="////", label="PREVISTA (corpo vuoto, bordo tratteggiato)"),
          Patch(facecolor=FASCIA, alpha=0.40, label="fascia della chiusura al 50%"), Patch(facecolor=FASCIA, alpha=0.15, label="fascia della chiusura all'80%")]
     if mediana:
         h.append(Line2D([], [], color=MEDIANA, lw=1.4, marker="o", ms=3.2, label="mediana D4: valore centrale della chiusura"))
-    if riferimenti:
+    if recente:                                  # Fase 3: il riferimento principale e' la media a 12 settimane
+        h.append(Line2D([], [], color=RECENTE, lw=2.2, label="livello recente: media a 12 settimane (riferimento principale)"))
+        if riferimenti:
+            h.append(Line2D([], [], color="#9aa0a6", lw=0.7, ls=":", label="mediana storica (in secondo piano)"))
+    elif riferimenti:
         h += [Line2D([], [], color="#d68910", lw=1.2, label="media mobile a 12 settimane"),
               Line2D([], [], color="black", lw=0.9, ls=":", label="mediana storica (fino all'origine)")]
     h.append(Line2D([], [], color="black", lw=1.0, ls="--", label="data di origine"))
@@ -95,12 +100,24 @@ def legenda(ax, percorsi: bool = False, riferimenti: bool = True, mediana: bool 
     ax.legend(handles=h, frameon=False, fontsize=7.5, **kw)
 
 
+def livello_recente(ax, d: pd.DataFrame, n_sett: int, x0: float, x_fine: float, testo: bool = True) -> float:
+    """Media a 12 settimane come riferimento principale: linea spessa sulla storia, prolungata (tratteggio) fino alla settimana +4."""
+    ma = d["close"].rolling(12).mean()
+    ax.plot(mdates.date2num(d["date"].iloc[-n_sett:]), ma.iloc[-n_sett:], color=RECENTE, lw=2.2, zorder=2.5)
+    ult = float(ma.iloc[-1])
+    ax.plot([x0, x_fine], [ult, ult], color=RECENTE, lw=1.4, ls=(0, (4, 2)), zorder=2.5)
+    if testo:
+        ax.annotate(f"livello recente {n(ult)}", (x_fine, ult), xytext=(4, 0), textcoords="offset points", ha="left", va="center", fontsize=7.5,
+                    color="#9c640c", bbox={"boxstyle": "round,pad=0.15", "fc": "white", "ec": "none", "alpha": 0.8}, zorder=8)
+    return ult
+
+
 def _date(prev: dict) -> tuple[float, list[float]]:
     x0 = mdates.date2num(pd.Timestamp(prev["data_origine"]))
     return x0, [mdates.date2num(pd.Timestamp(s["data"])) for s in prev["settimane"]]
 
 
-def _zoom(ax, d: pd.DataFrame, prev: dict, L: dict | None, n_sett: int, percorsi: bool, mediana: bool = False) -> None:
+def _zoom(ax, d: pd.DataFrame, prev: dict, L: dict | None, n_sett: int, percorsi: bool, mediana: bool = False, recente: bool = False) -> None:
     x0, xp = _date(prev)
     z = d.iloc[-n_sett:]
     fasce(ax, prev, x0, xp)
@@ -112,6 +129,8 @@ def _zoom(ax, d: pd.DataFrame, prev: dict, L: dict | None, n_sett: int, percorsi
     candele_previste(ax, prev, xp, 4.2)
     if mediana:
         linea_mediana(ax, prev, x0, xp)
+    if recente:
+        livello_recente(ax, d, n_sett, x0, xp[-1] + 4, testo=False)
     ax.axvline(x0, color="black", lw=1.0, ls="--", zorder=2)
     ax.set_xlim(mdates.date2num(z["date"].iloc[0]) - 5, xp[-1] + 9)
     ax.xaxis.set_major_locator(mdates.WeekdayLocator(byweekday=mdates.FR, interval=2))
@@ -119,7 +138,7 @@ def _zoom(ax, d: pd.DataFrame, prev: dict, L: dict | None, n_sett: int, percorsi
     ax.set_ylabel("VIX")
 
 
-def g1(d: pd.DataFrame, prev: dict, L: dict, path, settimane: int = 104, mediana: bool = False) -> None:
+def g1(d: pd.DataFrame, prev: dict, L: dict, path, settimane: int = 104, mediana: bool = False, recente: bool = False) -> None:
     """Grafico principale: ultimi 2 anni + 4 candele previste; sotto, ingrandimento con i percorsi dei casi simili."""
     with plt.rc_context(STILE):
         fig, (ax, az) = plt.subplots(2, 1, figsize=(15, 10.5), gridspec_kw={"height_ratios": [3, 2.2]})
@@ -130,9 +149,13 @@ def g1(d: pd.DataFrame, prev: dict, L: dict, path, settimane: int = 104, mediana
         candele_previste(ax, prev, xp, 4.2)
         if mediana:
             linea_mediana(ax, prev, x0, xp)
-        ax.plot(mdates.date2num(h["date"]), d["close"].rolling(12).mean().iloc[-settimane:], color="#d68910", lw=1.2, zorder=2)
         med = float(d["close"].median())
-        ax.axhline(med, color="black", lw=0.9, ls=":", zorder=1)
+        if recente:
+            livello_recente(ax, d, settimane, x0, xp[-1] + 6)
+            ax.axhline(med, color="#9aa0a6", lw=0.7, ls=":", zorder=1)
+        else:
+            ax.plot(mdates.date2num(h["date"]), d["close"].rolling(12).mean().iloc[-settimane:], color="#d68910", lw=1.2, zorder=2)
+            ax.axhline(med, color="black", lw=0.9, ls=":", zorder=1)
         ax.axvline(x0, color="black", lw=1.0, ls="--", zorder=2)
         ymax = max(h["high"].max(), max(s["fasce"]["80"][1] for s in prev["settimane"])) * 1.05
         ax.set_ylim(min(h["low"].min(), min(s["fasce"]["80"][0] for s in prev["settimane"])) * 0.93, ymax)
@@ -148,29 +171,37 @@ def g1(d: pd.DataFrame, prev: dict, L: dict, path, settimane: int = 104, mediana
         ax.xaxis.set_major_formatter(plt.FuncFormatter(_fmt_mese))
         ax.set_ylabel("VIX")
         ax.set_title(f"VIX settimanale: ultimi 2 anni e previsione a 4 settimane dall'origine {pd.Timestamp(prev['data_origine']).strftime('%d/%m/%Y')}", fontsize=11)
-        legenda(ax, loc="upper left", ncol=2, mediana=mediana)
-        _zoom(az, d, prev, L, 16, percorsi=True, mediana=mediana)
+        legenda(ax, loc="upper left", ncol=2, mediana=mediana, recente=recente)
+        _zoom(az, d, prev, L, 16, percorsi=True, mediana=mediana, recente=recente)
         for xi, s in zip(xp, prev["settimane"]):
-            et = n(s["chiusura"]) + (f"\n{s['direzione']} {round(100 * s['prob_direzione'])}%" if "prob_direzione" in s else "")
+            if "etichetta" in s:                     # Fase 3: direzione della chiusura rispetto all'origine
+                et = s["etichetta"]
+            else:
+                et = n(s["chiusura"]) + (f"\n{s['direzione']} {round(100 * s['prob_direzione'])}%" if "prob_direzione" in s else "")
             az.annotate(et, (xi, s["massimo"]), xytext=(0, 4), textcoords="offset points", ha="center", fontsize=7.5, color="#222",
-                        bbox={"boxstyle": "round,pad=0.15", "fc": "white", "ec": "none", "alpha": 0.8} if "prob_direzione" in s else None, zorder=8)
+                        bbox={"boxstyle": "round,pad=0.15", "fc": "white", "ec": "none", "alpha": 0.8} if ("prob_direzione" in s or "etichetta" in s) else None, zorder=8)
         az.set_title(f"Ingrandimento: ultime 16 settimane, previsione e percorsi reali a 4 settimane dei {L['casi_simili']['n']} casi simili "
                      "(riportati al livello attuale come variazione percentuale)", fontsize=9.5)
-        legenda(az, percorsi=True, riferimenti=False, mediana=mediana, loc="upper left", ncol=2)
+        legenda(az, percorsi=True, riferimenti=False, mediana=mediana, recente=recente, loc="upper left", ncol=2)
         fig.tight_layout()
         fig.savefig(path)
         plt.close(fig)
 
 
-def g2(d: pd.DataFrame, prev: dict, path, mediana: bool = False) -> None:
+def g2(d: pd.DataFrame, prev: dict, path, mediana: bool = False, recente: bool = False) -> None:
     """Tutto lo storico: linea delle chiusure (le candele non sarebbero leggibili) e riquadro con le candele previste."""
     with plt.rc_context(STILE):
         fig, ax = plt.subplots(figsize=(15, 6.2))
         x0, xp = _date(prev)
         ax.plot(mdates.date2num(d["date"]), d["close"], color=GIU, lw=0.8, label="chiusura settimanale (storia)")
-        ax.plot(mdates.date2num(d["date"]), d["close"].rolling(12).mean(), color="#d68910", lw=0.8, alpha=0.9, label="media mobile a 12 settimane")
         med = float(d["close"].median())
-        ax.axhline(med, color="black", lw=0.9, ls=":", label=f"mediana storica ({n(med)})")
+        if recente:
+            ma = d["close"].rolling(12).mean()
+            ax.plot(mdates.date2num(d["date"]), ma, color=RECENTE, lw=1.5, label=f"livello recente: media a 12 settimane ({n(float(ma.iloc[-1]))})")
+            ax.axhline(med, color="#9aa0a6", lw=0.7, ls=":", label=f"mediana storica, in secondo piano ({n(med)})")
+        else:
+            ax.plot(mdates.date2num(d["date"]), d["close"].rolling(12).mean(), color="#d68910", lw=0.8, alpha=0.9, label="media mobile a 12 settimane")
+            ax.axhline(med, color="black", lw=0.9, ls=":", label=f"mediana storica ({n(med)})")
         ax.axvline(x0, color="black", lw=1.0, ls="--", label="data di origine")
         fasce(ax, prev, x0, xp)
         ax.xaxis.set_major_locator(mdates.YearLocator(2))
@@ -181,7 +212,7 @@ def g2(d: pd.DataFrame, prev: dict, path, mediana: bool = False) -> None:
                      f"{pd.Timestamp(prev['data_origine']).strftime('%d/%m/%Y')}", fontsize=11)
         ax.legend(frameon=False, fontsize=8, loc="upper left")
         ins = ax.inset_axes([0.452, 0.44, 0.275, 0.50])      # zona 2012-2019, dove la linea resta bassa
-        _zoom(ins, d, prev, None, 20, percorsi=False, mediana=mediana)
+        _zoom(ins, d, prev, None, 20, percorsi=False, mediana=mediana, recente=recente)
         ins.set_title("ultime 20 settimane (candele reali) e 4 candele previste", fontsize=8)
         ins.tick_params(labelsize=7)
         ins.xaxis.set_major_locator(mdates.WeekdayLocator(byweekday=mdates.FR, interval=6))
