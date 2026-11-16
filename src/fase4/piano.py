@@ -1,4 +1,5 @@
-"""Genera reports/piano_esame_holdout.md: il piano dell'esame sull'holdout, SCRITTO E NON ESEGUITO.
+"""Genera il piano d'esame della Fase 4 (reports/fase4/piano_esame_holdout_fase4.md): SCRITTO E NON ESEGUITO.
+Dalla Fase 4b e' un documento d'archivio: il piano in vigore e' reports/piano_esame_holdout.md, scritto da `run_phase4b`.
 
 Il piano fissa ora versioni, metriche, tabelle e criteri. Questo modulo non apre l'holdout: usa solo costanti del
 progetto e i file di reports/fase4 (elenco delle versioni e dimensioni dei campioni di sviluppo).
@@ -116,7 +117,7 @@ Per ogni criterio i test sono {n_test} ({len(altre)} versioni × h = {ORIZZONTI_
 - Nessun sottoperiodo dentro l'holdout oltre alla fascia {FASCIA[0]}-{FASCIA[1]}: {C.HOLDOUT_WEEKS} settimane sono troppo poche.
 - Nessuna selezione dei risultati: tutte le tabelle della sezione 4 vengono pubblicate.
 """
-    (C.REPORTS_DIR / "piano_esame_holdout.md").write_text(out)
+    (R / "piano_esame_holdout_fase4.md").write_text(out)        # dalla Fase 4b il piano in vigore (reports/piano_esame_holdout.md) e' scritto da fase4b.piano
 
 
 if __name__ == "__main__":

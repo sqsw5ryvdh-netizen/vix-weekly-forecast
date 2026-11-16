@@ -21,6 +21,7 @@ SU_T, GIU_T = "#d98880", "#7fa8cf"          # previste: toni piu' tenui
 FASCIA = "#8e7cc3"
 MEDIANA = "#4a2d82"
 GRIGIO = "#7f8c8d"
+COLORE_ETICHETTA = {"rialzo": SU, "ribasso": GIU, "neutra": "#8a8f98"}     # Fase 4b: prima candela prevista colorata secondo l'etichetta
 RECENTE = "#d68910"                         # media a 12 settimane («livello recente»)
 MESI = ["gen", "feb", "mar", "apr", "mag", "giu", "lug", "ago", "set", "ott", "nov", "dic"]
 STILE = {"figure.dpi": 110, "savefig.dpi": 150, "axes.grid": True, "grid.alpha": 0.25, "axes.spines.top": False,
@@ -41,9 +42,13 @@ def n(v: float, d: int = 1) -> str:
     return f"{v:.{d}f}".replace(".", ",")
 
 
-def candela(ax, x, o, h, l, c, w, prevista: bool = False, z: int = 3) -> None:
+def candela(ax, x, o, h, l, c, w, prevista: bool = False, z: int = 3, colore: str | None = None) -> None:
     su = c >= o
-    if prevista:
+    if prevista and colore is not None:               # Fase 4b: corpo pieno nel colore dell'etichetta, bordo tratteggiato perche' e' una previsione
+        col = COLORE_ETICHETTA[colore]
+        ax.vlines(x, l, h, color=col, lw=1.1, ls=(0, (2, 1.5)), zorder=z)
+        ax.add_patch(Rectangle((x - w / 2, min(o, c)), w, max(abs(c - o), 0.02), facecolor=col, edgecolor="black", lw=0.9, ls=(0, (2.5, 1.5)), alpha=0.85, zorder=z + 1))
+    elif prevista:
         col = SU_T if su else GIU_T
         edge = SU if su else GIU
         ax.vlines(x, l, h, color=edge, lw=1.0, ls=(0, (2, 1.5)), zorder=z)
@@ -63,7 +68,7 @@ def candele_reali(ax, d: pd.DataFrame, x, w) -> None:
 
 def candele_previste(ax, prev: dict, x, w) -> None:
     for xi, s in zip(x, prev["settimane"]):
-        candela(ax, xi, s["apertura"], s["massimo"], s["minimo"], s["chiusura"], w, prevista=True)
+        candela(ax, xi, s["apertura"], s["massimo"], s["minimo"], s["chiusura"], w, prevista=True, colore=s.get("colore"))
 
 
 def fasce(ax, prev: dict, x0, x, livelli=(80, 50)) -> None:
@@ -81,10 +86,12 @@ def linea_mediana(ax, prev: dict, x0, x) -> None:
             marker="o", ms=3.2, zorder=6)
 
 
-def legenda(ax, percorsi: bool = False, riferimenti: bool = True, mediana: bool = False, recente: bool = False, centrale: str | None = None, **kw) -> None:
+def legenda(ax, percorsi: bool = False, riferimenti: bool = True, mediana: bool = False, recente: bool = False, centrale: str | None = None, etichette: bool = False, **kw) -> None:
     h = [Patch(facecolor=SU, edgecolor=SU, label="reale: settimana in rialzo"), Patch(facecolor=GIU, edgecolor=GIU, label="reale: settimana in ribasso"),
-         Patch(facecolor="white", edgecolor=SU, ls="--", hatch="////", label="PREVISTA (corpo vuoto, bordo tratteggiato)"),
+         Patch(facecolor="white", edgecolor=SU, ls="--", hatch="////", label="PREVISTA +2…+4 (corpo vuoto, bordo tratteggiato)" if etichette else "PREVISTA (corpo vuoto, bordo tratteggiato)"),
          Patch(facecolor=FASCIA, alpha=0.40, label="fascia della chiusura al 50%"), Patch(facecolor=FASCIA, alpha=0.15, label="fascia della chiusura all'80%")]
+    if etichette:                                # Fase 4b: la prima candela prevista ha il colore dell'etichetta della chiusura
+        h[3:3] = [Patch(facecolor=COLORE_ETICHETTA[k], edgecolor="black", ls="--", alpha=0.85, label=f"PREVISTA +1: chiusura rispetto all'origine «{k}»") for k in ("rialzo", "ribasso", "neutra")]
     if mediana:
         h.append(Line2D([], [], color=MEDIANA, lw=1.4, marker="o", ms=3.2, label="mediana D4: valore centrale della chiusura" if centrale is None else centrale))
     if recente:                                  # Fase 3: il riferimento principale e' la media a 12 settimane
@@ -138,7 +145,7 @@ def _zoom(ax, d: pd.DataFrame, prev: dict, L: dict | None, n_sett: int, percorsi
     ax.set_ylabel("VIX")
 
 
-def g1(d: pd.DataFrame, prev: dict, L: dict, path, settimane: int = 104, mediana: bool = False, recente: bool = False, centrale: str | None = None) -> None:
+def g1(d: pd.DataFrame, prev: dict, L: dict, path, settimane: int = 104, mediana: bool = False, recente: bool = False, centrale: str | None = None, etichette: bool = False) -> None:
     """Grafico principale: ultimi 2 anni + 4 candele previste; sotto, ingrandimento con i percorsi dei casi simili."""
     with plt.rc_context(STILE):
         fig, (ax, az) = plt.subplots(2, 1, figsize=(15, 10.5), gridspec_kw={"height_ratios": [3, 2.2]})
@@ -171,7 +178,7 @@ def g1(d: pd.DataFrame, prev: dict, L: dict, path, settimane: int = 104, mediana
         ax.xaxis.set_major_formatter(plt.FuncFormatter(_fmt_mese))
         ax.set_ylabel("VIX")
         ax.set_title(f"VIX settimanale: ultimi 2 anni e previsione a 4 settimane dall'origine {pd.Timestamp(prev['data_origine']).strftime('%d/%m/%Y')}", fontsize=11)
-        legenda(ax, loc="upper left", ncol=2, mediana=mediana, recente=recente, centrale=centrale)
+        legenda(ax, loc="upper left", ncol=2, mediana=mediana, recente=recente, centrale=centrale, etichette=etichette)
         _zoom(az, d, prev, L, 16, percorsi=True, mediana=mediana, recente=recente)
         for xi, s in zip(xp, prev["settimane"]):
             if "etichetta" in s:                     # Fase 3: direzione della chiusura rispetto all'origine
@@ -182,7 +189,7 @@ def g1(d: pd.DataFrame, prev: dict, L: dict, path, settimane: int = 104, mediana
                         bbox={"boxstyle": "round,pad=0.15", "fc": "white", "ec": "none", "alpha": 0.8} if ("prob_direzione" in s or "etichetta" in s) else None, zorder=8)
         az.set_title(f"Ingrandimento: ultime 16 settimane, previsione e percorsi reali a 4 settimane dei {L['casi_simili']['n']} casi simili "
                      "(riportati al livello attuale come variazione percentuale)", fontsize=9.5)
-        legenda(az, percorsi=True, riferimenti=False, mediana=mediana, recente=recente, centrale=centrale, loc="upper left", ncol=2)
+        legenda(az, percorsi=True, riferimenti=False, mediana=mediana, recente=recente, centrale=centrale, etichette=etichette, loc="upper left", ncol=2)
         fig.tight_layout()
         fig.savefig(path)
         plt.close(fig)
@@ -224,7 +231,7 @@ def g2(d: pd.DataFrame, prev: dict, path, mediana: bool = False, recente: bool =
         plt.close(fig)
 
 
-def g3(pannelli: list[dict], path, riga: str, mediana: bool = False) -> None:
+def g3(pannelli: list[dict], path, riga: str, mediana: bool = False, etichette: bool = False) -> None:
     """Verifica visiva sul passato: per ogni origine le 4 candele previste accanto alle 4 candele reali."""
     with plt.rc_context(STILE):
         fig, axes = plt.subplots(3, 4, figsize=(16, 10.5))
@@ -235,7 +242,7 @@ def g3(pannelli: list[dict], path, riga: str, mediana: bool = False) -> None:
             fasce(ax, prev, 0, xf)
             candele_reali(ax, st, xs, 0.55)
             for k, (s, r) in enumerate(zip(prev["settimane"], re.itertuples()), start=1):
-                candela(ax, k - 0.2, s["apertura"], s["massimo"], s["minimo"], s["chiusura"], 0.32, prevista=True)
+                candela(ax, k - 0.2, s["apertura"], s["massimo"], s["minimo"], s["chiusura"], 0.32, prevista=True, colore=s.get("colore"))
                 candela(ax, k + 0.2, r.open, r.high, r.low, r.close, 0.32)
             if mediana:
                 linea_mediana(ax, prev, 0, xf)
@@ -245,7 +252,7 @@ def g3(pannelli: list[dict], path, riga: str, mediana: bool = False) -> None:
             esito = ("dentro la fascia al 50%" if p["dentro_50"] else "dentro la fascia all'80%" if p["dentro_80"] else "fuori dalla fascia all'80%")
             ax.set_title(f"origine {pd.Timestamp(prev['data_origine']).strftime('%d/%m/%Y')} — chiusura a +4: {esito}", fontsize=8.5)
         fig.suptitle("Verifica visiva sul passato (campione di sviluppo): candele previste (vuote, a sinistra) accanto alle candele reali (piene, a destra)", fontsize=11)
-        legenda(fig, riferimenti=False, mediana=mediana, loc="upper center", ncol=7 if mediana else 6, bbox_to_anchor=(0.5, 0.965))
+        legenda(fig, riferimenti=False, mediana=mediana, etichette=etichette, loc="upper center", ncol=5 if etichette else 7 if mediana else 6, bbox_to_anchor=(0.5, 0.965))
         fig.text(0.5, 0.012, riga, ha="center", fontsize=10, fontweight="bold")
         fig.tight_layout(rect=(0, 0.03, 1, 0.935))
         fig.savefig(path)
