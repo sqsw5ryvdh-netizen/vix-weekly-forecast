@@ -8,6 +8,47 @@ Il lavoro procede per fasi; ogni fase si chiude con un report in `reports/`.
 | 0 | audit dei dati, analisi esplorativa, baseline walk-forward | [reports/fase0_report.md](reports/fase0_report.md) |
 | 1 | pattern storici (dopo e prima dei picchi, periodi calmi, tabelle condizionate) e modelli che usano solo il VIX | [reports/fase1_report.md](reports/fase1_report.md) |
 | 2 | previsione probabilistica attorno al tipo HAR (quantili, intervalli, probabilità di eventi), scheda di previsione, raccolta dei dati esterni | [reports/fase2_report.md](reports/fase2_report.md) |
+| 2b | programma di previsione a 1-4 settimane con grafico a candele | [reports/fase2b_report.md](reports/fase2b_report.md) · previsione corrente: [reports/previsione_corrente.md](reports/previsione_corrente.md) |
+
+## Il programma di previsione
+
+```bash
+python -m src.forecast                                   # previsione dall'ultima chiusura settimanale completa
+python -m src.forecast --origine 2025-06-27              # previsione "come se fossimo" a quella data
+python -m src.forecast --file percorso/del/file.csv      # con un file aggiornato (stesso formato del file grezzo)
+```
+
+Cosa fa: legge l'intero storico, esclude la settimana incompleta (riga con la colonna `note` valorizzata), stima i
+modelli sulla storia fino all'origine e produce, per le settimane +1 … +4:
+
+- una **candela prevista** (apertura, massimo, minimo, chiusura);
+- le **fasce della chiusura** al 50%, 80% e 90%, ciascuna con la copertura misurata nel passato;
+- le **probabilità** di chiudere sopra 20, 25 e 30;
+- una **lettura della situazione** (livello, riferimenti, dinamica, contesto, precedenti, casi simili) con una sintesi in poche frasi.
+
+Cosa scrive:
+
+| file | contenuto |
+|---|---|
+| `reports/previsione_corrente.md` | scheda completa: sintesi, lettura, tabella, grafico, guida alla lettura (solo senza `--origine`) |
+| `reports/previsione/previsione_AAAA-MM-GG.md` | la stessa scheda quando si indica `--origine` |
+| `reports/previsione/tabella_AAAA-MM-GG.csv` | tabella della previsione (stampata anche a schermo) |
+| `reports/previsione/previsione_AAAA-MM-GG.json` | lettura della situazione e previsione in formato JSON |
+| `reports/previsione/g1_AAAA-MM-GG.png` | grafico principale: ultimi 2 anni a candele, 4 candele previste, fasce, casi simili |
+| `reports/previsione/g2_AAAA-MM-GG.png` | lo stesso su tutto lo storico dal 2000 |
+
+Per aggiornare la previsione basta aggiungere le nuove settimane al file (o passarne uno nuovo con `--file`) e
+rieseguire il comando. Il file deve avere le colonne `week_start, last_trading_day, open, high, low, close,
+trading_days, note`; servono almeno 7 anni circa di storia.
+
+Come leggere il grafico: le candele piene sono settimane reali, quelle vuote con bordo tratteggiato sono previste;
+**le ombre delle candele previste indicano l'escursione attesa dentro la settimana, le fasce colorate indicano
+l'incertezza sulla chiusura**. Le fasce coprono meno del valore nominale: la copertura reale è scritta in tabella.
+
+Limiti: usa solo lo storico del VIX; non anticipa i picchi; è un progetto universitario, non un consiglio di
+investimento. `src.forecast` è l'unico comando che legge i dati successivi all'8 novembre 2024, e solo come storia
+da cui prevedere: errori e coperture mostrati nella scheda sono quelli misurati sul campione di sviluppo da
+`python -m src.run_phase2b`.
 
 ## Come riprodurre
 
@@ -21,6 +62,7 @@ pip install -r requirements.txt
 python -m src.run_phase0   # Fase 0: dataset puliti, tabelle, figure e report
 python -m src.run_phase1   # Fase 1: pattern storici, modelli M0-M7, report (circa 2 minuti)
 python -m src.run_phase2   # Fase 2: modelli di densità, eventi, scheda di previsione, report (circa 5 minuti)
+python -m src.run_phase2b  # Fase 2b: misure per h = 1-4 su chiusura, massimo e minimo, grafico di verifica, report (circa 4 minuti)
 python -m pytest           # test (anti look-ahead, integrità dell'holdout, metriche)
 ```
 
@@ -70,6 +112,15 @@ src/
     scheda.py      scheda di previsione a una data origine (mediana, intervalli, probabilità)
     report.py      costruisce il report leggendo reports/fase2/*.csv e *.json
   fetch_external.py  Parte C: scarico, documentazione e allineamento dei dati esterni
+  forecast.py      programma di previsione (unico comando che legge l'intero file grezzo)
+  run_phase2b.py   misure di sviluppo della Fase 2b, sotto la guardia
+  fase2b/
+    modello.py     previsione di chiusura, massimo e minimo; costruzione delle candele previste
+    lettura.py     lettura della situazione e casi simili
+    testo.py       tabella e testo della scheda
+    grafici.py     grafici a candele G1, G2, G3
+    valuta.py      walk-forward di sviluppo per h = 1-4 e grafico G3
+    report.py      costruisce il report leggendo reports/fase2b/*.csv e *.json
 tests/             test automatici
 reports/           report, tabelle (.csv/.json) e figure; i risultati delle Fasi 1 e 2 sono in reports/fase1/, reports/fase2/ e nelle rispettive cartelle di figure
 notebooks/         opzionale, vuota
