@@ -81,12 +81,12 @@ def linea_mediana(ax, prev: dict, x0, x) -> None:
             marker="o", ms=3.2, zorder=6)
 
 
-def legenda(ax, percorsi: bool = False, riferimenti: bool = True, mediana: bool = False, recente: bool = False, **kw) -> None:
+def legenda(ax, percorsi: bool = False, riferimenti: bool = True, mediana: bool = False, recente: bool = False, centrale: str | None = None, **kw) -> None:
     h = [Patch(facecolor=SU, edgecolor=SU, label="reale: settimana in rialzo"), Patch(facecolor=GIU, edgecolor=GIU, label="reale: settimana in ribasso"),
          Patch(facecolor="white", edgecolor=SU, ls="--", hatch="////", label="PREVISTA (corpo vuoto, bordo tratteggiato)"),
          Patch(facecolor=FASCIA, alpha=0.40, label="fascia della chiusura al 50%"), Patch(facecolor=FASCIA, alpha=0.15, label="fascia della chiusura all'80%")]
     if mediana:
-        h.append(Line2D([], [], color=MEDIANA, lw=1.4, marker="o", ms=3.2, label="mediana D4: valore centrale della chiusura"))
+        h.append(Line2D([], [], color=MEDIANA, lw=1.4, marker="o", ms=3.2, label="mediana D4: valore centrale della chiusura" if centrale is None else centrale))
     if recente:                                  # Fase 3: il riferimento principale e' la media a 12 settimane
         h.append(Line2D([], [], color=RECENTE, lw=2.2, label="livello recente: media a 12 settimane (riferimento principale)"))
         if riferimenti:
@@ -138,7 +138,7 @@ def _zoom(ax, d: pd.DataFrame, prev: dict, L: dict | None, n_sett: int, percorsi
     ax.set_ylabel("VIX")
 
 
-def g1(d: pd.DataFrame, prev: dict, L: dict, path, settimane: int = 104, mediana: bool = False, recente: bool = False) -> None:
+def g1(d: pd.DataFrame, prev: dict, L: dict, path, settimane: int = 104, mediana: bool = False, recente: bool = False, centrale: str | None = None) -> None:
     """Grafico principale: ultimi 2 anni + 4 candele previste; sotto, ingrandimento con i percorsi dei casi simili."""
     with plt.rc_context(STILE):
         fig, (ax, az) = plt.subplots(2, 1, figsize=(15, 10.5), gridspec_kw={"height_ratios": [3, 2.2]})
@@ -162,7 +162,7 @@ def g1(d: pd.DataFrame, prev: dict, L: dict, path, settimane: int = 104, mediana
         ax.annotate(f"origine\n{pd.Timestamp(prev['data_origine']).strftime('%d/%m/%Y')}\nchiusura {n(prev['chiusura_origine'], 2)}",
                     (x0, ymax), xytext=(-6, -4), textcoords="offset points", ha="right", va="top", fontsize=8)
         s4 = prev["settimane"][-1]
-        ax.annotate((f"settimana +4\ncandela: chiusura {n(s4['chiusura'])}\nmediana D4: {n(s4['quantili']['q50'])}\nfascia 50%: {n(s4['fasce']['50'][0])}–{n(s4['fasce']['50'][1])}"
+        ax.annotate((f"settimana +4\ncandela: chiusura {n(s4['chiusura'])}\n{'mediana D4' if centrale is None else 'chiusura centrale'}: {n(s4['quantili']['q50'])}\nfascia 50%: {n(s4['fasce']['50'][0])}–{n(s4['fasce']['50'][1])}"
                      if mediana else f"settimana +4\nchiusura prevista {n(s4['chiusura'])}\nfascia 50%: {n(s4['fasce']['50'][0])}–{n(s4['fasce']['50'][1])}"),
                     (xp[-1], s4["massimo"]), xytext=(10, 14), textcoords="offset points", ha="left", va="bottom", fontsize=8.5,
                     fontweight="bold", arrowprops={"arrowstyle": "-", "color": GRIGIO, "lw": 0.7})
@@ -171,7 +171,7 @@ def g1(d: pd.DataFrame, prev: dict, L: dict, path, settimane: int = 104, mediana
         ax.xaxis.set_major_formatter(plt.FuncFormatter(_fmt_mese))
         ax.set_ylabel("VIX")
         ax.set_title(f"VIX settimanale: ultimi 2 anni e previsione a 4 settimane dall'origine {pd.Timestamp(prev['data_origine']).strftime('%d/%m/%Y')}", fontsize=11)
-        legenda(ax, loc="upper left", ncol=2, mediana=mediana, recente=recente)
+        legenda(ax, loc="upper left", ncol=2, mediana=mediana, recente=recente, centrale=centrale)
         _zoom(az, d, prev, L, 16, percorsi=True, mediana=mediana, recente=recente)
         for xi, s in zip(xp, prev["settimane"]):
             if "etichetta" in s:                     # Fase 3: direzione della chiusura rispetto all'origine
@@ -182,7 +182,7 @@ def g1(d: pd.DataFrame, prev: dict, L: dict, path, settimane: int = 104, mediana
                         bbox={"boxstyle": "round,pad=0.15", "fc": "white", "ec": "none", "alpha": 0.8} if ("prob_direzione" in s or "etichetta" in s) else None, zorder=8)
         az.set_title(f"Ingrandimento: ultime 16 settimane, previsione e percorsi reali a 4 settimane dei {L['casi_simili']['n']} casi simili "
                      "(riportati al livello attuale come variazione percentuale)", fontsize=9.5)
-        legenda(az, percorsi=True, riferimenti=False, mediana=mediana, recente=recente, loc="upper left", ncol=2)
+        legenda(az, percorsi=True, riferimenti=False, mediana=mediana, recente=recente, centrale=centrale, loc="upper left", ncol=2)
         fig.tight_layout()
         fig.savefig(path)
         plt.close(fig)
