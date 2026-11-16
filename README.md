@@ -9,7 +9,8 @@ Il lavoro procede per fasi; ogni fase si chiude con un report in `reports/`.
 | 1 | pattern storici (dopo e prima dei picchi, periodi calmi, tabelle condizionate) e modelli che usano solo il VIX | [reports/fase1_report.md](reports/fase1_report.md) |
 | 2 | previsione probabilistica attorno al tipo HAR (quantili, intervalli, probabilità di eventi), scheda di previsione, raccolta dei dati esterni | [reports/fase2_report.md](reports/fase2_report.md) |
 | 2b | programma di previsione a 1-4 settimane con grafico a candele | [reports/fase2b_report.md](reports/fase2b_report.md) |
-| 2c | candele previste realistiche e misurabili, registro delle previsioni | [reports/fase2c_report.md](reports/fase2c_report.md) · previsione corrente: [reports/previsione_corrente.md](reports/previsione_corrente.md) |
+| 2c | candele previste realistiche e misurabili, registro delle previsioni | [reports/fase2c_report.md](reports/fase2c_report.md) |
+| 3 | nuova definizione delle candele (Parte 0); quanto aggiungono il VIX giornaliero e i dati di mercato a chiusura, direzione e fasce | [reports/fase3_report.md](reports/fase3_report.md) · previsione corrente: [reports/previsione_corrente.md](reports/previsione_corrente.md) |
 
 ## Il programma di previsione
 
@@ -24,8 +25,10 @@ Cosa fa: legge l'intero storico, esclude la settimana incompleta (riga con la co
 ultima riga con meno sedute di quelle attese: in questo caso avvisa a schermo), stima i modelli sulla storia fino
 all'origine e produce, per le settimane +1 … +4:
 
-- una **candela prevista** (apertura, massimo, minimo, chiusura) con la **probabilità della direzione**: è la settimana
-  più probabile per direzione e ampiezza;
+- una **candela prevista** (apertura, massimo, minimo, chiusura): una settimana di dimensioni medie, con il corpo
+  disegnato nella direzione storicamente più frequente;
+- la **direzione della chiusura rispetto alla chiusura dell'origine**, con la sua probabilità: «rialzo», «ribasso»
+  oppure «neutra» quando la probabilità è tra 40% e 60% (è la scritta sopra ogni candela nel grafico);
 - la **chiusura centrale** (mediana), cioè il centro di tutti gli esiti possibili;
 - le **fasce della chiusura** al 50%, 80% e 90%, ciascuna con la copertura misurata nel passato;
 - le **probabilità** di chiudere sopra 20, 25 e 30;
@@ -49,21 +52,25 @@ rieseguire il comando. Il file deve avere le colonne `week_start, last_trading_d
 trading_days, note`; servono almeno 7 anni circa di storia.
 
 Come leggere il grafico: le candele piene sono settimane reali, quelle vuote con bordo tratteggiato sono previste.
-**La candela mostra la settimana più probabile per direzione e ampiezza; la linea viola (mediana) è il centro degli
-esiti possibili; le fasce colorate indicano l'incertezza sulla chiusura.** Le candele previste sono quasi sempre in
-ribasso perché l'apertura ufficiale del VIX è di norma più alta della chiusura precedente: per sapere se il VIX sarà
-più alto o più basso di oggi si guarda la linea centrale, non il colore della candela. Le fasce coprono meno del valore
-nominale: la copertura reale è scritta in tabella.
+**La candela mostra una settimana di dimensioni medie; la scritta sopra la candela dice se la chiusura sarà sopra o
+sotto la chiusura dell'origine (o «neutra»); la linea viola (mediana) è il centro degli esiti possibili; le fasce
+colorate indicano l'incertezza sulla chiusura; la linea arancione spessa è il livello recente (media a 12 settimane),
+riferimento principale.** Le candele previste sono blu perché l'apertura ufficiale del VIX è di norma più alta della
+chiusura precedente e la settimana chiude più spesso sotto la propria apertura: il colore non dice dove chiuderà il
+VIX rispetto a oggi, lo dicono la scritta e la linea centrale. Le fasce coprono meno del valore nominale: la copertura
+reale è scritta in tabella.
 
 Il registro serve a misurare le previsioni dal vivo, non a scegliere modelli: dopo ogni aggiornamento del file,
 `python -m src.forecast` registra la nuova previsione e `python -m src.forecast --verifica` mostra come sono andate
 quelle precedenti.
 
-Limiti: usa solo lo storico del VIX; non anticipa i picchi; è un progetto universitario, non un consiglio di
+Limiti: usa solo lo storico settimanale del VIX (i modelli con VIX giornaliero e dati di mercato misurati nella
+Fase 3 **non** sono nel programma); non anticipa i picchi; è un progetto universitario, non un consiglio di
 investimento. `src.forecast` è l'unico comando che legge i dati successivi all'8 novembre 2024, e solo come storia
 da cui prevedere: errori e coperture mostrati nella scheda sono quelli misurati sul campione di sviluppo da
-`python -m src.run_phase2b` e `python -m src.run_phase2c`. Solo `--verifica` confronta previsioni e dati recenti, e
-solo per le previsioni già scritte nel registro.
+`python -m src.run_phase2b` e `python -m src.run_phase3`. Solo `--verifica` confronta previsioni e dati recenti, e
+solo per le previsioni già scritte nel registro. Le previsioni registrate prima della Fase 3 restano nel registro con
+le candele di allora (colonna `costruzione`).
 
 ## Come riprodurre
 
@@ -79,12 +86,17 @@ python -m src.run_phase1   # Fase 1: pattern storici, modelli M0-M7, report (cir
 python -m src.run_phase2   # Fase 2: modelli di densità, eventi, scheda di previsione, report (circa 5 minuti)
 python -m src.run_phase2b  # Fase 2b: misure per h = 1-4 su chiusura, massimo e minimo, grafico di verifica, report (circa 4 minuti)
 python -m src.run_phase2c  # Fase 2c: componenti e pagella delle candele, regola di scelta, report (circa 1 minuto; richiede run_phase2b)
+python -m src.run_phase3   # Fase 3: nuove candele, blocchi con VIX giornaliero e dati di mercato, report (circa 3 minuti; richiede run_phase2c e i dati esterni)
 python -m pytest           # test (anti look-ahead, integrità dell'holdout, metriche)
 ```
 
-I tre comandi sono deterministici: rieseguendoli si ottengono gli stessi file. `run_phase1` e `run_phase2`
+I comandi sono deterministici: rieseguendoli si ottengono gli stessi file. `run_phase1` e `run_phase2`
 richiedono `data/processed/vix_weekly_dev.csv`, prodotto da `run_phase0`. Versioni e seed sono in
 `reports/run_manifest.json`, `reports/fase1/run_manifest.json` e `reports/fase2/run_manifest.json`.
+
+`run_phase3` legge anche `data/external/dev/esterni_giornalieri_dev.csv`, che **non è nel repository**: va prodotto
+prima con `python -m src.fetch_external` (vedi sotto). Senza i dati esterni si può rigenerare la sola Parte 0 (le
+nuove candele) con `python -m src.fase3.valuta_candele`, e i test che richiedono i dati esterni vengono saltati.
 
 ### Dati esterni (Fase 2, Parte C)
 
@@ -98,8 +110,10 @@ Lo scarico non è deterministico (dipende dal giorno) ed è separato da `run_pha
 `data/external/raw/` (originali), `data/external/dev/` (serie giornaliere e settimanali fino al confine di
 sviluppo) e `data/external/holdout/` (parte successiva, bloccata). **`data/external/` non è nel repository**:
 contiene dati di terzi; nel repository ci sono il programma di scarico e l'inventario
-(`reports/fase2/c_inventario.json`). In questa fase i dati esterni sono solo raccolti: non sono usati da
-alcun modello.
+(`reports/fase2/c_inventario.json`). Nella Fase 2 i dati esterni sono solo raccolti. Dalla Fase 3 la parte di
+sviluppo (VIX giornaliero, VIX3M, VVIX, S&P 500, future VX1 e VX2) è usata da `run_phase3` per misurare quanto
+aggiunge a M1; l'indice delle condizioni finanziarie e i differenziali di credito sono esclusi. La parte di holdout
+resta bloccata dalla guardia.
 
 ## Struttura
 
@@ -146,6 +160,17 @@ src/
     settimana.py   riconoscimento della settimana incompleta
     testo.py       tabella e testi della scheda
     report.py      costruisce il report leggendo reports/fase2c/*.csv e *.json
+  run_phase3.py    misure di sviluppo della Fase 3, sotto la guardia
+  fase3/
+    candele.py         Parte 0: candele K2 con ampiezze medie, direzione L0, etichetta della chiusura (usato da forecast.py)
+    valuta_candele.py  Parte 0: regressione contro media storica, nuova pagella, grafico G3
+    testo.py           tabella e testi della scheda (usato da forecast.py)
+    registro.py        registro con l'etichetta della chiusura (usato da forecast.py)
+    dati.py            unico accesso ai dati esterni di sviluppo (solo le serie dell'elenco chiuso)
+    variabili.py       variabili dei blocchi G1 e X1-X4, calcolate con i soli dati disponibili a fine settimana
+    modelli.py         elenco chiuso: blocchi G1, X1-X4, combinazioni X6 (ridge) e X7 (media) per T1, T2, T3
+    valuta.py          walk-forward, tabelle, regole di scelta, figure
+    report.py          costruisce il report leggendo reports/fase3/*.csv e *.json
 tests/             test automatici
 reports/           report, tabelle (.csv/.json) e figure; i risultati delle Fasi 1 e 2 sono in reports/fase1/, reports/fase2/ e nelle rispettive cartelle di figure
 notebooks/         opzionale, vuota
@@ -163,11 +188,15 @@ notebooks/         opzionale, vuota
   stravolgendo i dati futuri e verificando che le previsioni passate non cambino; `tests/test_fase1.py`
   fa lo stesso per tutti i modelli della Fase 1, `tests/test_fase2.py` per i modelli di densità e per
   l'allineamento settimanale dei dati esterni (ogni valore usato deve essere disponibile entro la data).
+  `tests/test_fase3.py` lo fa per tutte le variabili della Fase 3 (ogni riga settimanale non cambia se si tolgono o
+  si stravolgono i dati giornalieri successivi all'ultima seduta della settimana) e per tutti i modelli dei blocchi.
 - **Elenco chiuso dei modelli.** In Fase 1 i modelli e i loro parametri sono fissati in
   `src/fase1/modelli.py` prima della valutazione; un test ne controlla l'elenco. Lo stesso vale per i
-  modelli di densità della Fase 2 (`src/fase2/densita.py`).
-- **Colonne.** `open` non è usata (scartata alla lettura in Fase 1); `high` e `low` compaiono solo
-  nell'analisi esplorativa A2.
+  modelli di densità della Fase 2 (`src/fase2/densita.py`) e per i blocchi della Fase 3 (`src/fase3/modelli.py`,
+  `src/fase3/variabili.py`): regole di scelta e parametri sono scritti nel codice prima della valutazione.
+- **Colonne.** Nelle Fasi 1 e 2 `open` non è usata (scartata alla lettura) e `high` e `low` compaiono solo
+  nell'analisi esplorativa A2; dalla Fase 2b `high` e `low` sono obiettivi di previsione e dalla Fase 2c `open`,
+  `high` e `low` entrano nei modelli delle candele (esclusa l'apertura anomala dell'8 novembre 2004).
 - **Numeri del report.** Il report è generato da `src/report.py` a partire dai file prodotti dal codice;
   non contiene valori scritti a mano.
 - **Dati grezzi.** `data/raw/` non viene mai modificato; anomalie e ambiguità sono segnalate nel report,
