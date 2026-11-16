@@ -1,0 +1,71 @@
+{
+  "costruzione": "K2m",
+  "nome": "K2 ancorata alla mediana, ampiezze medie",
+  "modello_direzione": "L0",
+  "scelte": {
+    "corpo": {
+      "1": "regressione",
+      "2": "regressione",
+      "3": "media",
+      "4": "media"
+    },
+    "ombra_sup": {
+      "1": "media",
+      "2": "media",
+      "3": "media",
+      "4": "media"
+    },
+    "ombra_inf": {
+      "1": "media",
+      "2": "media",
+      "3": "media",
+      "4": "media"
+    }
+  },
+  "regola_ampiezze": "regressione solo se errore quadratico medio più basso della media storica e Diebold-Mariano con p < 0.05",
+  "etichetta": {
+    "modello": "D1",
+    "neutra_tra": [
+      0.4,
+      0.6
+    ],
+    "riferimento": "chiusura all'origine"
+  },
+  "rapporto_apertura_ultimo": 1.0313207168575982,
+  "frequenza_rialzo_corpo_ultima": 0.3500772797527048,
+  "frequenza_rialzo_corpo_min_max": [
+    0.31420765027322406,
+    0.35931174089068824
+  ],
+  "per_orizzonte": {
+    "1": {
+      "n_previsioni": 933,
+      "prima_data_obiettivo": "2006-12-29",
+      "ultima_data_obiettivo": "2024-11-08"
+    },
+    "2": {
+      "n_previsioni": 931,
+      "prima_data_obiettivo": "2007-01-12",
+      "ultima_data_obiettivo": "2024-11-08"
+    },
+    "3": {
+      "n_previsioni": 929,
+      "prima_data_obiettivo": "2007-01-26",
+      "ultima_data_obiettivo": "2024-11-08"
+    },
+    "4": {
+      "n_previsioni": 927,
+      "prima_data_obiettivo": "2007-02-09",
+      "ultima_data_obiettivo": "2024-11-08"
+    }
+  },
+  "g3": {
+    "riga": "Chiusura reale a 4 settimane dentro la fascia al 50%: 6 pannelli su 12; dentro la fascia all'80%: 9 su 12. Etichette della chiusura non neutre: 24 su 48, corrette 17.",
+    "dentro_50": 6,
+    "dentro_80": 9,
+    "etichette_non_neutre": 24,
+    "etichette_corrette": 17,
+    "n": 12,
+    "regola": "12 origini, una ogni 52 settimane a ritroso a partire da 4 settimane prima dell'ultima data di sviluppo"
+  }
+}

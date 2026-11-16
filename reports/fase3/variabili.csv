@@ -1,0 +1,17 @@
+blocco,variabile,descrizione,prima_settimana_valida,settimane_valide,settimane_mancanti_dopo_l_inizio,media,dev_std,minimo,massimo
+G1,g_var1,VIX: variazione (log) dell'ultima seduta,2000-01-07,1297,0,-0.010297,0.0680583,-0.266228,0.43202
+G1,g_var3,VIX: variazione (log) delle ultime 3 sedute,2000-01-07,1297,0,-0.0154812,0.112702,-0.358361,0.709332
+G1,g_sd5,"VIX: deviazione standard delle variazioni giornaliere, ultime 5 sedute",2000-01-07,1297,0,0.0605245,0.0385227,0.00535857,0.401785
+G1,g_sd20,"VIX: deviazione standard delle variazioni giornaliere, ultime 20 sedute",2000-01-07,1297,0,0.0654622,0.0281021,0.0206016,0.221369
+G1,g_chiusura_su_media,VIX: chiusura settimanale rispetto alla media delle chiusure giornaliere della settimana (log),2000-01-07,1297,0,-0.0126583,0.0694861,-0.305852,0.451496
+G1,g_sedute_dal_max10,VIX: sedute trascorse dal massimo delle ultime 10 sedute,2000-01-07,1297,0,4.94911,3.21918,0,9
+G1,g_max_var5,VIX: massima variazione giornaliera (log) delle ultime 5 sedute,2000-01-07,1297,0,0.0785711,0.0719317,-0.056594,0.768245
+X1,x1_vix3m_su_vix,VIX3M / VIX − 1,2009-09-18,791,0,0.134927,0.091433,-0.255797,0.40774
+X2,x2_vx1_su_vix,VX1 / VIX − 1,2004-03-26,1077,0,0.0568094,0.0774372,-0.34368,0.321478
+X2,x2_vx2_su_vx1,VX2 / VX1 − 1,2004-03-26,1077,0,0.0593748,0.0659904,-0.324458,0.337461
+X3,x3_log_vvix,log(VVIX),2006-03-10,969,6,4.51089,0.176688,3.35341,5.23207
+X4,x4_rend1,S&P 500: rendimento (log) a 1 settimana,2000-01-14,1296,0,0.00109981,0.0249434,-0.200837,0.114237
+X4,x4_rend4,S&P 500: rendimento (log) a 4 settimane,2000-02-04,1293,0,0.00436498,0.0476874,-0.370251,0.220854
+X4,x4_volreal4,"S&P 500: volatilità realizzata a 4 settimane, annualizzata (%)",2000-02-04,1293,0,16.2981,10.5374,3.88358,96.1556
+X4,x4_vix_meno_volreal,VIX − volatilità realizzata a 4 settimane,2000-02-04,1293,0,3.37863,5.02746,-48.0982,19.31
+X4,x4_dist_max52,S&P 500: distanza (log) dal massimo a 52 settimane,2000-02-04,1293,0,-0.0782242,0.112806,-0.736019,0
