@@ -8,7 +8,8 @@ Il lavoro procede per fasi; ogni fase si chiude con un report in `reports/`.
 | 0 | audit dei dati, analisi esplorativa, baseline walk-forward | [reports/fase0_report.md](reports/fase0_report.md) |
 | 1 | pattern storici (dopo e prima dei picchi, periodi calmi, tabelle condizionate) e modelli che usano solo il VIX | [reports/fase1_report.md](reports/fase1_report.md) |
 | 2 | previsione probabilistica attorno al tipo HAR (quantili, intervalli, probabilità di eventi), scheda di previsione, raccolta dei dati esterni | [reports/fase2_report.md](reports/fase2_report.md) |
-| 2b | programma di previsione a 1-4 settimane con grafico a candele | [reports/fase2b_report.md](reports/fase2b_report.md) · previsione corrente: [reports/previsione_corrente.md](reports/previsione_corrente.md) |
+| 2b | programma di previsione a 1-4 settimane con grafico a candele | [reports/fase2b_report.md](reports/fase2b_report.md) |
+| 2c | candele previste realistiche e misurabili, registro delle previsioni | [reports/fase2c_report.md](reports/fase2c_report.md) · previsione corrente: [reports/previsione_corrente.md](reports/previsione_corrente.md) |
 
 ## Il programma di previsione
 
@@ -16,12 +17,16 @@ Il lavoro procede per fasi; ogni fase si chiude con un report in `reports/`.
 python -m src.forecast                                   # previsione dall'ultima chiusura settimanale completa
 python -m src.forecast --origine 2025-06-27              # previsione "come se fossimo" a quella data
 python -m src.forecast --file percorso/del/file.csv      # con un file aggiornato (stesso formato del file grezzo)
+python -m src.forecast --verifica                        # confronta le previsioni registrate con le settimane completate
 ```
 
-Cosa fa: legge l'intero storico, esclude la settimana incompleta (riga con la colonna `note` valorizzata), stima i
-modelli sulla storia fino all'origine e produce, per le settimane +1 … +4:
+Cosa fa: legge l'intero storico, esclude la settimana incompleta (riga con la colonna `note` valorizzata, oppure
+ultima riga con meno sedute di quelle attese: in questo caso avvisa a schermo), stima i modelli sulla storia fino
+all'origine e produce, per le settimane +1 … +4:
 
-- una **candela prevista** (apertura, massimo, minimo, chiusura);
+- una **candela prevista** (apertura, massimo, minimo, chiusura) con la **probabilità della direzione**: è la settimana
+  più probabile per direzione e ampiezza;
+- la **chiusura centrale** (mediana), cioè il centro di tutti gli esiti possibili;
 - le **fasce della chiusura** al 50%, 80% e 90%, ciascuna con la copertura misurata nel passato;
 - le **probabilità** di chiudere sopra 20, 25 e 30;
 - una **lettura della situazione** (livello, riferimenti, dinamica, contesto, precedenti, casi simili) con una sintesi in poche frasi.
@@ -36,19 +41,29 @@ Cosa scrive:
 | `reports/previsione/previsione_AAAA-MM-GG.json` | lettura della situazione e previsione in formato JSON |
 | `reports/previsione/g1_AAAA-MM-GG.png` | grafico principale: ultimi 2 anni a candele, 4 candele previste, fasce, casi simili |
 | `reports/previsione/g2_AAAA-MM-GG.png` | lo stesso su tutto lo storico dal 2000 |
+| `reports/registro_previsioni.csv` | registro: ogni esecuzione senza `--origine` aggiunge candele e fasce previste; la stessa origine non viene mai duplicata né riscritta |
+| `reports/previsione/registro_verifica_*.csv` | con `--verifica`: confronto tra il registro e le settimane nel frattempo completate (pagella dal vivo) |
 
 Per aggiornare la previsione basta aggiungere le nuove settimane al file (o passarne uno nuovo con `--file`) e
 rieseguire il comando. Il file deve avere le colonne `week_start, last_trading_day, open, high, low, close,
 trading_days, note`; servono almeno 7 anni circa di storia.
 
-Come leggere il grafico: le candele piene sono settimane reali, quelle vuote con bordo tratteggiato sono previste;
-**le ombre delle candele previste indicano l'escursione attesa dentro la settimana, le fasce colorate indicano
-l'incertezza sulla chiusura**. Le fasce coprono meno del valore nominale: la copertura reale è scritta in tabella.
+Come leggere il grafico: le candele piene sono settimane reali, quelle vuote con bordo tratteggiato sono previste.
+**La candela mostra la settimana più probabile per direzione e ampiezza; la linea viola (mediana) è il centro degli
+esiti possibili; le fasce colorate indicano l'incertezza sulla chiusura.** Le candele previste sono quasi sempre in
+ribasso perché l'apertura ufficiale del VIX è di norma più alta della chiusura precedente: per sapere se il VIX sarà
+più alto o più basso di oggi si guarda la linea centrale, non il colore della candela. Le fasce coprono meno del valore
+nominale: la copertura reale è scritta in tabella.
+
+Il registro serve a misurare le previsioni dal vivo, non a scegliere modelli: dopo ogni aggiornamento del file,
+`python -m src.forecast` registra la nuova previsione e `python -m src.forecast --verifica` mostra come sono andate
+quelle precedenti.
 
 Limiti: usa solo lo storico del VIX; non anticipa i picchi; è un progetto universitario, non un consiglio di
 investimento. `src.forecast` è l'unico comando che legge i dati successivi all'8 novembre 2024, e solo come storia
 da cui prevedere: errori e coperture mostrati nella scheda sono quelli misurati sul campione di sviluppo da
-`python -m src.run_phase2b`.
+`python -m src.run_phase2b` e `python -m src.run_phase2c`. Solo `--verifica` confronta previsioni e dati recenti, e
+solo per le previsioni già scritte nel registro.
 
 ## Come riprodurre
 
@@ -63,6 +78,7 @@ python -m src.run_phase0   # Fase 0: dataset puliti, tabelle, figure e report
 python -m src.run_phase1   # Fase 1: pattern storici, modelli M0-M7, report (circa 2 minuti)
 python -m src.run_phase2   # Fase 2: modelli di densità, eventi, scheda di previsione, report (circa 5 minuti)
 python -m src.run_phase2b  # Fase 2b: misure per h = 1-4 su chiusura, massimo e minimo, grafico di verifica, report (circa 4 minuti)
+python -m src.run_phase2c  # Fase 2c: componenti e pagella delle candele, regola di scelta, report (circa 1 minuto; richiede run_phase2b)
 python -m pytest           # test (anti look-ahead, integrità dell'holdout, metriche)
 ```
 
@@ -121,6 +137,15 @@ src/
     grafici.py     grafici a candele G1, G2, G3
     valuta.py      walk-forward di sviluppo per h = 1-4 e grafico G3
     report.py      costruisce il report leggendo reports/fase2b/*.csv e *.json
+  run_phase2c.py   misure di sviluppo della Fase 2c, sotto la guardia
+  fase2c/
+    componenti.py  apertura, direzione, ampiezza del corpo e ombre della candela (stima sulla storia fino all'origine)
+    candele.py     elenco chiuso delle costruzioni K0-K3
+    valuta.py      walk-forward, pagella delle candele, regola di scelta, grafico G3
+    registro.py    registro delle previsioni e pagella dal vivo
+    settimana.py   riconoscimento della settimana incompleta
+    testo.py       tabella e testi della scheda
+    report.py      costruisce il report leggendo reports/fase2c/*.csv e *.json
 tests/             test automatici
 reports/           report, tabelle (.csv/.json) e figure; i risultati delle Fasi 1 e 2 sono in reports/fase1/, reports/fase2/ e nelle rispettive cartelle di figure
 notebooks/         opzionale, vuota
