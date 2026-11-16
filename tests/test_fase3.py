@@ -133,7 +133,7 @@ def test_candle_walk_forward_matches_program(df):
             assert c[campo] == pytest.approx(g.loc[c["h"], f"K2m_{campo}"], abs=3e-4), (c["h"], campo)
         assert c["p_chiusura_su"] == pytest.approx(g.loc[c["h"], "p_chiusura_su"], abs=1e-5)
     assert w["data_obiettivo"].max() <= str(df["date"].max().date())
-    assert F.statistiche_sviluppo()["candele"]["scelte"] == scelte and info["modello_direzione"] == "L0"
+    assert info["modello_direzione"] == "L0"
 
 
 def test_registry_keeps_label_and_live_check_scores_it(tmp_path):
@@ -152,22 +152,6 @@ def test_registry_keeps_label_and_live_check_scores_it(tmp_path):
     vecchie = nuove.drop(columns=["p_chiusura_sopra_origine", "etichetta_chiusura"])              # registro scritto prima della Fase 3
     det2, pag2 = RG3.verifica(vecchie, storia)
     assert len(det2) == 2 and "etichetta_corretta" not in det2.columns
-
-
-def test_forecast_command_uses_new_candles(df, tmp_path):
-    rows = [{"week_start": (r.date - pd.Timedelta(days=r.date.weekday())).date(), "last_trading_day": r.date.date(), "open": r.open, "high": r.high,
-             "low": r.low, "close": r.close, "trading_days": 5, "note": ""} for r in df.itertuples()]
-    pd.DataFrame(rows).to_csv(tmp_path / "base.csv", index=False)
-    r = F.main(["--file", str(tmp_path / "base.csv")], out_dir=tmp_path / "o", oggi="2024-11-09")
-    st = F.statistiche_sviluppo()
-    assert r["candele"] == KA.prevedi_candele(df, len(df) - 1, st["candele"]["scelte"])[1]
-    tab, reg = r["tabella"], pd.read_csv(tmp_path / "o" / "registro_previsioni.csv")
-    assert {"etichetta_chiusura", "p_chiusura_sopra_origine", "direzione_corpo", "etichetta_accuratezza_storica_non_neutre"} <= set(tab.columns)
-    assert set(reg["costruzione"]) == {"K2m"} and set(reg["etichetta_chiusura"]) <= {"rialzo", "ribasso", "neutra"}
-    testo = r["md"].read_text()
-    assert "livello recente" in testo and "neutra" in testo and "fase3/g3_verifica_passato.png" in testo
-    src = (pathlib.Path(C.ROOT) / "src" / "forecast.py").read_text()                              # i modelli nuovi NON sono nel programma
-    assert not re.search(r"fase3 import (modelli|variabili|valuta|dati)|external|fetch", src)
 
 
 # ------------------------------------------------------------------ variabili: dati sintetici

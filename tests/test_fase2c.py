@@ -194,21 +194,23 @@ def test_registry_never_duplicates_and_live_check_works(df, tmp_path, capsys):
     r1 = F.main(["--file", str(base)], out_dir=out, oggi="2024-11-09")
     r2 = F.main(["--file", str(base)], out_dir=out, oggi="2024-11-10")
     reg = pd.read_csv(out / "registro_previsioni.csv")
-    assert r1["registrata"] and not r2["registrata"] and len(reg) == 4 and set(reg["data_esecuzione"]) == {"2024-11-09"}
+    nv = reg["versione"].nunique()                                                     # dalla Fase 4: una previsione per origine e versione
+    assert r1["registrata"] and not r2["registrata"] and len(reg) == 4 * nv and set(reg["data_esecuzione"]) == {"2024-11-09"}
     assert "già registrata" in capsys.readouterr().out
     r3 = F.main(["--file", str(base), "--origine", "2024-06-28"], out_dir=out)        # con --origine non si registra
-    assert not r3["registrata"] and len(pd.read_csv(out / "registro_previsioni.csv")) == 4
+    assert not r3["registrata"] and len(pd.read_csv(out / "registro_previsioni.csv")) == 4 * nv
     v0 = F.main(["--file", str(base), "--verifica"], out_dir=out)                      # nessuna settimana completata
     assert v0["dettaglio"].empty
-    v = F.main(["--file", str(agg), "--verifica"], out_dir=out)                        # file aggiornato: 4 settimane confrontabili
+    v = F.main(["--file", str(agg), "--verifica"], out_dir=out)                        # file aggiornato: 4 settimane confrontabili per versione
     det, pag = v["dettaglio"], v["pagella"]
-    assert len(det) == 4 and list(pag["n"]) == [1, 1, 1, 1] and pag["meno_di_20_casi"].all() and det["registrata_prima_dell_esito"].all()
+    assert len(det) == 4 * nv and list(pag["n"]) == [1] * (4 * nv) and pag["meno_di_20_casi"].all() and det["registrata_prima_dell_esito"].all()
     real = pd.read_csv(agg).iloc[len(df): len(df) + 4]
-    np.testing.assert_allclose(det["errore_chiusura"], np.abs(reg["chiusura"].to_numpy() - real["close"].to_numpy()), atol=1e-3)
+    np.testing.assert_allclose(det.loc[det["versione"] == "f1", "errore_chiusura"],
+                               np.abs(reg.loc[reg["versione"] == "f1", "chiusura"].to_numpy() - real["close"].to_numpy()), atol=1e-3)
     assert det["sovrapposizione"].between(0, 1).all()
     assert str(last.date()) == reg["data_origine"].iloc[0]
     F.main(["--file", str(agg)], out_dir=out, oggi="2024-12-21")                       # nuova origine: si aggiunge
-    assert len(pd.read_csv(out / "registro_previsioni.csv")) == 8
+    assert len(pd.read_csv(out / "registro_previsioni.csv")) == 8 * nv
 
 
 def test_registry_functions(tmp_path):

@@ -156,7 +156,7 @@ def test_command_works_with_updated_file(df, tmp_path):
     # stessa origine, file diverso: le settimane in piu' non cambiano nulla
     a = F.main(["--file", str(f6), "--origine", str(last.date())], out_dir=tmp_path / "oa")
     b = F.main(["--file", str(f0)], out_dir=tmp_path / "ob")
-    assert a["previsione"] == b["previsione"] == MO.prevedi(df, len(df) - 1) and a["lettura"] == b["lettura"]
+    assert a["previsione"] == b["previsione"] == MO.prevedi(df, len(df) - 1) | {"versione": "f1"} and a["lettura"] == b["lettura"]
     # origine non coincidente con una data settimanale: si usa l'ultima chiusura disponibile
     c = F.main(["--file", str(f6), "--origine", str((last + pd.Timedelta(days=3)).date())], out_dir=tmp_path / "oc")
     assert c["previsione"]["data_origine"] == str(last.date())
