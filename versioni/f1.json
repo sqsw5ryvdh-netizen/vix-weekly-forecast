@@ -1,8 +1,8 @@
 {
   "versione": "f1",
   "nome": "F1 solo storico del VIX",
-  "congelata_il": "2026-11-16",
-  "commit": "cdf33956e532d55c7ea3789498c68a043df28c8f",
+  "congelata_il": "2026-11-17",
+  "commit": "5624daa98901b465a4e9582d574968f7bd00b7a8",
   "sorgenti_identici_al_commit": true,
   "dati": [
     "VIX settimanale (apertura, massimo, minimo, chiusura)"
@@ -119,7 +119,24 @@
       "dlog1",
       "dlog4"
     ],
-    "esclusioni": "settimane con apertura fuori dall'intervallo minimo-massimo (8 novembre 2004)"
+    "esclusioni": "settimane con apertura fuori dall'intervallo minimo-massimo (8 novembre 2004)",
+    "prima_candela": {
+      "settimana": 1,
+      "costruzione": "K2",
+      "apertura": "chiusura all'origine x rapporto di apertura",
+      "chiusura": "come K2 (corpo dalla regressione, direzione dalla frequenza storica)",
+      "ombre": "come K2, sopra e sotto il corpo",
+      "minimo": "M1q",
+      "minimo_m1q": {
+        "obiettivo": "ln(minimo della settimana +1 / chiusura all'origine)",
+        "modello": "regressione sulla mediana sulle variabili di M1",
+        "finestra_settimane": 520,
+        "vincolo": "il minimo non supera il corpo"
+      },
+      "colore": "secondo l'etichetta della chiusura; grigio se neutra",
+      "nome_nel_registro": "K2+M1q/K2m-A1"
+    },
+    "settimane_2_4": "K2, come nella Fase 4"
   },
   "file_sorgenti_congelati": [
     "src/baselines.py",
@@ -132,21 +149,45 @@
     "src/fase3/variabili.py",
     "src/fase4/candele.py",
     "src/fase4/regimi.py",
-    "src/fase4/versioni.py"
+    "src/fase4/versioni.py",
+    "src/fase4b/prima.py",
+    "src/fase4b/versioni.py"
   ],
-  "scelte_della_fase_4": {
-    "variante_ampiezze": {
-      "regola": "rapporto corpo previsto / reale più vicino a 1 a h = 1, purché l'errore quadratico sulle ampiezze non sia significativamente peggiore di A0 (DM, p < 0,05); a parità vince la prima dell'elenco A0, A1, A2",
-      "scelta": "A1",
-      "rapporto_corpo_h1": {
-        "A0": 0.8562464501997933,
-        "A1": 0.9103679226621522,
-        "A2": 0.9103679226621522
+  "scelte": {
+    "variante": "A1",
+    "prima_candela": "K2",
+    "minimo": "M1q",
+    "candidato": "P5"
+  },
+  "scelte_delle_regole": {
+    "variante_ampiezze (Fase 4, Parte A)": "A1",
+    "candidato della sfidante (Parte B)": {
+      "regola": "Brier più basso a h = 1 tra P2, P3, P4, P5; a parità il primo dell'elenco",
+      "scelta": "P5",
+      "brier": {
+        "P1": 0.2410488481771484,
+        "P2": 0.2339049238246758,
+        "P3": 0.23756678256843833,
+        "P4": 0.23499714968843555,
+        "P5": 0.2327429936880845
       }
     },
-    "modelli_della_parte_b_che_passano": [
-      "N1"
-    ]
+    "prima candela (Parte C)": {
+      "regola": "K4 se la sovrapposizione media non è più bassa di quella di K2 e l'errore sulla chiusura della candela non è significativamente peggiore (DM, p < 0,05); altrimenti K2 con il colore legato all'etichetta. Applicata a F1 su tutte le sue origini",
+      "scelta": "K2",
+      "sovrapposizione": {
+        "K2": 0.5185228428710236,
+        "K4": 0.5029530471913005
+      }
+    },
+    "minimo della prima candela (Parte D)": {
+      "regola": "M1q se l'errore assoluto medio è più basso con DM p < 0,05; altrimenti M0. Applicata a F1 su tutte le sue origini",
+      "scelta": "M1q",
+      "mae": {
+        "M0": 1.3859686345123259,
+        "M1q": 1.2057030484865892
+      }
+    }
   },
   "piano_d_esame": "reports/piano_esame_holdout.md",
   "sha256_sorgenti": {
@@ -160,6 +201,8 @@
     "src/fase3/variabili.py": "0ceaa9feab941773ff277a006348b5450dab4b14064bdcb1075593895c0432b9",
     "src/fase4/candele.py": "ee3bd156e4bd7db3320797eec7df609f60449770462193c33563de4a391a00b9",
     "src/fase4/regimi.py": "70f6095c6f24adfbee5a8639765944bad2f89e791c29e11d4787c6d044cf507c",
-    "src/fase4/versioni.py": "b6b9b03523607377564579cec45380222d8388b6e61e3317e5c99a1a11e0529b"
+    "src/fase4/versioni.py": "b6b9b03523607377564579cec45380222d8388b6e61e3317e5c99a1a11e0529b",
+    "src/fase4b/prima.py": "9eac770eaceff9913be6e4a0b60c846766a9d0b07df9a6202408f0c7bbbea741",
+    "src/fase4b/versioni.py": "58bf0f4991a4975fe61372c47d65a81cc57f7446b5028b9f41f5a63862dea8c9"
   }
 }
