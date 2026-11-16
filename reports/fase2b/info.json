@@ -1,0 +1,45 @@
+{
+  "campione": [
+    "2000-01-07",
+    "2024-11-08"
+  ],
+  "n_settimane": 1297,
+  "orizzonti": [
+    1,
+    2,
+    3,
+    4
+  ],
+  "modelli": {
+    "mediana_e_fasce": "D4",
+    "probabilita": "D1",
+    "massimo_minimo": "regressione diretta di M1 su log(high) e log(low)"
+  },
+  "min_errori_passati": 104,
+  "origine_minima_indice": 366,
+  "g3": {
+    "regola": "12 origini, una ogni 52 settimane a ritroso a partire da 4 settimane prima dell'ultima data di sviluppo",
+    "dentro_50": 6,
+    "dentro_80": 9,
+    "n": 12,
+    "riga": "Chiusura reale a 4 settimane dentro la fascia al 50%: 6 pannelli su 12; dentro la fascia all'80%: 9 su 12."
+  },
+  "per_orizzonte": {
+    "1": {
+      "n_previsioni": 933,
+      "incroci": 119
+    },
+    "2": {
+      "n_previsioni": 931,
+      "incroci": 59
+    },
+    "3": {
+      "n_previsioni": 929,
+      "incroci": 45
+    },
+    "4": {
+      "n_previsioni": 927,
+      "incroci": 67
+    }
+  }
+}
