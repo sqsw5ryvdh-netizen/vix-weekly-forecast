@@ -1,0 +1,81 @@
+{
+  "varianti": {
+    "A0": {
+      "media": null,
+      "regressione": null,
+      "descrizione": "A0 media espandibile, regressione su tutta la storia (Fase 3)"
+    },
+    "A1": {
+      "media": 260,
+      "regressione": 520,
+      "descrizione": "A1 media su 260 settimane, regressione su 520"
+    },
+    "A2": {
+      "media": 104,
+      "regressione": 520,
+      "descrizione": "A2 media su 104 settimane, regressione su 520"
+    }
+  },
+  "assegnazione": {
+    "corpo": {
+      "1": "regressione",
+      "2": "regressione",
+      "3": "media",
+      "4": "media"
+    },
+    "ombra_sup": {
+      "1": "media",
+      "2": "media",
+      "3": "media",
+      "4": "media"
+    },
+    "ombra_inf": {
+      "1": "media",
+      "2": "media",
+      "3": "media",
+      "4": "media"
+    }
+  },
+  "scelta": {
+    "rapporto_corpo_h1": {
+      "A0": 0.8562464501997933,
+      "A1": 0.9103679226621522,
+      "A2": 0.9103679226621522
+    },
+    "candidata": "A1",
+    "soglia_p": 0.05,
+    "scelta": "A1",
+    "dm_stat": 2.3951631383494987,
+    "p": 0.016809486774057112,
+    "mse_a0": 0.01785244199916141,
+    "mse_candidata": 0.017609850917348478,
+    "significativamente_peggiore": false,
+    "motivo": "A1 ha il rapporto del corpo più vicino a 1 a h = 1 e un errore quadratico sulle ampiezze non significativamente peggiore di A0"
+  },
+  "per_orizzonte": {
+    "1": {
+      "n_previsioni": 933,
+      "prima_data_obiettivo": "2006-12-29",
+      "ultima_data_obiettivo": "2024-11-08",
+      "n_fascia_13_22": 494
+    },
+    "2": {
+      "n_previsioni": 931,
+      "prima_data_obiettivo": "2007-01-12",
+      "ultima_data_obiettivo": "2024-11-08",
+      "n_fascia_13_22": 493
+    },
+    "3": {
+      "n_previsioni": 929,
+      "prima_data_obiettivo": "2007-01-26",
+      "ultima_data_obiettivo": "2024-11-08",
+      "n_fascia_13_22": 492
+    },
+    "4": {
+      "n_previsioni": 927,
+      "prima_data_obiettivo": "2007-02-09",
+      "ultima_data_obiettivo": "2024-11-08",
+      "n_fascia_13_22": 491
+    }
+  }
+}

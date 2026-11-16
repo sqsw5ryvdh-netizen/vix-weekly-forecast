@@ -1,0 +1,54 @@
+{
+  "variante_ampiezze": "A1",
+  "versioni": [
+    "f1",
+    "f2",
+    "f3"
+  ],
+  "f3_attorno_a": [
+    "N1"
+  ],
+  "x1": "x1_vix3m_su_vix",
+  "settimane_x1_valide": 791,
+  "prima_settimana_x1": "2009-09-18",
+  "per_orizzonte": {
+    "1": {
+      "n": 542,
+      "prima_data_origine": "2014-06-20",
+      "prima_data_obiettivo": "2014-06-27",
+      "ultima_data_obiettivo": "2024-11-08",
+      "n_fascia_13_22": 299,
+      "n_etichette": 438
+    },
+    "2": {
+      "n": 541,
+      "prima_data_origine": "2014-06-20",
+      "prima_data_obiettivo": "2014-07-03",
+      "ultima_data_obiettivo": "2024-11-08",
+      "n_fascia_13_22": 298,
+      "n_etichette": 436
+    },
+    "3": {
+      "n": 540,
+      "prima_data_origine": "2014-06-20",
+      "prima_data_obiettivo": "2014-07-11",
+      "ultima_data_obiettivo": "2024-11-08",
+      "n_fascia_13_22": 297,
+      "n_etichette": 434
+    },
+    "4": {
+      "n": 539,
+      "prima_data_origine": "2014-06-20",
+      "prima_data_obiettivo": "2014-07-18",
+      "ultima_data_obiettivo": "2024-11-08",
+      "n_fascia_13_22": 296,
+      "n_etichette": 432
+    }
+  },
+  "prima_origine_con_etichetta_f2": "2016-06-17",
+  "g3": {
+    "riga": "Chiusura reale a 4 settimane dentro la fascia al 50%: 6 pannelli su 12; dentro la fascia all'80%: 9 su 12. Etichette della chiusura non neutre: 24 su 48, corrette 17.",
+    "n": 12,
+    "regola": "12 origini, una ogni 52 settimane a ritroso a partire da 4 settimane prima dell'ultima data di sviluppo"
+  }
+}

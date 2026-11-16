@@ -1,0 +1,166 @@
+{
+  "modelli": {
+    "N1": "N1 autoregressivo a 2 regimi",
+    "N2": "N2 gradient boosting, solo VIX",
+    "N3": "N3 gradient boosting, VIX + mercato"
+  },
+  "alfa": 0.05,
+  "test": "Diebold-Mariano a due code (modelli non annidati in M1)",
+  "n_test_holm": {
+    "t1": 6,
+    "t2_base": 6,
+    "t2_freq": 6
+  },
+  "scelta_chiusura": {
+    "scelto": null,
+    "significativi": [],
+    "guadagno_medio": {
+      "N1": 0.003441902076408654,
+      "N2": -0.10029434872346543,
+      "N3": -0.1930181710926674
+    }
+  },
+  "scelta_direzione": {
+    "scelto": "N1",
+    "significativi": [
+      "N1"
+    ],
+    "guadagno_medio": {
+      "N1": 0.0037140499307529717,
+      "N2": -0.086900593354033,
+      "N3": -0.14158710104833094
+    }
+  },
+  "passa": [
+    "N1"
+  ],
+  "n1": {
+    "passo_stima": 26,
+    "n_ristime": 40,
+    "n_non_valide": 1,
+    "date_non_valide": [
+      "2004-12-23"
+    ],
+    "origini_con_ripiego_ar1": 26,
+    "n_origini": 1037,
+    "ultima_stima": {
+      "data_stima": "2024-05-31",
+      "settimane_usate": 1274,
+      "livello_basso": 16.033025870579277,
+      "livello_alto": 18.900038574155552,
+      "sigma_basso": 0.08035256690841143,
+      "sigma_alto": 0.17970688623050302,
+      "phi": 0.9518922287610222,
+      "p_resta_basso": 0.8706517015999692,
+      "p_resta_alto": 0.6381965849154543,
+      "durata_media_basso": 7.731064207024479,
+      "durata_media_alto": 2.7639318986702253
+    },
+    "intervallo_tra_le_stime": {
+      "livello_basso": [
+        14.939880187091964,
+        17.608417622328748
+      ],
+      "livello_alto": [
+        17.232737688001812,
+        20.824170682539407
+      ],
+      "sigma_basso": [
+        0.06172496640605573,
+        0.08141347015803503
+      ],
+      "sigma_alto": [
+        0.09672696687409582,
+        0.18300238156921206
+      ],
+      "durata_media_basso": [
+        5.429948554629608,
+        13.769987468071735
+      ],
+      "durata_media_alto": [
+        2.513832499047351,
+        4.814065784071162
+      ],
+      "phi": [
+        0.9516675236494855,
+        0.9747837585998433
+      ]
+    },
+    "quota_origini_regime_alto_oltre_50": 0.1918997107039537
+  },
+  "boosting": {
+    "parametri": {
+      "n_estimators": 200,
+      "max_depth": 3,
+      "learning_rate": 0.05,
+      "subsample": 0.8,
+      "random_state": 12345
+    },
+    "passo_stima": 13,
+    "n_ristime": {
+      "N2|1": 80,
+      "N3|1": 42,
+      "N2|4": 80,
+      "N3|4": 42
+    },
+    "obiettivo_t1": "variazione x_{t+h} - x_t",
+    "importanze_ultima_origine": {
+      "N2|1": {
+        "dlog1": 0.11799291821278361,
+        "g_sd5": 0.11591866002342623,
+        "ombra_inf": 0.07841120307948855,
+        "g_sd20": 0.07730584522833835,
+        "g_var1": 0.07650753714497084
+      },
+      "N3|1": {
+        "x1_vix3m_su_vix": 0.11283504114716243,
+        "g_sd5": 0.06648247632535939,
+        "dlog1": 0.058168521514371824,
+        "ombra_inf": 0.05541902321112437,
+        "x4_vix_meno_volreal": 0.05368399533445523
+      },
+      "N2|4": {
+        "x_t": 0.14265082693286102,
+        "dlog4": 0.13485958350609967,
+        "media12": 0.09105448435406599,
+        "g_sd20": 0.08209736054939294,
+        "ombra_inf": 0.07817875852703401
+      },
+      "N3|4": {
+        "x1_vix3m_su_vix": 0.16071917894811671,
+        "x4_dist_max52": 0.08948694920705164,
+        "media12": 0.06169844612580724,
+        "x4_rend4": 0.05829201732040168,
+        "x2_vx2_su_vx1": 0.05458554761753975
+      }
+    }
+  },
+  "per_orizzonte": {
+    "1": {
+      "n_origini_m1": 1037,
+      "n_per_modello": {
+        "N1": 1037,
+        "N2": 1036,
+        "N3": 542
+      },
+      "prima_data_obiettivo": {
+        "N1": "2004-12-31",
+        "N2": "2005-01-07",
+        "N3": "2014-06-27"
+      }
+    },
+    "4": {
+      "n_origini_m1": 1034,
+      "n_per_modello": {
+        "N1": 1034,
+        "N2": 1033,
+        "N3": 539
+      },
+      "prima_data_obiettivo": {
+        "N1": "2005-01-21",
+        "N2": "2005-01-28",
+        "N3": "2014-07-18"
+      }
+    }
+  }
+}
