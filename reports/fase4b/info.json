@@ -1,0 +1,102 @@
+{
+  "scelte": {
+    "variante": "A1",
+    "prima_candela": "K2",
+    "minimo": "M1q",
+    "candidato": "P5"
+  },
+  "parte_b": {
+    "candidato": "P5",
+    "brier": {
+      "P1": 0.2410488481771484,
+      "P2": 0.2339049238246758,
+      "P3": 0.23756678256843833,
+      "P4": 0.23499714968843555,
+      "P5": 0.2327429936880845
+    },
+    "base": "f2",
+    "componenti": [
+      "f2",
+      "f3"
+    ],
+    "significativo_vs_p1_dopo_holm": true
+  },
+  "parte_c": {
+    "scelta": "K2",
+    "sovrapposizione": {
+      "K2": 0.5185228428710236,
+      "K4": 0.5029530471913005
+    },
+    "sovrapposizione_non_piu_bassa": false,
+    "mae_chiusura": {
+      "K2": 2.4076604726688102,
+      "K4": 2.248205984300452
+    },
+    "dm_stat": 4.418459712055244,
+    "p": 1.110775125871597e-05,
+    "chiusura_significativamente_peggiore": false
+  },
+  "parte_d": {
+    "scelta": "M1q",
+    "mae": {
+      "M0": 1.3859686345123259,
+      "M1q": 1.2057030484865892
+    },
+    "dm_stat": 7.71753798895485,
+    "p": 3.047077528669494e-14
+  },
+  "parte_d_con_altra_costruzione": {
+    "costruzione": "K4",
+    "scelta": "M0",
+    "mae": {
+      "M0": 1.277172324520259,
+      "M1q": 1.211136616016586
+    },
+    "dm_stat": 1.9607583477771908,
+    "p": 0.050204716981536585
+  },
+  "variante_ampiezze": "A1",
+  "costruzione_nel_registro": "K2+M1q/K2m-A1",
+  "campioni": {
+    "tutte_le_origini": {
+      "n": 933,
+      "prima_data_obiettivo": "2006-12-29",
+      "ultima_data_obiettivo": "2024-11-08"
+    },
+    "origini_comuni": {
+      "n": 438,
+      "prima_data_origine": "2016-06-17",
+      "ultima_data_origine": "2024-11-01",
+      "n_fascia_13_22": 228
+    }
+  },
+  "mosse": {
+    "finestra": 260,
+    "d_ultima": 0.08912505007777997,
+    "u_ultima": 0.12308354780317657,
+    "d_min_max": [
+      0.07452903050380297,
+      0.1137303181422171
+    ],
+    "u_min_max": [
+      0.07535119246789637,
+      0.1522516423649289
+    ]
+  },
+  "etichette_f1": {
+    "neutra": 642,
+    "ribasso": 258,
+    "rialzo": 33
+  },
+  "etichette_fs": {
+    "neutra": 272,
+    "ribasso": 154,
+    "rialzo": 12
+  },
+  "n_test_holm_parte_a": 4,
+  "g3": {
+    "riga": "Prima candela: etichetta non neutra in 6 pannelli su 12, corretta in 3. Chiusura reale a 4 settimane dentro la fascia al 50%: 6 su 12; dentro la fascia all'80%: 9 su 12.",
+    "n": 12,
+    "regola": "12 origini, una ogni 52 settimane a ritroso a partire da 4 settimane prima dell'ultima data di sviluppo"
+  }
+}

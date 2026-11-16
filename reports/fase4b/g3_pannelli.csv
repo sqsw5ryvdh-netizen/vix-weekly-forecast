@@ -1,0 +1,13 @@
+data_origine,chiusura_origine,etichetta_1,etichetta_1_corretta,chiusura_candela_1,minimo_candela_1,chiusura_reale_1,minimo_reale_1,chiusura_reale_4,dentro_50,dentro_80
+2013-10-25,13.09,neutra,,12.5628,12.5628,13.28,13.06,12.26,False,True
+2014-10-24,16.11,neutra,,15.2869,15.0689,14.03,13.72,12.9,False,False
+2015-10-23,14.46,rialzo,True,13.9973,13.9973,15.07,12.8,15.47,True,True
+2016-10-21,13.34,neutra,,12.4152,12.4152,16.19,12.73,12.85,True,True
+2017-10-20,9.97,neutra,,9.27211,9.27211,9.8,9.74,11.43,True,True
+2018-10-19,19.89,ribasso,False,17.4427,16.4894,24.16,18.82,18.14,True,True
+2019-10-18,14.25,neutra,,13.4558,13.4558,12.65,12.62,12.05,False,False
+2020-10-16,27.41,ribasso,False,24.7787,23.6547,27.55,27.04,23.1,True,True
+2021-10-15,16.3,neutra,,15.2584,15.2584,15.43,14.84,16.29,True,True
+2022-10-14,32.02,ribasso,True,28.837,26.9542,29.69,29.24,22.52,False,True
+2023-10-13,19.32,ribasso,False,17.1112,16.7511,21.71,16.97,14.17,False,True
+2024-10-11,20.46,ribasso,True,18.6696,17.8529,18.03,17.99,14.94,False,False

@@ -1,0 +1,13 @@
+versione,campione,variante,n,errore_assoluto_medio,errore_assoluto_mediano,entro_5,entro_10,quota_troppo_bassi,errore_medio_con_segno,quota_limitati_dal_corpo
+F1,tutte le origini,M0,933,1.38597,0.951586,0.404073,0.732047,0.710611,-0.523138,
+F1,tutte le origini,M1q,933,1.2057,0.753664,0.505895,0.81672,0.525188,0.000873919,0.429796
+F1,tutte le origini,M1q senza vincolo,933,1.21601,0.761607,0.512326,0.811361,0.46731,0.0979036,
+F1,"tutte le origini, con K4 (non scelta)",M0,933,1.27717,0.77164,0.527331,0.795284,0.452304,0.270757,
+F1,"tutte le origini, con K4 (non scelta)",M1q,933,1.21114,0.761607,0.513398,0.811361,0.46731,0.0901866,0.022508
+F1,"tutte le origini, con K4 (non scelta)",M1q senza vincolo,933,1.21601,0.761607,0.512326,0.811361,0.46731,0.0979036,
+F1,origini comuni,M0,438,1.38415,0.953422,0.360731,0.691781,0.771689,-0.731795,
+F1,origini comuni,M1q,438,1.12878,0.705927,0.504566,0.817352,0.591324,-0.275508,0.465753
+F1,origini comuni,M1q senza vincolo,438,1.1255,0.691582,0.531963,0.819635,0.522831,-0.172204,
+FS,origini comuni,M0,438,1.38415,0.953422,0.360731,0.691781,0.771689,-0.731795,
+FS,origini comuni,M1q,438,1.12878,0.705927,0.504566,0.817352,0.591324,-0.275508,0.465753
+FS,origini comuni,M1q senza vincolo,438,1.1255,0.691582,0.531963,0.819635,0.522831,-0.172204,
