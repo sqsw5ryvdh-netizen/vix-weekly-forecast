@@ -1,0 +1,585 @@
+{
+  "file": {
+    "file": "/Users/lorenzobianchi/Desktop/VIX/data/raw/VIX_settimanale_2000-2026.csv",
+    "righe": 1402,
+    "settimane_complete": 1401,
+    "settimane_incomplete_escluse": 1,
+    "prima_data": "2000-01-07",
+    "ultima_data_completa": "2026-11-06",
+    "settimane_mancanti_nel_file": 0
+  },
+  "lettura": {
+    "data_origine": "2026-11-06",
+    "settimane_di_storia": 1401,
+    "prima_data": "2000-01-07",
+    "livello": {
+      "chiusura": 25.64,
+      "percentile_storia": 83.15488936473947,
+      "percentile_5_anni": 87.3076923076923,
+      "n_settimane_5_anni": 260,
+      "fascia": "25-30"
+    },
+    "riferimenti": {
+      "media_4_settimane": {
+        "valore": 21.125,
+        "distanza_punti": 4.515000000000001,
+        "distanza_pct": 21.372781065088752
+      },
+      "media_12_settimane": {
+        "valore": 17.021666666666665,
+        "distanza_punti": 8.618333333333336,
+        "distanza_pct": 50.63154802702441
+      },
+      "mediana_5_anni": {
+        "valore": 17.6,
+        "distanza_punti": 8.04,
+        "distanza_pct": 45.68181818181818
+      },
+      "mediana_storia": {
+        "valore": 17.48,
+        "distanza_punti": 8.16,
+        "distanza_pct": 46.68192219679634
+      }
+    },
+    "dinamica": {
+      "variazione_1_settimane": {
+        "punti": 6.219999999999999,
+        "pct": 32.028836251287316
+      },
+      "variazione_4_settimane": {
+        "punti": 10.8,
+        "pct": 72.77628032345014
+      },
+      "variazione_12_settimane": {
+        "punti": 11.39,
+        "pct": 79.92982456140352
+      },
+      "massimo_chiusure_12_settimane": 25.64,
+      "minimo_chiusure_12_settimane": 14.43,
+      "ampiezza_mediana_recente_pct": 3.8482293452391514,
+      "ampiezza_mediana_storica_pct": 7.579403299803383,
+      "percentile_ampiezza_recente": 3.8156947444204463
+    },
+    "contesto": {
+      "settimane_dall_ultima_chiusura_sopra_30": 32,
+      "data_ultima_chiusura_sopra_30": "2026-03-27",
+      "picco_episodio": 31.05,
+      "data_picco": "2026-03-27",
+      "settimane_dal_picco": 32,
+      "settimane_consecutive_sotto_15": 0,
+      "periodo_calmo": false
+    },
+    "precedenti": {
+      "fascia": "25-30",
+      "direzione": "in rialzo",
+      "variazione_log_4_settimane": 0.5468273943132349,
+      "dopo_1": {
+        "n": 61,
+        "quota_piu_alto": 0.4098360655737705,
+        "mediana_punti": -1.0400000000000027,
+        "p10_punti": -5.07,
+        "p90_punti": 3.620000000000001,
+        "meno_di_20_casi": false
+      },
+      "dopo_4": {
+        "n": 61,
+        "quota_piu_alto": 0.29508196721311475,
+        "mediana_punti": -2.0700000000000003,
+        "p10_punti": -9.3,
+        "p90_punti": 6.150000000000002,
+        "meno_di_20_casi": false
+      }
+    },
+    "casi_simili": {
+      "nota": "selezione illustrativa: stato di M6, almeno 8 settimane tra un caso e l'altro, esito a 4 settimane già noto; non è il modello M6",
+      "n": 20,
+      "meno_di_20_casi": false,
+      "casi": [
+        {
+          "data": "2007-08-03",
+          "livello": 25.16,
+          "variazioni_pct": [
+            12.480127186009549,
+            19.197138314785356,
+            -17.647058823529417,
+            -7.074721780604143
+          ],
+          "chiusura_dopo_4": 23.38,
+          "variazione_4_pct": -7.074721780604143,
+          "massimo_chiusure_4": 29.99,
+          "minimo_chiusure_4": 20.72
+        },
+        {
+          "data": "2026-03-06",
+          "livello": 29.49,
+          "variazioni_pct": [
+            -7.799253984401478,
+            -9.189555781620884,
+            5.28992878942014,
+            -19.057307561885374
+          ],
+          "chiusura_dopo_4": 23.87,
+          "variazione_4_pct": -19.057307561885374,
+          "massimo_chiusure_4": 31.05,
+          "minimo_chiusure_4": 23.87
+        },
+        {
+          "data": "2024-08-02",
+          "livello": 23.39,
+          "variazioni_pct": [
+            -12.9115006412997,
+            -36.72509619495511,
+            -32.19324497648568,
+            -35.87002992731937
+          ],
+          "chiusura_dopo_4": 15.0,
+          "variazione_4_pct": -35.87002992731937,
+          "massimo_chiusure_4": 20.37,
+          "minimo_chiusure_4": 14.8
+        },
+        {
+          "data": "2016-06-24",
+          "livello": 25.76,
+          "variazioni_pct": [
+            -42.663043478260875,
+            -48.757763975155285,
+            -50.815217391304344,
+            -53.338509316770185
+          ],
+          "chiusura_dopo_4": 12.02,
+          "variazione_4_pct": -53.338509316770185,
+          "massimo_chiusure_4": 14.77,
+          "minimo_chiusure_4": 12.02
+        },
+        {
+          "data": "2018-10-12",
+          "livello": 21.31,
+          "variazioni_pct": [
+            -6.663538244955413,
+            13.374002815579544,
+            -8.446738620366013,
+            -18.53589863913655
+          ],
+          "chiusura_dopo_4": 17.36,
+          "variazione_4_pct": -18.53589863913655,
+          "massimo_chiusure_4": 24.16,
+          "minimo_chiusure_4": 17.36
+        },
+        {
+          "data": "2011-03-18",
+          "livello": 24.44,
+          "variazioni_pct": [
+            -26.718494271685767,
+            -28.80523731587562,
+            -26.882160392798692,
+            -37.31587561374795
+          ],
+          "chiusura_dopo_4": 15.32,
+          "variazione_4_pct": -37.31587561374795,
+          "massimo_chiusure_4": 17.91,
+          "minimo_chiusure_4": 15.32
+        },
+        {
+          "data": "2002-06-21",
+          "livello": 27.23,
+          "variazioni_pct": [
+            -6.720528828497985,
+            -0.44069041498348005,
+            20.969518912963636,
+            40.1762761659934
+          ],
+          "chiusura_dopo_4": 38.17,
+          "variazione_4_pct": 40.1762761659934,
+          "massimo_chiusure_4": 38.17,
+          "minimo_chiusure_4": 25.4
+        },
+        {
+          "data": "2025-11-21",
+          "livello": 23.43,
+          "variazioni_pct": [
+            -30.21766965428937,
+            -34.2296201451131,
+            -32.82116944088776,
+            -36.36363636363637
+          ],
+          "chiusura_dopo_4": 14.91,
+          "variazione_4_pct": -36.36363636363637,
+          "massimo_chiusure_4": 16.35,
+          "minimo_chiusure_4": 14.91
+        },
+        {
+          "data": "2012-05-18",
+          "livello": 25.1,
+          "variazioni_pct": [
+            -13.306772908366538,
+            6.215139442231066,
+            -15.41832669322709,
+            -15.896414342629495
+          ],
+          "chiusura_dopo_4": 21.11,
+          "variazione_4_pct": -15.896414342629495,
+          "massimo_chiusure_4": 26.66,
+          "minimo_chiusure_4": 21.11
+        },
+        {
+          "data": "2022-04-29",
+          "livello": 33.4,
+          "variazioni_pct": [
+            -9.610778443113766,
+            -13.562874251497004,
+            -11.886227544910177,
+            -22.9940119760479
+          ],
+          "chiusura_dopo_4": 25.72,
+          "variazione_4_pct": -22.9940119760479,
+          "massimo_chiusure_4": 30.19,
+          "minimo_chiusure_4": 25.72
+        },
+        {
+          "data": "2012-12-28",
+          "livello": 22.72,
+          "variazioni_pct": [
+            -39.12852112676056,
+            -41.19718309859155,
+            -45.15845070422535,
+            -43.26584507042253
+          ],
+          "chiusura_dopo_4": 12.89,
+          "variazione_4_pct": -43.26584507042253,
+          "massimo_chiusure_4": 13.83,
+          "minimo_chiusure_4": 12.46
+        },
+        {
+          "data": "2008-09-19",
+          "livello": 32.07,
+          "variazioni_pct": [
+            8.325537885874645,
+            40.75459931400063,
+            118.1166198939819,
+            119.30152790770188
+          ],
+          "chiusura_dopo_4": 70.33,
+          "variazione_4_pct": 119.30152790770188,
+          "massimo_chiusure_4": 70.33,
+          "minimo_chiusure_4": 34.74
+        },
+        {
+          "data": "2000-10-13",
+          "livello": 27.6,
+          "variazioni_pct": [
+            -12.173913043478269,
+            -4.094202898550736,
+            -14.23913043478261,
+            3.3695652173913127
+          ],
+          "chiusura_dopo_4": 28.53,
+          "variazione_4_pct": 3.3695652173913127,
+          "massimo_chiusure_4": 28.53,
+          "minimo_chiusure_4": 23.67
+        },
+        {
+          "data": "2014-10-17",
+          "livello": 21.99,
+          "variazioni_pct": [
+            -26.739427012278306,
+            -36.198271941791724,
+            -40.33651659845384,
+            -39.47248749431559
+          ],
+          "chiusura_dopo_4": 13.31,
+          "variazione_4_pct": -39.47248749431559,
+          "massimo_chiusure_4": 16.11,
+          "minimo_chiusure_4": 13.12
+        },
+        {
+          "data": "2008-01-18",
+          "livello": 27.18,
+          "variazioni_pct": [
+            6.990434142752022,
+            -11.626195732155997,
+            3.0537159676232495,
+            -7.947019867549665
+          ],
+          "chiusura_dopo_4": 25.02,
+          "variazione_4_pct": -7.947019867549665,
+          "massimo_chiusure_4": 29.08,
+          "minimo_chiusure_4": 24.02
+        },
+        {
+          "data": "2025-03-07",
+          "livello": 23.37,
+          "variazioni_pct": [
+            -6.846384253316218,
+            -17.501069747539578,
+            -7.359863072314942,
+            93.88104407359863
+          ],
+          "chiusura_dopo_4": 45.31,
+          "variazione_4_pct": 93.88104407359863,
+          "massimo_chiusure_4": 45.31,
+          "minimo_chiusure_4": 19.28
+        },
+        {
+          "data": "2021-11-26",
+          "livello": 28.62,
+          "variazioni_pct": [
+            7.162823200559054,
+            -34.696016771488466,
+            -24.633123689727466,
+            -37.24668064290706
+          ],
+          "chiusura_dopo_4": 17.96,
+          "variazione_4_pct": -37.24668064290706,
+          "massimo_chiusure_4": 30.67,
+          "minimo_chiusure_4": 17.96
+        },
+        {
+          "data": "2001-09-07",
+          "livello": 30.99,
+          "variazioni_pct": [
+            2.7428202646014865,
+            37.65730880929332,
+            3.033236527912231,
+            7.744433688286545
+          ],
+          "chiusura_dopo_4": 33.39,
+          "variazione_4_pct": 7.744433688286545,
+          "massimo_chiusure_4": 42.66,
+          "minimo_chiusure_4": 31.84
+        },
+        {
+          "data": "2000-04-14",
+          "livello": 33.49,
+          "variazioni_pct": [
+            -22.812779934308747,
+            -21.767691848312932,
+            -17.796357121528818,
+            -22.215586742311146
+          ],
+          "chiusura_dopo_4": 26.05,
+          "variazione_4_pct": -22.215586742311146,
+          "massimo_chiusure_4": 27.53,
+          "minimo_chiusure_4": 25.85
+        },
+        {
+          "data": "2011-07-29",
+          "livello": 25.25,
+          "variazioni_pct": [
+            26.732673267326735,
+            43.99999999999999,
+            70.49504950495049,
+            40.950495049504966
+          ],
+          "chiusura_dopo_4": 35.59,
+          "variazione_4_pct": 40.950495049504966,
+          "massimo_chiusure_4": 43.05,
+          "minimo_chiusure_4": 32.0
+        }
+      ],
+      "quota_piu_alto_dopo_4": 0.3,
+      "mediana_variazione_4_pct": -18.796603100510964
+    }
+  },
+  "sintesi": [
+    "Il VIX ha chiuso a 25,64 il 06/11/2026: si colloca al percentile 83 di tutta la storia e al percentile 87 degli ultimi 5 anni (fascia 25-30).",
+    "È 8,16 punti sopra la mediana storica (17,48) e 8,62 punti sopra la media a 12 settimane (17,02); nelle ultime 4 settimane è salito del 72,8%.",
+    "Nei 61 precedenti con la stessa fascia e direzione (25-30, in rialzo) il VIX era più alto dopo 4 settimane nel 30% dei casi, con variazione mediana di −2,07 punti.",
+    "Per la settimana +4 il modello indica una chiusura mediana di 21,0, con fascia all'80% tra 15,8 e 31,4; la probabilità di una chiusura sopra 20 è 63%, sopra 30 è 8%."
+  ],
+  "previsione": {
+    "data_origine": "2026-11-06",
+    "indice_origine": 1400,
+    "chiusura_origine": 25.64,
+    "settimane_di_storia": 1401,
+    "settimane": [
+      {
+        "h": 1,
+        "quantili": {
+          "q05": 17.653646947755064,
+          "q10": 18.700183856399217,
+          "q25": 20.839996284641337,
+          "q50": 23.612239930518896,
+          "q75": 27.069111300462716,
+          "q90": 30.5088157768746,
+          "q95": 33.64900081499998
+        },
+        "quantili_riordinati": false,
+        "m1": 23.95029385293397,
+        "probabilita": {
+          "VIX>20": 0.9316389132340053,
+          "VIX>25": 0.3102541630148992,
+          "VIX>30": 0.06134969325153374
+        },
+        "n_errori_d1": 1141,
+        "massimo_previsto": 29.60627389646851,
+        "minimo_previsto": 21.069351800844615,
+        "massimo_riferimento": 28.417079840765897,
+        "minimo_riferimento": 24.05542054379525,
+        "apertura": 25.64,
+        "chiusura": 23.612239930518896,
+        "massimo": 29.60627389646851,
+        "minimo": 21.069351800844615,
+        "massimo_grezzo": 29.60627389646851,
+        "minimo_grezzo": 21.069351800844615,
+        "massimo_corretto": false,
+        "minimo_corretto": false,
+        "data": "2026-11-13",
+        "fasce": {
+          "50": [
+            20.839996284641337,
+            27.069111300462716
+          ],
+          "80": [
+            18.700183856399217,
+            30.5088157768746
+          ],
+          "90": [
+            17.653646947755064,
+            33.64900081499998
+          ]
+        }
+      },
+      {
+        "h": 2,
+        "quantili": {
+          "q05": 16.149070409007358,
+          "q10": 17.24450938803761,
+          "q25": 19.076613363333305,
+          "q50": 22.604218588398638,
+          "q75": 27.028899328038495,
+          "q90": 31.266486626341624,
+          "q95": 36.6045871441639
+        },
+        "quantili_riordinati": false,
+        "m1": 23.150134329113726,
+        "probabilita": {
+          "VIX>20": 0.8192982456140351,
+          "VIX>25": 0.256140350877193,
+          "VIX>30": 0.07456140350877193
+        },
+        "n_errori_d1": 1140,
+        "massimo_previsto": 27.569007905981696,
+        "minimo_previsto": 20.595740885328954,
+        "massimo_riferimento": 28.563961835529305,
+        "minimo_riferimento": 23.81434880576836,
+        "apertura": 23.612239930518896,
+        "chiusura": 22.604218588398638,
+        "massimo": 27.569007905981696,
+        "minimo": 20.595740885328954,
+        "massimo_grezzo": 27.569007905981696,
+        "minimo_grezzo": 20.595740885328954,
+        "massimo_corretto": false,
+        "minimo_corretto": false,
+        "data": "2026-11-20",
+        "fasce": {
+          "50": [
+            19.076613363333305,
+            27.028899328038495
+          ],
+          "80": [
+            17.24450938803761,
+            31.266486626341624
+          ],
+          "90": [
+            16.149070409007358,
+            36.6045871441639
+          ]
+        }
+      },
+      {
+        "h": 3,
+        "quantili": {
+          "q05": 15.516628433337196,
+          "q10": 16.62628392839698,
+          "q25": 18.359624404670445,
+          "q50": 21.44979331391026,
+          "q75": 25.640008752327738,
+          "q90": 31.192559974670473,
+          "q95": 38.11966262547776
+        },
+        "quantili_riordinati": false,
+        "m1": 22.543617990197852,
+        "probabilita": {
+          "VIX>20": 0.7006145741878841,
+          "VIX>25": 0.2344161545215101,
+          "VIX>30": 0.07901668129938542
+        },
+        "n_errori_d1": 1139,
+        "massimo_previsto": 26.594313438724654,
+        "minimo_previsto": 20.31263013159095,
+        "massimo_riferimento": 28.56434882720652,
+        "minimo_riferimento": 23.705657562404834,
+        "apertura": 22.604218588398638,
+        "chiusura": 21.44979331391026,
+        "massimo": 26.594313438724654,
+        "minimo": 20.31263013159095,
+        "massimo_grezzo": 26.594313438724654,
+        "minimo_grezzo": 20.31263013159095,
+        "massimo_corretto": false,
+        "minimo_corretto": false,
+        "data": "2026-11-27",
+        "fasce": {
+          "50": [
+            18.359624404670445,
+            25.640008752327738
+          ],
+          "80": [
+            16.62628392839698,
+            31.192559974670473
+          ],
+          "90": [
+            15.516628433337196,
+            38.11966262547776
+          ]
+        }
+      },
+      {
+        "h": 4,
+        "quantili": {
+          "q05": 14.986872387075755,
+          "q10": 15.811754668338416,
+          "q25": 17.767779266651157,
+          "q50": 21.034714239809976,
+          "q75": 25.24000968010973,
+          "q90": 31.414928438353126,
+          "q95": 37.59583609807274
+        },
+        "quantili_riordinati": false,
+        "m1": 21.990333056187104,
+        "probabilita": {
+          "VIX>20": 0.6309314586994728,
+          "VIX>25": 0.2100175746924429,
+          "VIX>30": 0.08172231985940245
+        },
+        "n_errori_d1": 1138,
+        "massimo_previsto": 25.677528189723127,
+        "minimo_previsto": 19.992296407539335,
+        "massimo_riferimento": 28.380063665302412,
+        "minimo_riferimento": 23.657826284674854,
+        "apertura": 21.44979331391026,
+        "chiusura": 21.034714239809976,
+        "massimo": 25.677528189723127,
+        "minimo": 19.992296407539335,
+        "massimo_grezzo": 25.677528189723127,
+        "minimo_grezzo": 19.992296407539335,
+        "massimo_corretto": false,
+        "minimo_corretto": false,
+        "data": "2026-12-04",
+        "fasce": {
+          "50": [
+            17.767779266651157,
+            25.24000968010973
+          ],
+          "80": [
+            15.811754668338416,
+            31.414928438353126
+          ],
+          "90": [
+            14.986872387075755,
+            37.59583609807274
+          ]
+        }
+      }
+    ]
+  }
+}
