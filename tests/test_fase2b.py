@@ -174,7 +174,7 @@ def test_forecast_command_does_not_evaluate():
     src = (pathlib.Path(C.ROOT) / "src" / "forecast.py").read_text()
     assert not re.search(r"import.*valuta|evaluate|density_row|dm_loss|pinball|brier", src)
     assert not re.search(r"HOLDOUT_FILE|CLEAN_FILE|vix_weekly_holdout", src)
-    assert "statistiche_sviluppo" in src and "chiusura_metriche.csv" in src
+    assert "statistiche_sviluppo" in src and ("chiusura_metriche.csv" in src or "statistiche_programma.csv" in src)   # dalla Fase 4b le misure lette sono raccolte in un solo file
 
 
 # ------------------------------------------------------------------ misure di sviluppo sotto guardia

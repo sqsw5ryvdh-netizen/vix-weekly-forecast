@@ -1,5 +1,5 @@
-"""Fase 4: varianti delle ampiezze delle candele, modello a regimi N1, gradient boosting N2/N3, versioni finaliste
-F1/F2/F3, configurazioni congelate, programma con --versione e --aggiorna, registro con la versione.
+"""Fase 4: varianti delle ampiezze delle candele, modello a regimi N1, gradient boosting N2/N3, versioni F1/F2/F3,
+scarico dei dati giornalieri, registro con la versione. Configurazioni congelate e programma: vedi test_fase4b.py.
 
 Anti look-ahead di ogni modello nuovo; regole di scelta; ripiego di f2; guardia sull'holdout.
 I test che richiedono file prodotti da `run_phase4` o i dati esterni di sviluppo vengono saltati se mancano."""
@@ -20,7 +20,7 @@ from src.fase2 import densita as D
 from src.fase2b import dati as dati2b, modello as MO
 from src.fase2c import componenti as CP
 from src.fase3 import candele as K3, dati as dati3, modelli as M, variabili as V
-from src.fase4 import boosting as GB, candele as KA, congela, esterni as ES, regimi as RE, registro as RG, valuta_a as VA4, valuta_b as VB4, valuta_c as VC4, versioni as VS
+from src.fase4 import boosting as GB, candele as KA, esterni as ES, regimi as RE, registro as RG, valuta_a as VA4, valuta_b as VB4, valuta_c as VC4, versioni as VS
 
 DIR = pathlib.Path(C.ROOT) / "src" / "fase4"
 OUT = C.REPORTS_DIR / "fase4"
@@ -375,28 +375,6 @@ def test_comparison_metrics_known_values():
     assert VC4._versioni(g) == ("F1", "F2")
 
 
-# ------------------------------------------------------------------ configurazioni congelate
-
-def test_frozen_configurations_match_the_code():
-    files = sorted(VS.CARTELLA.glob("f*.json"))
-    if not files or not (OUT / "b_info.json").exists():
-        pytest.skip("eseguire prima python -m src.run_phase4 e python -m src.fase4.congela")
-    attese = congela.costruisci()
-    assert [f.stem for f in files] == sorted(attese) and {"f1", "f2"} <= set(attese)
-    for f in files:
-        cfg = json.loads(f.read_text())
-        assert re.fullmatch(r"[0-9a-f]{40}", cfg["commit"]) and cfg["congelata_il"] and isinstance(cfg["sorgenti_identici_al_commit"], bool)
-        resto = {k: v for k, v in cfg.items() if k not in congela.VARIABILI_ESECUZIONE}
-        assert resto == json.loads(json.dumps(attese[f.stem])), f"{f.name} non coincide con la configurazione ricostruita dal codice"
-        assert cfg["sha256_sorgenti"] == congela.impronte(), "un sorgente congelato e' cambiato dopo il congelamento: rieseguire congela PRIMA dell'esame"
-        assert cfg["candele"]["variante_ampiezze"] in KA.VARIANTI and cfg["orizzonti_settimane"] == [1, 2, 3, 4] and cfg["min_errori_passati"] == 104
-    assert all((C.ROOT / s).exists() for s in VS.SORGENTI_CONGELATI)
-    f2 = json.loads((VS.CARTELLA / "f2.json").read_text())
-    assert f2["variabile_aggiuntiva"]["definizione"] == "VIX3M / VIX - 1" and f2["ammissione"]["min_settimane_valide"] == M.MIN_VALIDE
-    passa = json.loads((OUT / "b_info.json").read_text())["passa"]
-    assert ("f3" in attese) == ("N1" in passa)
-
-
 # ------------------------------------------------------------------ programma
 
 def _file_grezzo(df, path):
@@ -415,46 +393,6 @@ def _file_cboe(df, cartella, fino_a=None, vix3m_da=600):
         t.to_csv(cartella / ES.FILE[nome], index=False)
 
 
-def test_forecast_versions_fallback_and_registry(df, tmp_path, capsys):
-    if not F.VS.CARTELLA.joinpath("f1.json").exists():
-        pytest.skip("eseguire prima python -m src.fase4.congela")
-    cfg = F.carica_versioni()
-    base, out = tmp_path / "base.csv", tmp_path / "out"
-    _file_grezzo(df, base)
-    r = F.main(["--file", str(base), "--versione", "f2"], out_dir=out, oggi="2024-11-09")                 # nessun file giornaliero: avviso e ripiego su f1
-    testo = capsys.readouterr().out
-    assert r["versione"] == "f1" and "f2" not in r["versioni"] and "ATTENZIONE" in testo and "Si ripiega su f1" in testo
-    est = tmp_path / "esterni"
-    _file_cboe(df, est)
-    r2 = F.main(["--file", str(base), "--versione", "f2"], out_dir=out, esterni_dir=est, oggi="2024-11-10")
-    assert r2["versione"] == "f2" and {"f1", "f2"} <= set(r2["versioni"]) and r2["md"].name.endswith("_f2.md")
-    assert r2["candele"] == r2["versioni"]["f2"][1] and r2["versioni"]["f1"] == r["versioni"]["f1"]
-    usati = pd.read_csv(out / f"f2_valori_usati_{r2['previsione']['data_origine']}.csv")
-    assert usati["data_settimanale"].max() == r2["previsione"]["data_origine"] and r2["note"]["f2"]["x1_origine"]["x1"] == pytest.approx(usati["x1"].iloc[-1], abs=1e-6)
-    conf = r2["confronto"]
-    assert set(conf["versione"]) == set(r2["versioni"]) and len(conf) == 4 * len(r2["versioni"])
-    md = r2["md"].read_text()
-    assert "Confronto tra le versioni" in md and VS.NOMI["f2"] in md and "piano_esame_holdout.md" in md
-    reg = pd.read_csv(out / "registro_previsioni.csv")
-    assert set(reg["versione"]) == set(r2["versioni"]) and len(reg) == 4 * len(r2["versioni"])               # f1 (e f3) del primo giro non duplicate, f2 aggiunta
-    assert set(reg.loc[reg["versione"] == "f2", "data_esecuzione"]) == {"2024-11-10"} and set(reg.loc[reg["versione"] == "f1", "data_esecuzione"]) == {"2024-11-09"}
-    assert r2["registrate"] == ["f2"] and (reg["costruzione"] == f"K2m-{cfg['f1']['candele']['variante_ampiezze']}").all()
-    vecchio = tmp_path / "vecchio"                                                                         # VIX3M piu' vecchio dell'origine: avviso e ripiego
-    _file_cboe(df, vecchio, fino_a=df["date"].iloc[-2])
-    capsys.readouterr()
-    r3 = F.main(["--file", str(base), "--versione", "f2", "--origine", str(df["date"].iloc[-1].date())], out_dir=tmp_path / "o3", esterni_dir=vecchio)
-    testo = capsys.readouterr().out
-    assert r3["versione"] == "f1" and "VIX3M manca nella settimana di origine" in testo and str(df["date"].iloc[-2].date()) in testo
-    r4 = F.main(["--file", str(base), "--origine", str(df["date"].iloc[-30].date())], out_dir=tmp_path / "o4", esterni_dir=est)   # dati successivi all'origine: ignorati
-    est_tronco = tmp_path / "tronco"
-    _file_cboe(df, est_tronco, fino_a=df["date"].iloc[-30])
-    r5 = F.main(["--file", str(base), "--origine", str(df["date"].iloc[-30].date())], out_dir=tmp_path / "o5", esterni_dir=est_tronco)
-    assert r4["versioni"]["f2"] == r5["versioni"]["f2"] and r4["versione"] == "f1"
-    if "f3" in cfg:
-        r6 = F.main(["--file", str(base), "--versione", "f3", "--origine", str(df["date"].iloc[-1].date())], out_dir=tmp_path / "o6")
-        assert r6["versione"] == "f3" and r6["candele"] == VS.prevedi_f3(df, len(df) - 1, cfg["f1"]["candele"]["variante_ampiezze"])[1]
-
-
 def test_update_downloads_only_vix_and_vix3m_and_failure_is_not_fatal(df, tmp_path, monkeypatch, capsys):
     chiesti = []
 
@@ -470,7 +408,7 @@ def test_update_downloads_only_vix_and_vix3m_and_failure_is_not_fatal(df, tmp_pa
     base = tmp_path / "base.csv"
     _file_grezzo(df, base)
     monkeypatch.setattr(ES, "aggiorna", lambda cartella: (_ for _ in ()).throw(RuntimeError("rete assente")))
-    r = F.main(["--file", str(base), "--aggiorna", "--versione", "f2", "--origine", str(df["date"].iloc[-1].date())], out_dir=tmp_path / "o", esterni_dir=tmp_path / "vuota")
+    r = F.main(["--file", str(base), "--aggiorna", "--versione", "fs", "--origine", str(df["date"].iloc[-1].date())], out_dir=tmp_path / "o", esterni_dir=tmp_path / "vuota")
     testo = capsys.readouterr().out
     assert r["versione"] == "f1" and "scarico dei dati giornalieri non riuscito" in testo and "Si ripiega su f1" in testo
 
@@ -522,7 +460,7 @@ def test_phase4_measures_read_only_dev_and_never_touch_the_holdout():
 
 
 def test_exam_plan_is_written_and_nothing_executes_it():
-    piano = C.REPORTS_DIR / "piano_esame_holdout.md"
+    piano = OUT / "piano_esame_holdout_fase4.md"                     # piano della Fase 4, in archivio: quello in vigore e' della Fase 4b
     if not piano.exists():
         pytest.skip("eseguire prima python -m src.run_phase4")
     testo = piano.read_text()
