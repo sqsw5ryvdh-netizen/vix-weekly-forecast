@@ -1,0 +1,13 @@
+data_origine,chiusura_origine,mediana_d4_4,candela_chiusura_4,chiusura_reale_4,dentro_50,dentro_80,direzioni_indovinate_su_4,chiusura_reale_4_nell_escursione_prevista
+2013-10-25,13.0900,13.5339,13.1417,12.2600,False,True,4,False
+2014-10-24,16.1100,15.8404,15.0022,12.9000,False,False,3,False
+2015-10-23,14.4600,15.4256,14.8212,15.4700,True,True,2,True
+2016-10-21,13.3400,13.4738,12.7610,12.8500,True,True,2,True
+2017-10-20,9.9700,10.4255,9.8916,11.4300,True,True,2,False
+2018-10-19,19.8900,17.3718,16.3995,18.1400,True,True,2,True
+2019-10-18,14.2500,14.6177,13.9728,12.0500,False,False,4,False
+2020-10-16,27.4100,24.6152,23.6927,23.1000,True,True,2,True
+2021-10-15,16.3000,16.2003,15.3876,16.2900,True,True,3,True
+2022-10-14,32.0200,27.3118,25.9095,22.5200,False,True,4,False
+2023-10-13,19.3200,17.4523,16.7040,14.1700,False,True,3,False
+2024-10-11,20.4600,18.7252,17.7934,14.9400,False,False,2,False

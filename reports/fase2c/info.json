@@ -1,0 +1,100 @@
+{
+  "campione": [
+    "2000-01-07",
+    "2024-11-08"
+  ],
+  "n_settimane": 1297,
+  "settimane_escluse_dalle_stime": [
+    {
+      "data": "2004-11-12",
+      "open": 2.58,
+      "low": 12.64,
+      "high": 14.48
+    }
+  ],
+  "modello_direzione": {
+    "1": "L1",
+    "2": "L1",
+    "3": "L1",
+    "4": "L1"
+  },
+  "regola_direzione": "per ogni orizzonte, Brier più basso nel walk-forward di sviluppo",
+  "scelta": {
+    "costruzione": "K2",
+    "motivo": "nessuna costruzione rispetta il vincolo: scelta quella con il rapporto del corpo a h = 1 più vicino a 1",
+    "ammesse": [],
+    "spareggio": {
+      "in_parita": [
+        "K1",
+        "K2"
+      ],
+      "criterio": "sovrapposizione media su h = 1-4 (criterio principale della regola)",
+      "scelta": "K2"
+    },
+    "vincolo": [
+      0.8,
+      1.2
+    ],
+    "rapporto_corpo_h1": {
+      "K0": 0.24947412355293327,
+      "K1": 0.7579051317359489,
+      "K2": 0.7579051317359489,
+      "K3": 0.7122176747746535
+    },
+    "rapporto_escursione_h1": {
+      "K0": 0.8230723854394478,
+      "K1": 0.6554925734378655,
+      "K2": 0.6554925734378655,
+      "K3": 0.8061096415729151
+    },
+    "sovrapposizione_media": {
+      "K0": 0.3790704893937898,
+      "K1": 0.3088247410551839,
+      "K2": 0.3477389107007192,
+      "K3": 0.3032823517404631
+    }
+  },
+  "rapporto_apertura": {
+    "min": 1.028522226197898,
+    "max": 1.0337009803921569,
+    "ultimo": 1.0313207168575982
+  },
+  "rialzo_forte_soglia": 0.3,
+  "n_rialzo_forte": {
+    "1": 111,
+    "2": 111,
+    "3": 111,
+    "4": 111
+  },
+  "per_orizzonte": {
+    "1": {
+      "n_previsioni": 933,
+      "prima_data_obiettivo": "2006-12-29",
+      "ultima_data_obiettivo": "2024-11-08"
+    },
+    "2": {
+      "n_previsioni": 931,
+      "prima_data_obiettivo": "2007-01-12",
+      "ultima_data_obiettivo": "2024-11-08"
+    },
+    "3": {
+      "n_previsioni": 929,
+      "prima_data_obiettivo": "2007-01-26",
+      "ultima_data_obiettivo": "2024-11-08"
+    },
+    "4": {
+      "n_previsioni": 927,
+      "prima_data_obiettivo": "2007-02-09",
+      "ultima_data_obiettivo": "2024-11-08"
+    }
+  },
+  "g3": {
+    "riga": "Chiusura reale a 4 settimane dentro la fascia al 50%: 6 pannelli su 12; dentro la fascia all'80%: 9 su 12. Direzione del corpo indovinata: 33 candele su 48.",
+    "dentro_50": 6,
+    "dentro_80": 9,
+    "direzioni_indovinate": 33,
+    "n_candele": 48,
+    "n": 12,
+    "regola": "12 origini, una ogni 52 settimane a ritroso a partire da 4 settimane prima dell'ultima data di sviluppo"
+  }
+}
