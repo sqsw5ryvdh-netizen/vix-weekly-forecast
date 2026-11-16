@@ -9,6 +9,8 @@
     "settimane_mancanti_nel_file": 0,
     "avvisi": []
   },
+  "versione": "f1",
+  "versione_richiesta": "f1",
   "lettura": {
     "data_origine": "2026-11-06",
     "settimane_di_storia": 1401,
@@ -385,294 +387,796 @@
     "Il VIX ha chiuso a 25,64 il 06/11/2026: si colloca al percentile 83 di tutta la storia e al percentile 87 degli ultimi 5 anni (fascia 25-30).",
     "È 8,16 punti sopra la mediana storica (17,48) e 8,62 punti sopra la media a 12 settimane (17,02); nelle ultime 4 settimane è salito del 72,8%.",
     "Nei 61 precedenti con la stessa fascia e direzione (25-30, in rialzo) il VIX era più alto dopo 4 settimane nel 30% dei casi, con variazione mediana di −2,07 punti.",
-    "Per la settimana +4 il modello indica una chiusura mediana di 21,0, con fascia all'80% tra 15,8 e 31,4; la probabilità di una chiusura sopra 20 è 63%, sopra 30 è 8%.",
+    "Versione F1 solo storico del VIX: per la settimana +4 la chiusura centrale è 21,0, con fascia all'80% tra 15,8 e 31,4; la probabilità di una chiusura sopra 20 è 63%, sopra 30 è 8%.",
     "Rispetto alla chiusura dell'origine (25,64), la direzione della chiusura è in ribasso (probabilità 74%) per la settimana +1 e in ribasso (probabilità 81%) per la settimana +4.",
-    "Candela prevista per la settimana +1: apertura 26,5, chiusura 22,0, escursione attesa tra 21,1 e 28,3 (ampiezze medie; il corpo è disegnato nella direzione storicamente più frequente)."
+    "Candela prevista per la settimana +1: apertura 26,5, chiusura 21,8, escursione attesa tra 20,8 e 28,4 (ampiezze medie recenti; il corpo è disegnato nella direzione storicamente più frequente)."
   ],
-  "previsione": {
-    "data_origine": "2026-11-06",
-    "indice_origine": 1400,
-    "chiusura_origine": 25.64,
-    "settimane_di_storia": 1401,
-    "settimane": [
-      {
-        "h": 1,
-        "quantili": {
-          "q05": 17.653646947755064,
-          "q10": 18.700183856399217,
-          "q25": 20.839996284641337,
-          "q50": 23.612239930518896,
-          "q75": 27.069111300462716,
-          "q90": 30.5088157768746,
-          "q95": 33.64900081499998
-        },
-        "quantili_riordinati": false,
-        "m1": 23.95029385293397,
-        "probabilita": {
-          "VIX>20": 0.9316389132340053,
-          "VIX>25": 0.3102541630148992,
-          "VIX>30": 0.06134969325153374
-        },
-        "n_errori_d1": 1141,
-        "massimo_previsto": 29.60627389646851,
-        "minimo_previsto": 21.069351800844615,
-        "massimo_riferimento": 28.417079840765897,
-        "minimo_riferimento": 24.05542054379525,
-        "apertura": 25.64,
-        "chiusura": 23.612239930518896,
-        "massimo": 29.60627389646851,
-        "minimo": 21.069351800844615,
-        "massimo_grezzo": 29.60627389646851,
-        "minimo_grezzo": 21.069351800844615,
-        "massimo_corretto": false,
-        "minimo_corretto": false,
-        "data": "2026-11-13",
-        "fasce": {
-          "50": [
-            20.839996284641337,
-            27.069111300462716
-          ],
-          "80": [
-            18.700183856399217,
-            30.5088157768746
-          ],
-          "90": [
-            17.653646947755064,
-            33.64900081499998
-          ]
-        }
+  "versioni": {
+    "f1": {
+      "previsione": {
+        "data_origine": "2026-11-06",
+        "indice_origine": 1400,
+        "chiusura_origine": 25.64,
+        "settimane_di_storia": 1401,
+        "settimane": [
+          {
+            "h": 1,
+            "quantili": {
+              "q05": 17.653646947755064,
+              "q10": 18.700183856399217,
+              "q25": 20.839996284641337,
+              "q50": 23.612239930518896,
+              "q75": 27.069111300462716,
+              "q90": 30.5088157768746,
+              "q95": 33.64900081499998
+            },
+            "quantili_riordinati": false,
+            "m1": 23.95029385293397,
+            "probabilita": {
+              "VIX>20": 0.9316389132340053,
+              "VIX>25": 0.3102541630148992,
+              "VIX>30": 0.06134969325153374
+            },
+            "n_errori_d1": 1141,
+            "massimo_previsto": 29.60627389646851,
+            "minimo_previsto": 21.069351800844615,
+            "massimo_riferimento": 28.417079840765897,
+            "minimo_riferimento": 24.05542054379525,
+            "apertura": 25.64,
+            "chiusura": 23.612239930518896,
+            "massimo": 29.60627389646851,
+            "minimo": 21.069351800844615,
+            "massimo_grezzo": 29.60627389646851,
+            "minimo_grezzo": 21.069351800844615,
+            "massimo_corretto": false,
+            "minimo_corretto": false,
+            "data": "2026-11-13",
+            "fasce": {
+              "50": [
+                20.839996284641337,
+                27.069111300462716
+              ],
+              "80": [
+                18.700183856399217,
+                30.5088157768746
+              ],
+              "90": [
+                17.653646947755064,
+                33.64900081499998
+              ]
+            }
+          },
+          {
+            "h": 2,
+            "quantili": {
+              "q05": 16.149070409007358,
+              "q10": 17.24450938803761,
+              "q25": 19.076613363333305,
+              "q50": 22.604218588398638,
+              "q75": 27.028899328038495,
+              "q90": 31.266486626341624,
+              "q95": 36.6045871441639
+            },
+            "quantili_riordinati": false,
+            "m1": 23.150134329113726,
+            "probabilita": {
+              "VIX>20": 0.8192982456140351,
+              "VIX>25": 0.256140350877193,
+              "VIX>30": 0.07456140350877193
+            },
+            "n_errori_d1": 1140,
+            "massimo_previsto": 27.569007905981696,
+            "minimo_previsto": 20.595740885328954,
+            "massimo_riferimento": 28.563961835529305,
+            "minimo_riferimento": 23.81434880576836,
+            "apertura": 23.612239930518896,
+            "chiusura": 22.604218588398638,
+            "massimo": 27.569007905981696,
+            "minimo": 20.595740885328954,
+            "massimo_grezzo": 27.569007905981696,
+            "minimo_grezzo": 20.595740885328954,
+            "massimo_corretto": false,
+            "minimo_corretto": false,
+            "data": "2026-11-20",
+            "fasce": {
+              "50": [
+                19.076613363333305,
+                27.028899328038495
+              ],
+              "80": [
+                17.24450938803761,
+                31.266486626341624
+              ],
+              "90": [
+                16.149070409007358,
+                36.6045871441639
+              ]
+            }
+          },
+          {
+            "h": 3,
+            "quantili": {
+              "q05": 15.516628433337196,
+              "q10": 16.62628392839698,
+              "q25": 18.359624404670445,
+              "q50": 21.44979331391026,
+              "q75": 25.640008752327738,
+              "q90": 31.192559974670473,
+              "q95": 38.11966262547776
+            },
+            "quantili_riordinati": false,
+            "m1": 22.543617990197852,
+            "probabilita": {
+              "VIX>20": 0.7006145741878841,
+              "VIX>25": 0.2344161545215101,
+              "VIX>30": 0.07901668129938542
+            },
+            "n_errori_d1": 1139,
+            "massimo_previsto": 26.594313438724654,
+            "minimo_previsto": 20.31263013159095,
+            "massimo_riferimento": 28.56434882720652,
+            "minimo_riferimento": 23.705657562404834,
+            "apertura": 22.604218588398638,
+            "chiusura": 21.44979331391026,
+            "massimo": 26.594313438724654,
+            "minimo": 20.31263013159095,
+            "massimo_grezzo": 26.594313438724654,
+            "minimo_grezzo": 20.31263013159095,
+            "massimo_corretto": false,
+            "minimo_corretto": false,
+            "data": "2026-11-27",
+            "fasce": {
+              "50": [
+                18.359624404670445,
+                25.640008752327738
+              ],
+              "80": [
+                16.62628392839698,
+                31.192559974670473
+              ],
+              "90": [
+                15.516628433337196,
+                38.11966262547776
+              ]
+            }
+          },
+          {
+            "h": 4,
+            "quantili": {
+              "q05": 14.986872387075755,
+              "q10": 15.811754668338416,
+              "q25": 17.767779266651157,
+              "q50": 21.034714239809976,
+              "q75": 25.24000968010973,
+              "q90": 31.414928438353126,
+              "q95": 37.59583609807274
+            },
+            "quantili_riordinati": false,
+            "m1": 21.990333056187104,
+            "probabilita": {
+              "VIX>20": 0.6309314586994728,
+              "VIX>25": 0.2100175746924429,
+              "VIX>30": 0.08172231985940245
+            },
+            "n_errori_d1": 1138,
+            "massimo_previsto": 25.677528189723127,
+            "minimo_previsto": 19.992296407539335,
+            "massimo_riferimento": 28.380063665302412,
+            "minimo_riferimento": 23.657826284674854,
+            "apertura": 21.44979331391026,
+            "chiusura": 21.034714239809976,
+            "massimo": 25.677528189723127,
+            "minimo": 19.992296407539335,
+            "massimo_grezzo": 25.677528189723127,
+            "minimo_grezzo": 19.992296407539335,
+            "massimo_corretto": false,
+            "minimo_corretto": false,
+            "data": "2026-12-04",
+            "fasce": {
+              "50": [
+                17.767779266651157,
+                25.24000968010973
+              ],
+              "80": [
+                15.811754668338416,
+                31.414928438353126
+              ],
+              "90": [
+                14.986872387075755,
+                37.59583609807274
+              ]
+            }
+          }
+        ],
+        "versione": "f1"
       },
-      {
-        "h": 2,
-        "quantili": {
-          "q05": 16.149070409007358,
-          "q10": 17.24450938803761,
-          "q25": 19.076613363333305,
-          "q50": 22.604218588398638,
-          "q75": 27.028899328038495,
-          "q90": 31.266486626341624,
-          "q95": 36.6045871441639
+      "candele": [
+        {
+          "apertura": 26.4554911131899,
+          "chiusura": 21.798130400431226,
+          "massimo": 28.410863575830877,
+          "minimo": 20.81964033321143,
+          "h": 1,
+          "costruzione": "K2m-A1",
+          "variante_ampiezze": "A1",
+          "modello_direzione": "L0",
+          "p_rialzo": 0.35025017869907077,
+          "direzione": "ribasso",
+          "prob_direzione": 0.6497498213009292,
+          "rapporto_apertura": 1.0318054256314313,
+          "p_chiusura_su": 0.25503943908851884,
+          "direzione_chiusura": "ribasso",
+          "etichetta": "ribasso 74%",
+          "chiusura_centrale": 23.612239930518896,
+          "mediana_d4": 23.612239930518896,
+          "versione": "f1"
         },
-        "quantili_riordinati": false,
-        "m1": 23.150134329113726,
-        "probabilita": {
-          "VIX>20": 0.8192982456140351,
-          "VIX>25": 0.256140350877193,
-          "VIX>30": 0.07456140350877193
+        {
+          "apertura": 24.363237271620527,
+          "chiusura": 20.381491713432712,
+          "massimo": 26.163967526745658,
+          "minimo": 19.466592736760752,
+          "h": 2,
+          "costruzione": "K2m-A1",
+          "variante_ampiezze": "A1",
+          "modello_direzione": "L0",
+          "p_rialzo": 0.35025017869907077,
+          "direzione": "ribasso",
+          "prob_direzione": 0.6497498213009292,
+          "rapporto_apertura": 1.0318054256314313,
+          "p_chiusura_su": 0.21403508771929824,
+          "direzione_chiusura": "ribasso",
+          "etichetta": "ribasso 79%",
+          "chiusura_centrale": 22.604218588398638,
+          "mediana_d4": 22.604218588398638,
+          "versione": "f1"
         },
-        "n_errori_d1": 1140,
-        "massimo_previsto": 27.569007905981696,
-        "minimo_previsto": 20.595740885328954,
-        "massimo_riferimento": 28.563961835529305,
-        "minimo_riferimento": 23.81434880576836,
-        "apertura": 23.612239930518896,
-        "chiusura": 22.604218588398638,
-        "massimo": 27.569007905981696,
-        "minimo": 20.595740885328954,
-        "massimo_grezzo": 27.569007905981696,
-        "minimo_grezzo": 20.595740885328954,
-        "massimo_corretto": false,
-        "minimo_corretto": false,
-        "data": "2026-11-20",
-        "fasce": {
-          "50": [
-            19.076613363333305,
-            27.028899328038495
-          ],
-          "80": [
-            17.24450938803761,
-            31.266486626341624
-          ],
-          "90": [
-            16.149070409007358,
-            36.6045871441639
-          ]
+        {
+          "apertura": 23.323155381668567,
+          "chiusura": 20.82885346106099,
+          "massimo": 25.047011332030188,
+          "minimo": 19.893872990312836,
+          "h": 3,
+          "costruzione": "K2m-A1",
+          "variante_ampiezze": "A1",
+          "modello_direzione": "L0",
+          "p_rialzo": 0.35025017869907077,
+          "direzione": "ribasso",
+          "prob_direzione": 0.6497498213009292,
+          "rapporto_apertura": 1.0318054256314313,
+          "p_chiusura_su": 0.2054433713784021,
+          "direzione_chiusura": "ribasso",
+          "etichetta": "ribasso 79%",
+          "chiusura_centrale": 21.44979331391026,
+          "mediana_d4": 21.44979331391026,
+          "versione": "f1"
+        },
+        {
+          "apertura": 22.132013119965404,
+          "chiusura": 19.765098269523225,
+          "massimo": 23.76782962446465,
+          "minimo": 18.877868402599912,
+          "h": 4,
+          "costruzione": "K2m-A1",
+          "variante_ampiezze": "A1",
+          "modello_direzione": "L0",
+          "p_rialzo": 0.35025017869907077,
+          "direzione": "ribasso",
+          "prob_direzione": 0.6497498213009292,
+          "rapporto_apertura": 1.0318054256314313,
+          "p_chiusura_su": 0.18629173989455183,
+          "direzione_chiusura": "ribasso",
+          "etichetta": "ribasso 81%",
+          "chiusura_centrale": 21.034714239809976,
+          "mediana_d4": 21.034714239809976,
+          "versione": "f1"
         }
-      },
-      {
-        "h": 3,
-        "quantili": {
-          "q05": 15.516628433337196,
-          "q10": 16.62628392839698,
-          "q25": 18.359624404670445,
-          "q50": 21.44979331391026,
-          "q75": 25.640008752327738,
-          "q90": 31.192559974670473,
-          "q95": 38.11966262547776
-        },
-        "quantili_riordinati": false,
-        "m1": 22.543617990197852,
-        "probabilita": {
-          "VIX>20": 0.7006145741878841,
-          "VIX>25": 0.2344161545215101,
-          "VIX>30": 0.07901668129938542
-        },
-        "n_errori_d1": 1139,
-        "massimo_previsto": 26.594313438724654,
-        "minimo_previsto": 20.31263013159095,
-        "massimo_riferimento": 28.56434882720652,
-        "minimo_riferimento": 23.705657562404834,
-        "apertura": 22.604218588398638,
-        "chiusura": 21.44979331391026,
-        "massimo": 26.594313438724654,
-        "minimo": 20.31263013159095,
-        "massimo_grezzo": 26.594313438724654,
-        "minimo_grezzo": 20.31263013159095,
-        "massimo_corretto": false,
-        "minimo_corretto": false,
-        "data": "2026-11-27",
-        "fasce": {
-          "50": [
-            18.359624404670445,
-            25.640008752327738
-          ],
-          "80": [
-            16.62628392839698,
-            31.192559974670473
-          ],
-          "90": [
-            15.516628433337196,
-            38.11966262547776
-          ]
-        }
-      },
-      {
-        "h": 4,
-        "quantili": {
-          "q05": 14.986872387075755,
-          "q10": 15.811754668338416,
-          "q25": 17.767779266651157,
-          "q50": 21.034714239809976,
-          "q75": 25.24000968010973,
-          "q90": 31.414928438353126,
-          "q95": 37.59583609807274
-        },
-        "quantili_riordinati": false,
-        "m1": 21.990333056187104,
-        "probabilita": {
-          "VIX>20": 0.6309314586994728,
-          "VIX>25": 0.2100175746924429,
-          "VIX>30": 0.08172231985940245
-        },
-        "n_errori_d1": 1138,
-        "massimo_previsto": 25.677528189723127,
-        "minimo_previsto": 19.992296407539335,
-        "massimo_riferimento": 28.380063665302412,
-        "minimo_riferimento": 23.657826284674854,
-        "apertura": 21.44979331391026,
-        "chiusura": 21.034714239809976,
-        "massimo": 25.677528189723127,
-        "minimo": 19.992296407539335,
-        "massimo_grezzo": 25.677528189723127,
-        "minimo_grezzo": 19.992296407539335,
-        "massimo_corretto": false,
-        "minimo_corretto": false,
-        "data": "2026-12-04",
-        "fasce": {
-          "50": [
-            17.767779266651157,
-            25.24000968010973
-          ],
-          "80": [
-            15.811754668338416,
-            31.414928438353126
-          ],
-          "90": [
-            14.986872387075755,
-            37.59583609807274
-          ]
-        }
-      }
-    ]
-  },
-  "candele": [
-    {
-      "apertura": 26.4554911131899,
-      "chiusura": 22.045993948447293,
-      "massimo": 28.304964641510853,
-      "minimo": 21.084624432284507,
-      "h": 1,
-      "costruzione": "K2m",
-      "modello_direzione": "L0",
-      "p_rialzo": 0.35025017869907077,
-      "direzione": "ribasso",
-      "prob_direzione": 0.6497498213009292,
-      "p_chiusura_su": 0.25503943908851884,
-      "direzione_chiusura": "ribasso",
-      "etichetta": "ribasso 74%",
-      "ampiezze": {
-        "corpo": "regressione",
-        "ombra_sup": "media",
-        "ombra_inf": "media"
-      },
-      "mediana_d4": 23.612239930518896,
-      "rapporto_apertura": 1.0318054256314313
+      ]
     },
-    {
-      "apertura": 24.363237271620527,
-      "chiusura": 20.778021451634768,
-      "massimo": 26.0649230527141,
-      "minimo": 19.871172932306727,
-      "h": 2,
-      "costruzione": "K2m",
-      "modello_direzione": "L0",
-      "p_rialzo": 0.35025017869907077,
-      "direzione": "ribasso",
-      "prob_direzione": 0.6497498213009292,
-      "p_chiusura_su": 0.21403508771929824,
-      "direzione_chiusura": "ribasso",
-      "etichetta": "ribasso 79%",
-      "ampiezze": {
-        "corpo": "regressione",
-        "ombra_sup": "media",
-        "ombra_inf": "media"
+    "f2": {
+      "previsione": {
+        "versione": "f2",
+        "data_origine": "2026-11-06",
+        "indice_origine": 1400,
+        "chiusura_origine": 25.64,
+        "settimane_di_storia": 1401,
+        "x1_origine": -0.040561622464898583,
+        "settimane": [
+          {
+            "h": 1,
+            "quantili": {
+              "q05": 16.93152511760578,
+              "q10": 18.199570420839454,
+              "q25": 20.422639342308223,
+              "q50": 23.012154651917097,
+              "q75": 26.6486698355583,
+              "q90": 30.220859564218,
+              "q95": 33.26296538389452
+            },
+            "quantili_riordinati": false,
+            "centro": 23.41903708229484,
+            "probabilita": {
+              "VIX>20": 0.8978328173374613,
+              "VIX>25": 0.23529411764705882,
+              "VIX>30": 0.06346749226006192
+            },
+            "n_errori": 646,
+            "data": "2026-11-13",
+            "chiusura": 23.012154651917097,
+            "fasce": {
+              "50": [
+                20.422639342308223,
+                26.6486698355583
+              ],
+              "80": [
+                18.199570420839454,
+                30.220859564218
+              ],
+              "90": [
+                16.93152511760578,
+                33.26296538389452
+              ]
+            }
+          },
+          {
+            "h": 2,
+            "quantili": {
+              "q05": 15.944195111562124,
+              "q10": 16.401029440192513,
+              "q25": 18.227279503103567,
+              "q50": 21.76442561668616,
+              "q75": 26.067590085254203,
+              "q90": 32.19890964093294,
+              "q95": 35.85119993588271
+            },
+            "quantili_riordinati": false,
+            "centro": 22.274868327440224,
+            "probabilita": {
+              "VIX>20": 0.7054263565891473,
+              "VIX>25": 0.21550387596899226,
+              "VIX>30": 0.07131782945736434
+            },
+            "n_errori": 645,
+            "data": "2026-11-20",
+            "chiusura": 21.76442561668616,
+            "fasce": {
+              "50": [
+                18.227279503103567,
+                26.067590085254203
+              ],
+              "80": [
+                16.401029440192513,
+                32.19890964093294
+              ],
+              "90": [
+                15.944195111562124,
+                35.85119993588271
+              ]
+            }
+          },
+          {
+            "h": 3,
+            "quantili": {
+              "q05": 14.981223590354384,
+              "q10": 15.950794622946711,
+              "q25": 17.64445105843791,
+              "q50": 20.095604271740985,
+              "q75": 25.070135237206525,
+              "q90": 30.04612498446253,
+              "q95": 36.89653249308891
+            },
+            "quantili_riordinati": false,
+            "centro": 21.562105230493106,
+            "probabilita": {
+              "VIX>20": 0.5978260869565217,
+              "VIX>25": 0.20031055900621117,
+              "VIX>30": 0.07142857142857142
+            },
+            "n_errori": 644,
+            "data": "2026-11-27",
+            "chiusura": 20.095604271740985,
+            "fasce": {
+              "50": [
+                17.64445105843791,
+                25.070135237206525
+              ],
+              "80": [
+                15.950794622946711,
+                30.04612498446253
+              ],
+              "90": [
+                14.981223590354384,
+                36.89653249308891
+              ]
+            }
+          },
+          {
+            "h": 4,
+            "quantili": {
+              "q05": 14.508452748254578,
+              "q10": 15.2708227599866,
+              "q25": 16.724665336790117,
+              "q50": 19.938669913203928,
+              "q75": 23.672175342189355,
+              "q90": 31.15229118517558,
+              "q95": 36.40807818962168
+            },
+            "quantili_riordinati": false,
+            "centro": 20.92829262948802,
+            "probabilita": {
+              "VIX>20": 0.5101088646967341,
+              "VIX>25": 0.18973561430793157,
+              "VIX>30": 0.07465007776049767
+            },
+            "n_errori": 643,
+            "data": "2026-12-04",
+            "chiusura": 19.938669913203928,
+            "fasce": {
+              "50": [
+                16.724665336790117,
+                23.672175342189355
+              ],
+              "80": [
+                15.2708227599866,
+                31.15229118517558
+              ],
+              "90": [
+                14.508452748254578,
+                36.40807818962168
+              ]
+            }
+          }
+        ]
       },
-      "mediana_d4": 22.604218588398638,
-      "rapporto_apertura": 1.0318054256314313
+      "candele": [
+        {
+          "apertura": 26.4554911131899,
+          "chiusura": 21.798130400431226,
+          "massimo": 28.410863575830877,
+          "minimo": 20.81964033321143,
+          "h": 1,
+          "costruzione": "K2m-A1",
+          "variante_ampiezze": "A1",
+          "modello_direzione": "L0",
+          "p_rialzo": 0.35025017869907077,
+          "direzione": "ribasso",
+          "prob_direzione": 0.6497498213009292,
+          "rapporto_apertura": 1.0318054256314313,
+          "p_chiusura_su": 0.1996904024767802,
+          "direzione_chiusura": "ribasso",
+          "etichetta": "ribasso 80%",
+          "chiusura_centrale": 23.012154651917097,
+          "mediana_d4": 23.012154651917097,
+          "versione": "f2"
+        },
+        {
+          "apertura": 23.744066025317643,
+          "chiusura": 19.863513191735272,
+          "massimo": 25.49903223094924,
+          "minimo": 18.971865605398335,
+          "h": 2,
+          "costruzione": "K2m-A1",
+          "variante_ampiezze": "A1",
+          "modello_direzione": "L0",
+          "p_rialzo": 0.35025017869907077,
+          "direzione": "ribasso",
+          "prob_direzione": 0.6497498213009292,
+          "rapporto_apertura": 1.0318054256314313,
+          "p_chiusura_su": 0.1875968992248062,
+          "direzione_chiusura": "ribasso",
+          "etichetta": "ribasso 81%",
+          "chiusura_centrale": 21.76442561668616,
+          "mediana_d4": 21.76442561668616,
+          "versione": "f2"
+        },
+        {
+          "apertura": 22.45665243704849,
+          "chiusura": 20.055018936455674,
+          "massimo": 24.116463611622045,
+          "minimo": 19.154774903286732,
+          "h": 3,
+          "costruzione": "K2m-A1",
+          "variante_ampiezze": "A1",
+          "modello_direzione": "L0",
+          "p_rialzo": 0.35025017869907077,
+          "direzione": "ribasso",
+          "prob_direzione": 0.6497498213009292,
+          "rapporto_apertura": 1.0318054256314313,
+          "p_chiusura_su": 0.18167701863354038,
+          "direzione_chiusura": "ribasso",
+          "etichetta": "ribasso 82%",
+          "chiusura_centrale": 20.095604271740985,
+          "mediana_d4": 20.095604271740985,
+          "versione": "f2"
+        },
+        {
+          "apertura": 20.734753518924517,
+          "chiusura": 18.517269019969124,
+          "massimo": 22.267296077937495,
+          "minimo": 17.686052604834817,
+          "h": 4,
+          "costruzione": "K2m-A1",
+          "variante_ampiezze": "A1",
+          "modello_direzione": "L0",
+          "p_rialzo": 0.35025017869907077,
+          "direzione": "ribasso",
+          "prob_direzione": 0.6497498213009292,
+          "rapporto_apertura": 1.0318054256314313,
+          "p_chiusura_su": 0.15396578538102643,
+          "direzione_chiusura": "ribasso",
+          "etichetta": "ribasso 85%",
+          "chiusura_centrale": 19.938669913203928,
+          "mediana_d4": 19.938669913203928,
+          "versione": "f2"
+        }
+      ]
     },
-    {
-      "apertura": 23.323155381668567,
-      "chiusura": 20.99237411923197,
-      "massimo": 24.950086628344952,
-      "minimo": 20.07659450717303,
-      "h": 3,
-      "costruzione": "K2m",
-      "modello_direzione": "L0",
-      "p_rialzo": 0.35025017869907077,
-      "direzione": "ribasso",
-      "prob_direzione": 0.6497498213009292,
-      "p_chiusura_su": 0.2054433713784021,
-      "direzione_chiusura": "ribasso",
-      "etichetta": "ribasso 79%",
-      "ampiezze": {
-        "corpo": "media",
-        "ombra_sup": "media",
-        "ombra_inf": "media"
+    "f3": {
+      "previsione": {
+        "versione": "f3",
+        "data_origine": "2026-11-06",
+        "indice_origine": 1400,
+        "chiusura_origine": 25.64,
+        "settimane_di_storia": 1401,
+        "regime": {
+          "p_regime_alto": 0.9843374949692127,
+          "stima_su_settimane": 1378,
+          "livello_basso": 16.239927686411047,
+          "livello_alto": 19.394073214259954,
+          "sigma_basso": 0.0821807054792837,
+          "sigma_alto": 0.18000597486850692,
+          "phi": 0.9491178315891068,
+          "p_resta_basso": 0.8736964079387367,
+          "p_resta_alto": 0.6171549504151587,
+          "durata_media_basso": 7.917431196374463,
+          "durata_media_alto": 2.6120228042243303
+        },
+        "ripiego_ar1": false,
+        "settimane": [
+          {
+            "h": 1,
+            "quantili": {
+              "q05": 18.62976220874776,
+              "q10": 19.43324191073995,
+              "q25": 20.86920022066832,
+              "q50": 22.976453437952735,
+              "q75": 26.442742618226667,
+              "q90": 30.17203396830557,
+              "q95": 32.50448364120614
+            },
+            "quantili_riordinati": false,
+            "centro": 23.647776203745025,
+            "probabilita": {
+              "VIX>20": 0.8489071413318265,
+              "VIX>25": 0.3353587226467946,
+              "VIX>30": 0.10488026380285863
+            },
+            "data": "2026-11-13",
+            "chiusura": 22.976453437952735,
+            "fasce": {
+              "50": [
+                20.86920022066832,
+                26.442742618226667
+              ],
+              "80": [
+                19.43324191073995,
+                30.17203396830557
+              ],
+              "90": [
+                18.62976220874776,
+                32.50448364120614
+              ]
+            }
+          },
+          {
+            "h": 2,
+            "quantili": {
+              "q05": 16.502147910693676,
+              "q10": 17.670840857285462,
+              "q25": 19.616360184822806,
+              "q50": 22.05814870609968,
+              "q75": 25.48756495925085,
+              "q90": 30.121591063318775,
+              "q95": 33.44716007986722
+            },
+            "quantili_riordinati": false,
+            "centro": 22.57836209613168,
+            "probabilita": {
+              "VIX>20": 0.7120696740430734,
+              "VIX>25": 0.2756574467633416,
+              "VIX>30": 0.10248389728063936
+            },
+            "data": "2026-11-20",
+            "chiusura": 22.05814870609968,
+            "fasce": {
+              "50": [
+                19.616360184822806,
+                25.48756495925085
+              ],
+              "80": [
+                17.670840857285462,
+                30.121591063318775
+              ],
+              "90": [
+                16.502147910693676,
+                33.44716007986722
+              ]
+            }
+          },
+          {
+            "h": 3,
+            "quantili": {
+              "q05": 15.292076985376225,
+              "q10": 16.599865397439036,
+              "q25": 18.814804207805604,
+              "q50": 21.54841103416926,
+              "q75": 25.122565160259064,
+              "q90": 29.874730872393563,
+              "q95": 33.577771703840085
+            },
+            "quantili_riordinati": false,
+            "centro": 21.93397109812638,
+            "probabilita": {
+              "VIX>20": 0.6433949685539797,
+              "VIX>25": 0.2561694507342258,
+              "VIX>30": 0.09767405642097356
+            },
+            "data": "2026-11-27",
+            "chiusura": 21.54841103416926,
+            "fasce": {
+              "50": [
+                18.814804207805604,
+                25.122565160259064
+              ],
+              "80": [
+                16.599865397439036,
+                29.874730872393563
+              ],
+              "90": [
+                15.292076985376225,
+                33.577771703840085
+              ]
+            }
+          },
+          {
+            "h": 4,
+            "quantili": {
+              "q05": 14.485338192431893,
+              "q10": 15.863333913838577,
+              "q25": 18.240290306730227,
+              "q50": 21.192692341138287,
+              "q75": 24.95691742829351,
+              "q90": 29.79482653171734,
+              "q95": 33.63534182844737
+            },
+            "quantili_riordinati": false,
+            "centro": 21.49673616738502,
+            "probabilita": {
+              "VIX>20": 0.6019667744956277,
+              "VIX>25": 0.247930373184577,
+              "VIX>30": 0.09630031322039727
+            },
+            "data": "2026-12-04",
+            "chiusura": 21.192692341138287,
+            "fasce": {
+              "50": [
+                18.240290306730227,
+                24.95691742829351
+              ],
+              "80": [
+                15.863333913838577,
+                29.79482653171734
+              ],
+              "90": [
+                14.485338192431893,
+                33.63534182844737
+              ]
+            }
+          }
+        ]
       },
-      "mediana_d4": 21.44979331391026,
-      "rapporto_apertura": 1.0318054256314313
-    },
-    {
-      "apertura": 22.132013119965404,
-      "chiusura": 19.92288898420691,
-      "massimo": 23.67674084317192,
-      "minimo": 19.052886154191256,
-      "h": 4,
-      "costruzione": "K2m",
-      "modello_direzione": "L0",
-      "p_rialzo": 0.35025017869907077,
-      "direzione": "ribasso",
-      "prob_direzione": 0.6497498213009292,
-      "p_chiusura_su": 0.18629173989455183,
-      "direzione_chiusura": "ribasso",
-      "etichetta": "ribasso 81%",
-      "ampiezze": {
-        "corpo": "media",
-        "ombra_sup": "media",
-        "ombra_inf": "media"
-      },
-      "mediana_d4": 21.034714239809976,
-      "rapporto_apertura": 1.0318054256314313
+      "candele": [
+        {
+          "apertura": 26.4554911131899,
+          "chiusura": 21.798130400431226,
+          "massimo": 28.410863575830877,
+          "minimo": 20.81964033321143,
+          "h": 1,
+          "costruzione": "K2m-A1",
+          "variante_ampiezze": "A1",
+          "modello_direzione": "L0",
+          "p_rialzo": 0.35025017869907077,
+          "direzione": "ribasso",
+          "prob_direzione": 0.6497498213009292,
+          "rapporto_apertura": 1.0318054256314313,
+          "p_chiusura_su": 0.2952537083477211,
+          "direzione_chiusura": "ribasso",
+          "etichetta": "ribasso 70%",
+          "chiusura_centrale": 22.976453437952735,
+          "mediana_d4": 22.976453437952735,
+          "versione": "f3"
+        },
+        {
+          "apertura": 23.707229319047585,
+          "chiusura": 19.83269680164626,
+          "massimo": 25.45947285811644,
+          "minimo": 18.942432523467215,
+          "h": 2,
+          "costruzione": "K2m-A1",
+          "variante_ampiezze": "A1",
+          "modello_direzione": "L0",
+          "p_rialzo": 0.35025017869907077,
+          "direzione": "ribasso",
+          "prob_direzione": 0.6497498213009292,
+          "rapporto_apertura": 1.0318054256314313,
+          "p_chiusura_su": 0.24252247337611157,
+          "direzione_chiusura": "ribasso",
+          "etichetta": "ribasso 76%",
+          "chiusura_centrale": 22.05814870609968,
+          "mediana_d4": 22.05814870609968,
+          "versione": "f3"
+        },
+        {
+          "apertura": 22.759717514338586,
+          "chiusura": 20.325672627208085,
+          "massimo": 24.441928768501885,
+          "minimo": 19.41327929759983,
+          "h": 3,
+          "costruzione": "K2m-A1",
+          "variante_ampiezze": "A1",
+          "modello_direzione": "L0",
+          "p_rialzo": 0.35025017869907077,
+          "direzione": "ribasso",
+          "prob_direzione": 0.6497498213009292,
+          "rapporto_apertura": 1.0318054256314313,
+          "p_chiusura_su": 0.22562011258850145,
+          "direzione_chiusura": "ribasso",
+          "etichetta": "ribasso 77%",
+          "chiusura_centrale": 21.54841103416926,
+          "mediana_d4": 21.54841103416926,
+          "versione": "f3"
+        },
+        {
+          "apertura": 22.23376741879204,
+          "chiusura": 19.855970424024193,
+          "massimo": 23.87710476473134,
+          "minimo": 18.964661422838784,
+          "h": 4,
+          "costruzione": "K2m-A1",
+          "variante_ampiezze": "A1",
+          "modello_direzione": "L0",
+          "p_rialzo": 0.35025017869907077,
+          "direzione": "ribasso",
+          "prob_direzione": 0.6497498213009292,
+          "rapporto_apertura": 1.0318054256314313,
+          "p_chiusura_su": 0.21912506545581564,
+          "direzione_chiusura": "ribasso",
+          "etichetta": "ribasso 78%",
+          "chiusura_centrale": 21.192692341138287,
+          "mediana_d4": 21.192692341138287,
+          "versione": "f3"
+        }
+      ]
     }
-  ]
+  },
+  "note": {
+    "f2": {
+      "disponibile": true,
+      "avvisi": [],
+      "ultima_data_nei_file": {
+        "vix": "2026-11-13",
+        "vix3m": "2026-11-13"
+      },
+      "sha256": {
+        "vix": "d4e2b1199951501b7757814b6e1c2356394922a7ea8ef16d85c3a4596e6e2c2d",
+        "vix3m": "6fa2ba5f8b85bf62a98ba14acf5e03c712298dffe534d3c73998e21db1248a4b"
+      },
+      "x1_origine": {
+        "data_osservazione": "2026-11-06",
+        "vix3m": 24.6,
+        "vix": 25.64,
+        "x1": -0.040561622464898583
+      }
+    }
+  }
 }
