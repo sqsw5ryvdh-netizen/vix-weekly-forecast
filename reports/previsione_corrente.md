@@ -10,6 +10,7 @@ Progetto universitario: non è un consiglio di investimento.*
 - È 8,16 punti sopra la mediana storica (17,48) e 8,62 punti sopra la media a 12 settimane (17,02); nelle ultime 4 settimane è salito del 72,8%.
 - Nei 61 precedenti con la stessa fascia e direzione (25-30, in rialzo) il VIX era più alto dopo 4 settimane nel 30% dei casi, con variazione mediana di −2,07 punti.
 - Per la settimana +4 il modello indica una chiusura mediana di 21,0, con fascia all'80% tra 15,8 e 31,4; la probabilità di una chiusura sopra 20 è 63%, sopra 30 è 8%.
+- La candela prevista per la settimana +1 è in ribasso (probabilità 68%): apertura 26,5, chiusura 22,2, escursione attesa tra 20,5 e 28,5.
 
 ## 1. Lettura della situazione
 
@@ -64,47 +65,60 @@ Dopo 4 settimane il VIX era più alto nel 30% dei casi; variazione mediana −18
 
 ## 2. Previsione per le prossime 4 settimane
 
-Valori in punti VIX. Chiusura = mediana del modello D4; fasce = quantili di D4; probabilità = modello D1; massimo e minimo = regressione dedicata.
-Accanto a ogni fascia, tra parentesi, la **copertura storica**: la frequenza con cui la chiusura reale è caduta dentro la fascia nel walk-forward di sviluppo
-(927 previsioni a h = 4, obiettivi dal 09/02/2007 al 08/11/2024). Le fasce non sono ricalibrate: coprono meno del valore nominale.
-Ultima colonna: errore assoluto medio storico (punti VIX) di chiusura, massimo e minimo, misurato nello stesso walk-forward.
+Valori in punti VIX. Due livelli, da leggere insieme.
 
-|   settimana | data       | apertura   | massimo   | minimo   | chiusura   | fascia 50% (copertura storica)   | fascia 80% (copertura storica)   | fascia 90% (copertura storica)   | P(VIX > 20)   | P(VIX > 25)   | P(VIX > 30)   | errore medio storico: chiusura / massimo / minimo   |
-|------------:|:-----------|:-----------|:----------|:---------|:-----------|:---------------------------------|:---------------------------------|:---------------------------------|:--------------|:--------------|:--------------|:----------------------------------------------------|
-|          +1 | 13/11/2026 | 25,64      | 29,61     | 21,07    | 23,61      | 20,8 – 27,1 (44%)                | 18,7 – 30,5 (73%)                | 17,7 – 33,6 (84%)                | 93,2%         | 31,0%         | 6,1%          | 2,2 / 2,1 / 1,2                                     |
-|          +2 | 20/11/2026 | 23,61      | 27,57     | 20,60    | 22,60      | 19,1 – 27,0 (43%)                | 17,2 – 31,3 (72%)                | 16,1 – 36,6 (84%)                | 81,9%         | 25,6%         | 7,5%          | 2,8 / 3,3 / 1,8                                     |
-|          +3 | 27/11/2026 | 22,60      | 26,59     | 20,31    | 21,45      | 18,4 – 25,6 (45%)                | 16,6 – 31,2 (73%)                | 15,5 – 38,1 (84%)                | 70,1%         | 23,4%         | 7,9%          | 3,2 / 4,0 / 2,2                                     |
-|          +4 | 04/12/2026 | 21,45      | 25,68     | 19,99    | 21,03      | 17,8 – 25,2 (44%)                | 15,8 – 31,4 (73%)                | 15,0 – 37,6 (84%)                | 63,1%         | 21,0%         | 8,2%          | 3,5 / 4,4 / 2,5                                     |
+**Candele previste** (costruzione K2 ancorata alla mediana): la settimana più probabile per direzione e ampiezza.
 
-Nessuna candela ha richiesto la correzione dei vincoli su massimo e minimo.
-Le date sono indicative (origine + 7 giorni per settimana): la chiusura settimanale è quella dell'ultima seduta della settimana.
+|   settimana | data       | apertura   | massimo   | minimo   | chiusura   | direzione (probabilità)   | chiusura centrale (mediana D4)   | errore medio storico della candela: apertura / massimo / minimo / chiusura   |
+|------------:|:-----------|:-----------|:----------|:---------|:-----------|:--------------------------|:---------------------------------|:-----------------------------------------------------------------------------|
+|          +1 | 13/11/2026 | 26,46      | 28,54     | 20,55    | 22,16      | ribasso 68%               | 23,61                            | 0,7 / 2,3 / 1,2 / 2,3                                                        |
+|          +2 | 20/11/2026 | 24,36      | 26,33     | 20,17    | 21,21      | ribasso 64%               | 22,60                            | 2,3 / 3,5 / 1,8 / 2,9                                                        |
+|          +3 | 27/11/2026 | 23,32      | 25,01     | 19,62    | 20,50      | ribasso 64%               | 21,45                            | 2,9 / 4,0 / 2,2 / 3,2                                                        |
+|          +4 | 04/12/2026 | 22,13      | 23,60     | 19,15    | 20,07      | ribasso 68%               | 21,03                            | 3,2 / 4,4 / 2,4 / 3,5                                                        |
+
+**Chiusura centrale, fasce e probabilità** (mediana e fasce: modello D4; probabilità: modello D1). Tra parentesi la copertura storica di ogni fascia,
+cioè la frequenza con cui la chiusura reale vi è caduta nel walk-forward di sviluppo (927 previsioni a 4 settimane). Le fasce non sono ricalibrate.
+
+|   settimana | chiusura centrale (mediana D4)   | fascia 50% (copertura storica)   | fascia 80% (copertura storica)   | fascia 90% (copertura storica)   | P(VIX > 20)   | P(VIX > 25)   | P(VIX > 30)   | errore medio storico della mediana   |
+|------------:|:---------------------------------|:---------------------------------|:---------------------------------|:---------------------------------|:--------------|:--------------|:--------------|:-------------------------------------|
+|          +1 | 23,61                            | 20,8 – 27,1 (44%)                | 18,7 – 30,5 (73%)                | 17,7 – 33,6 (84%)                | 93,2%         | 31,0%         | 6,1%          | 2,2                                  |
+|          +2 | 22,60                            | 19,1 – 27,0 (43%)                | 17,2 – 31,3 (72%)                | 16,1 – 36,6 (84%)                | 81,9%         | 25,6%         | 7,5%          | 2,8                                  |
+|          +3 | 21,45                            | 18,4 – 25,6 (45%)                | 16,6 – 31,2 (73%)                | 15,5 – 38,1 (84%)                | 70,1%         | 23,4%         | 7,9%          | 3,2                                  |
+|          +4 | 21,03                            | 17,8 – 25,2 (44%)                | 15,8 – 31,4 (73%)                | 15,0 – 37,6 (84%)                | 63,1%         | 21,0%         | 8,2%          | 3,5                                  |
+
+- La **probabilità della direzione** viene dal modello L1. Nel walk-forward di sviluppo la direzione del corpo è stata indovinata nel 63,8% dei casi a 1 settimana,
+  contro il 63,8% di chi prevede sempre la direzione più frequente: **il modello non aggiunge capacità di previsione sulla direzione**.
+- Gli errori storici sono errori assoluti medi in punti VIX misurati sul campione di sviluppo. Le date sono indicative (origine + 7 giorni per settimana).
 
 ## 3. Grafico
 
 ![Grafico principale](previsione/g1_2026-11-06.png)
 
-Il grafico in alto mostra gli ultimi 2 anni. I percorsi dei casi simili sono nel pannello in basso (ingrandimento sulle ultime 16 settimane): nel grafico
-a 2 anni le quattro settimane di previsione occupano troppo poco spazio per ospitarli senza coprire candele e fasce.
+In alto gli ultimi 2 anni; in basso l'ingrandimento sulle ultime 16 settimane, con i percorsi dei casi simili (nel grafico a 2 anni le quattro settimane
+di previsione sono troppo strette per ospitarli).
 
 ### Come leggere il grafico
 
-- **Candele piene** = settimane reali (apertura, massimo, minimo, chiusura del file). Rosso: chiusura sopra l'apertura; blu: chiusura sotto l'apertura.
-- **Candele vuote con bordo tratteggiato** = le quattro settimane previste. Il corpo va dalla chiusura prevista della settimana precedente (per la prima: l'ultima chiusura reale) alla chiusura prevista; **le ombre indicano l'escursione attesa dentro la settimana** (massimo e minimo previsti), non un intervallo di confidenza.
-- **Le fasce colorate sullo sfondo indicano l'incertezza sulla chiusura**: la più scura è la fascia al 50%, la più chiara quella all'80%. La chiusura reale è caduta dentro queste fasce con la frequenza riportata in tabella («copertura storica»), che è più bassa del valore nominale.
-- **Ombre e fasce misurano cose diverse.** Un'ombra lunga dice che dentro la settimana il VIX può allontanarsi molto dalla chiusura; una fascia larga dice che la chiusura stessa è incerta.
+- **Candele piene** = settimane reali (apertura ufficiale della prima seduta, massimo, minimo, chiusura). Rosso: chiusura sopra l'apertura; blu: chiusura sotto l'apertura.
+- **Candele vuote con bordo tratteggiato** = le quattro settimane previste. **La candela mostra la settimana più probabile per direzione e ampiezza**: apertura attesa, direzione più probabile del corpo (con la sua probabilità scritta sopra), ampiezza tipica del corpo e delle ombre.
+- **La linea viola con i punti è la mediana D4, cioè il valore centrale della chiusura: la media degli esiti possibili**, rialzi e ribassi insieme. Dove la candela si allontana dalla linea si vede la differenza tra «la settimana più probabile» e «il centro di tutte le settimane possibili».
+- **Perché le candele previste sono quasi sempre blu.** L'apertura ufficiale del VIX è di norma più alta della chiusura precedente (mediana storica: +3,1%) e nel passato la settimana ha chiuso sotto la propria apertura nel 64% dei casi. Una candela blu non significa che il VIX scenderà rispetto a oggi: guarda la linea centrale per questo.
+- **Le fasce colorate sullo sfondo indicano l'incertezza sulla chiusura**: la più scura è la fascia al 50%, la più chiara quella all'80%. La copertura misurata nel passato è in tabella ed è più bassa del valore nominale.
+- **Le ombre delle candele indicano l'escursione attesa dentro la settimana** (massimo e minimo tipici), non un intervallo di confidenza: nel walk-forward di sviluppo la chiusura reale è caduta dentro l'escursione prevista nel 47% dei casi a 1 settimana e nel 31% a 4.
 - **Linea tratteggiata verticale** = data di origine: a destra tutto è previsione. **Linea arancione** = media mobile a 12 settimane; **linea punteggiata** = mediana storica.
-- **Linee grigie sottili** (pannello di ingrandimento) = cosa è successo davvero nelle 4 settimane successive ai casi simili del passato, riportato al livello attuale come variazione percentuale. Servono a dare un'idea della varietà degli esiti; non sono una previsione.
+- **Linee grigie sottili** (pannello di ingrandimento) = cosa è successo davvero nelle 4 settimane successive ai casi simili del passato, riportato al livello attuale. Non sono una previsione.
 
 ## 4. Verifica visiva sul passato
 
-![Verifica sul passato](figures/fase2b/g3_verifica_passato.png)
+![Verifica sul passato](figures/fase2c/g3_verifica_passato.png)
 
-Dodici origini scelte con regola fissa (12 origini, una ogni 52 settimane a ritroso a partire da 4 settimane prima dell'ultima data di sviluppo): tutte le origini e tutti gli esiti stanno nel campione di sviluppo. Chiusura reale a 4 settimane dentro la fascia al 50%: 6 pannelli su 12; dentro la fascia all'80%: 9 su 12.
-Dodici casi sono pochi: servono a vedere come si comporta la previsione, non a misurarla. Le misure sono nel report `fase2b_report.md`.
+Dodici origini scelte con regola fissa (12 origini, una ogni 52 settimane a ritroso a partire da 4 settimane prima dell'ultima data di sviluppo), tutte nel campione di sviluppo. Chiusura reale a 4 settimane dentro la fascia al 50%: 6 pannelli su 12; dentro la fascia all'80%: 9 su 12. Direzione del corpo indovinata: 33 candele su 48.
+Dodici casi sono pochi: servono a vedere come si comporta la previsione, non a misurarla. Le misure sono in `fase2c_report.md`.
 
 ## 5. Avvertenze
 
-- Le fasce coprono meno del nominale: a 4 settimane la fascia al 50% ha contenuto la chiusura reale nel 44% dei casi, quella all'80% nel 73%, quella al 90% nel 84%.
-- Fasce (modello D4) e probabilità (modello D1) vengono da due modelli diversi e possono non essere perfettamente coerenti tra loro.
-- Il modello non anticipa i picchi: nelle fasi precedenti nessuna variabile costruita sul solo VIX li ha previsti. Le probabilità di superare 25 e 30 sono frequenze condizionate al livello attuale, non segnali.
-- La previsione usa solo lo storico del VIX. Nessun dato esterno.
+- Le candele previste sono più piccole di quelle reali: nel walk-forward il corpo medio previsto è il 76% di quello reale e l'escursione il 66% (a 1 settimana). Mostrano valori tipici, e le settimane estreme non sono tipiche.
+- Le fasce coprono meno del nominale: a 4 settimane quella al 50% ha contenuto la chiusura reale nel 44% dei casi, quella all'80% nel 73%, quella al 90% nel 84%.
+- Candele, fasce (D4) e probabilità (D1) vengono da modelli diversi e possono non essere perfettamente coerenti tra loro.
+- Il modello non anticipa i picchi e usa solo lo storico del VIX.
+- Ogni esecuzione senza `--origine` viene scritta in `reports/registro_previsioni.csv`; `python -m src.forecast --verifica` confronta il registro con le settimane completate.

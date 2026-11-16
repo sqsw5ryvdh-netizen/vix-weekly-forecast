@@ -6,7 +6,8 @@
     "settimane_incomplete_escluse": 1,
     "prima_data": "2000-01-07",
     "ultima_data_completa": "2026-11-06",
-    "settimane_mancanti_nel_file": 0
+    "settimane_mancanti_nel_file": 0,
+    "avvisi": []
   },
   "lettura": {
     "data_origine": "2026-11-06",
@@ -384,7 +385,8 @@
     "Il VIX ha chiuso a 25,64 il 06/11/2026: si colloca al percentile 83 di tutta la storia e al percentile 87 degli ultimi 5 anni (fascia 25-30).",
     "È 8,16 punti sopra la mediana storica (17,48) e 8,62 punti sopra la media a 12 settimane (17,02); nelle ultime 4 settimane è salito del 72,8%.",
     "Nei 61 precedenti con la stessa fascia e direzione (25-30, in rialzo) il VIX era più alto dopo 4 settimane nel 30% dei casi, con variazione mediana di −2,07 punti.",
-    "Per la settimana +4 il modello indica una chiusura mediana di 21,0, con fascia all'80% tra 15,8 e 31,4; la probabilità di una chiusura sopra 20 è 63%, sopra 30 è 8%."
+    "Per la settimana +4 il modello indica una chiusura mediana di 21,0, con fascia all'80% tra 15,8 e 31,4; la probabilità di una chiusura sopra 20 è 63%, sopra 30 è 8%.",
+    "La candela prevista per la settimana +1 è in ribasso (probabilità 68%): apertura 26,5, chiusura 22,2, escursione attesa tra 20,5 e 28,5."
   ],
   "previsione": {
     "data_origine": "2026-11-06",
@@ -581,5 +583,63 @@
         }
       }
     ]
-  }
+  },
+  "candele": [
+    {
+      "apertura": 26.4554911131899,
+      "chiusura": 22.164857943590214,
+      "massimo": 28.542927446482242,
+      "minimo": 20.546269456709084,
+      "h": 1,
+      "costruzione": "K2",
+      "p_rialzo": 0.3170399110188163,
+      "modello_direzione": "L1",
+      "direzione": "ribasso",
+      "prob_direzione": 0.6829600889811838,
+      "mediana_d4": 23.612239930518896,
+      "rapporto_apertura": 1.0318054256314313
+    },
+    {
+      "apertura": 24.363237271620527,
+      "chiusura": 21.21202628490883,
+      "massimo": 26.331671097546664,
+      "minimo": 20.174954543676776,
+      "h": 2,
+      "costruzione": "K2",
+      "p_rialzo": 0.35799088633866055,
+      "modello_direzione": "L1",
+      "direzione": "ribasso",
+      "prob_direzione": 0.6420091136613395,
+      "mediana_d4": 22.604218588398638,
+      "rapporto_apertura": 1.0318054256314313
+    },
+    {
+      "apertura": 23.323155381668567,
+      "chiusura": 20.496103067107533,
+      "massimo": 25.010399397544997,
+      "minimo": 19.62263721610832,
+      "h": 3,
+      "costruzione": "K2",
+      "p_rialzo": 0.3602194693091776,
+      "modello_direzione": "L1",
+      "direzione": "ribasso",
+      "prob_direzione": 0.6397805306908224,
+      "mediana_d4": 21.44979331391026,
+      "rapporto_apertura": 1.0318054256314313
+    },
+    {
+      "apertura": 22.132013119965404,
+      "chiusura": 20.07051991360137,
+      "massimo": 23.600832845172132,
+      "minimo": 19.15006866302615,
+      "h": 4,
+      "costruzione": "K2",
+      "p_rialzo": 0.32376722669418867,
+      "modello_direzione": "L1",
+      "direzione": "ribasso",
+      "prob_direzione": 0.6762327733058113,
+      "mediana_d4": 21.034714239809976,
+      "rapporto_apertura": 1.0318054256314313
+    }
+  ]
 }
