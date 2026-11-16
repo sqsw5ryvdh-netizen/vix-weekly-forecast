@@ -12,6 +12,7 @@ from . import componenti as CP
 
 R = C.REPORTS_DIR / "fase2c"
 MIN_N = 20
+SPAREGGIO_CONFERMATO = "2026-11-16"      # data in cui lo spareggio K1/K2 (criterio: sovrapposizione media) e' stato confermato
 
 
 def md(df: pd.DataFrame, fmt=".3f") -> str:
@@ -116,7 +117,7 @@ def run() -> None:
 
 ## 1. Sintesi
 
-1. **Costruzione scelta: {KA.NOMI[K]}.** Nessuna delle quattro costruzioni rispetta il vincolo di realismo (corpo ed escursione tra 0,8 e 1,2 volte quelli reali a h = 1): è stata applicata la regola di riserva (rapporto del corpo più vicino a 1){', con uno spareggio che va confermato (sezione 4)' if sp else ''}.
+1. **Costruzione scelta: {KA.NOMI[K]}.** Nessuna delle quattro costruzioni rispetta il vincolo di realismo (corpo ed escursione tra 0,8 e 1,2 volte quelli reali a h = 1): è stata applicata la regola di riserva (rapporto del corpo più vicino a 1){', con uno spareggio tra K1 e K2 confermato il ' + SPAREGGIO_CONFERMATO + ' (sezione 4)' if sp else ''}.
 2. **Il problema di partenza è risolto solo in parte.** Il corpo medio delle candele passa dal {pct(P.loc[('K0', 1), 'rapporto_corpo'], 0)} di quello reale (K0, Fase 2b) al {pct(P.loc[(K, 1), 'rapporto_corpo'], 0)} ({K}) a 1 settimana, e dal {pct(P.loc[('K0', 4), 'rapporto_corpo'], 0)} al {pct(P.loc[(K, 4), 'rapporto_corpo'], 0)} a 4 settimane. Restano più piccole del reale perché l'ampiezza è una mediana, e la mediana dei corpi ({n(A.loc[('corpo', 1), 'mediana_reale'], 3)} in log) è più bassa della media ({n(A.loc[('corpo', 1), 'media_reale'], 3)}).
 3. **La direzione del corpo non è prevedibile.** Il modello scelto ({mdir[1]}) indovina la direzione nel {pct(acc(1, mdir[1]))} dei casi a 1 settimana; chi prevede sempre la direzione più frequente (L0) nel {pct(acc(1, 'L0'))}. **Il guadagno è {'nullo' if max(abs(g) for g in gain_dir) < 0.005 else 'minimo'}** a tutti gli orizzonti (differenze di accuratezza: {', '.join(pct(g, 1) for g in gain_dir)}); nessun confronto con L0 è significativo dopo Holm ({len(sig_dir)} su {int(dr['p'].notna().sum())}).
 4. **Perché le candele sono quasi sempre in ribasso.** L'apertura ufficiale è in mediana il {pct(info['rapporto_apertura']['ultimo'] - 1)} sopra la chiusura precedente e la settimana chiude sopra la propria apertura solo nel {pct(D.loc[(1, 'L0'), 'frequenza_rialzo'])} dei casi. Nel walk-forward la quota di candele disegnate in rialzo a h = 1 è {pct(quota_su[1])}.
@@ -235,7 +236,7 @@ se nessuna rispetta il vincolo, quella con il rapporto del corpo più vicino a 1
 
 - Costruzioni che rispettano il vincolo: **{', '.join(sc['ammesse']) or 'nessuna'}**.
 - Esito: {sc['motivo']}.
-{('- **Spareggio da confermare.** ' + ' e '.join(sp['in_parita']) + ' hanno esattamente lo stesso rapporto del corpo a h = 1 (' + n(sc['rapporto_corpo_h1'][sp['in_parita'][0]], 4) + '): a un passo sono la stessa candela per costruzione. La regola non dice come risolvere la parità. Ho usato il criterio principale della regola stessa, la sovrapposizione media su h = 1-4 (' + ', '.join(f"{k} {n(iou[k], 3)}" for k in sp['in_parita']) + '), che dà **' + sp['scelta'] + '**. È una scelta mia fatta dopo aver visto i risultati: se preferisci un altro criterio, il programma cambia modificando una riga.') if sp else ''}
+{('- **Spareggio (confermato il ' + SPAREGGIO_CONFERMATO + ').** ' + ' e '.join(sp['in_parita']) + ' hanno esattamente lo stesso rapporto del corpo a h = 1 (' + n(sc['rapporto_corpo_h1'][sp['in_parita'][0]], 4) + '): a un passo sono la stessa candela per costruzione. La regola non dice come risolvere la parità. Ho usato il criterio principale della regola stessa, la sovrapposizione media su h = 1-4 (' + ', '.join(f"{k} {n(iou[k], 3)}" for k in sp['in_parita']) + '), che dà **' + sp['scelta'] + '**. È un criterio scelto dopo aver visto i risultati, poi confermato: d’ora in poi fa parte della regola.') if sp else ''}
 - **Scelta: {KA.NOMI[K]}.**
 
 ## 5. Verifica visiva (G3) e programma
@@ -258,7 +259,7 @@ Novità del programma `python -m src.forecast`:
 
 ## 6. Problemi e ambiguità
 
-1. **Vincolo di realismo non rispettato da nessuna costruzione**: applicata la regola di riserva. {('Lo spareggio tra ' + ' e '.join(sp['in_parita']) + ' è una mia scelta (sezione 4).') if sp else ''}
+1. **Vincolo di realismo non rispettato da nessuna costruzione**: applicata la regola di riserva. {('Lo spareggio tra ' + ' e '.join(sp['in_parita']) + ' è stato deciso dopo aver visto i risultati e poi confermato (sezione 4).') if sp else ''}
 2. **Perché il corpo resta piccolo.** A3 è una regressione sulla mediana, come richiesto; la distribuzione dei corpi è asimmetrica e la mediana è circa il {pct(A.loc[('corpo', 1), 'mediana_reale'] / A.loc[('corpo', 1), 'media_reale'], 0)} della media. Con questa componente il rapporto non può arrivare a 1: per arrivarci servirebbe prevedere la media, cosa fuori dall'elenco chiuso.
 3. **Modello di direzione scelto sull'intero walk-forward** e poi usato nella pagella delle candele sullo stesso campione: la pagella di K1 e K2 è leggermente ottimistica. Poiché L1 non differisce da L0, l'effetto è trascurabile.
 4. **Scelta della direzione per orizzonte**: ho applicato «il Brier più basso» separatamente a ogni h; ha scelto {', '.join(sorted(set(mdir.values())))} ovunque.

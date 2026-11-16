@@ -5,7 +5,7 @@
 
 ## 1. Sintesi
 
-1. **Costruzione scelta: K2 ancorata alla mediana.** Nessuna delle quattro costruzioni rispetta il vincolo di realismo (corpo ed escursione tra 0,8 e 1,2 volte quelli reali a h = 1): è stata applicata la regola di riserva (rapporto del corpo più vicino a 1), con uno spareggio che va confermato (sezione 4).
+1. **Costruzione scelta: K2 ancorata alla mediana.** Nessuna delle quattro costruzioni rispetta il vincolo di realismo (corpo ed escursione tra 0,8 e 1,2 volte quelli reali a h = 1): è stata applicata la regola di riserva (rapporto del corpo più vicino a 1), con uno spareggio tra K1 e K2 confermato il 2026-11-16 (sezione 4).
 2. **Il problema di partenza è risolto solo in parte.** Il corpo medio delle candele passa dal 25% di quello reale (K0, Fase 2b) al 76% (K2) a 1 settimana, e dal 6% al 62% a 4 settimane. Restano più piccole del reale perché l'ampiezza è una mediana, e la mediana dei corpi (0,087 in log) è più bassa della media (0,112).
 3. **La direzione del corpo non è prevedibile.** Il modello scelto (L1) indovina la direzione nel 63,8% dei casi a 1 settimana; chi prevede sempre la direzione più frequente (L0) nel 63,8%. **Il guadagno è nullo** a tutti gli orizzonti (differenze di accuratezza: 0,0%, 0,1%, 0,0%, 0,0%); nessun confronto con L0 è significativo dopo Holm (0 su 8).
 4. **Perché le candele sono quasi sempre in ribasso.** L'apertura ufficiale è in mediana il 3,1% sopra la chiusura precedente e la settimana chiude sopra la propria apertura solo nel 36,2% dei casi. Nel walk-forward la quota di candele disegnate in rialzo a h = 1 è 0,0%.
@@ -293,7 +293,7 @@ se nessuna rispetta il vincolo, quella con il rapporto del corpo più vicino a 1
 
 - Costruzioni che rispettano il vincolo: **nessuna**.
 - Esito: nessuna costruzione rispetta il vincolo: scelta quella con il rapporto del corpo a h = 1 più vicino a 1.
-- **Spareggio da confermare.** K1 e K2 hanno esattamente lo stesso rapporto del corpo a h = 1 (0,7579): a un passo sono la stessa candela per costruzione. La regola non dice come risolvere la parità. Ho usato il criterio principale della regola stessa, la sovrapposizione media su h = 1-4 (K1 0,309, K2 0,348), che dà **K2**. È una scelta mia fatta dopo aver visto i risultati: se preferisci un altro criterio, il programma cambia modificando una riga.
+- **Spareggio (confermato il 2026-11-16).** K1 e K2 hanno esattamente lo stesso rapporto del corpo a h = 1 (0,7579): a un passo sono la stessa candela per costruzione. La regola non dice come risolvere la parità. Ho usato il criterio principale della regola stessa, la sovrapposizione media su h = 1-4 (K1 0,309, K2 0,348), che dà **K2**. È un criterio scelto dopo aver visto i risultati, poi confermato: d’ora in poi fa parte della regola.
 - **Scelta: K2 ancorata alla mediana.**
 
 ## 5. Verifica visiva (G3) e programma
@@ -329,7 +329,7 @@ Novità del programma `python -m src.forecast`:
 
 ## 6. Problemi e ambiguità
 
-1. **Vincolo di realismo non rispettato da nessuna costruzione**: applicata la regola di riserva. Lo spareggio tra K1 e K2 è una mia scelta (sezione 4).
+1. **Vincolo di realismo non rispettato da nessuna costruzione**: applicata la regola di riserva. Lo spareggio tra K1 e K2 è stato deciso dopo aver visto i risultati e poi confermato (sezione 4).
 2. **Perché il corpo resta piccolo.** A3 è una regressione sulla mediana, come richiesto; la distribuzione dei corpi è asimmetrica e la mediana è circa il 78% della media. Con questa componente il rapporto non può arrivare a 1: per arrivarci servirebbe prevedere la media, cosa fuori dall'elenco chiuso.
 3. **Modello di direzione scelto sull'intero walk-forward** e poi usato nella pagella delle candele sullo stesso campione: la pagella di K1 e K2 è leggermente ottimistica. Poiché L1 non differisce da L0, l'effetto è trascurabile.
 4. **Scelta della direzione per orizzonte**: ho applicato «il Brier più basso» separatamente a ogni h; ha scelto L1 ovunque.
