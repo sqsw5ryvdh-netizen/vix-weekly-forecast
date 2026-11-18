@@ -14,9 +14,41 @@ Il lavoro procede per fasi; ogni fase si chiude con un report in `reports/`.
 | 4 | ultima fase di costruzione: dimensioni delle candele, modelli a regimi e gradient boosting, versioni finaliste | [reports/fase4_report.md](reports/fase4_report.md) |
 | 4b | la prima candela (direzione, corpo e colore, minimo), scelta della sfidante | [reports/fase4b_report.md](reports/fase4b_report.md) |
 | 4c | massimo e minimo della prima candela previsti direttamente (candela del VIX, VVIX, S&P 500, VIX3M, previsione incrociata), nuovo congelamento (`versioni/`), piano d'esame aggiornato | [reports/fase4c_report.md](reports/fase4c_report.md) · [piano d'esame](reports/piano_esame_holdout.md) · previsione corrente: [reports/previsione_corrente.md](reports/previsione_corrente.md) |
+| 9D-1 | secondo indice, il **VIX9D**: fondamenta, modelli e programma per due candele settimanali | [reports/vix9d/fase1_report.md](reports/vix9d/fase1_report.md) · [piano d'esame](reports/vix9d/piano_esame_holdout.md) · previsione corrente: [reports/vix9d/previsione_corrente.md](reports/vix9d/previsione_corrente.md) |
 
 **Stato:** i modelli sono chiusi. All'esame vanno due versioni, F1 e la sfidante FS, congelate in `versioni/f1.json` e `versioni/fs.json`; resta solo
 l'esame sull'holdout, descritto in `reports/piano_esame_holdout.md` e non ancora eseguito. L'holdout non è mai stato aperto.
+Il lavoro sul VIX è fermo qui. Per il VIX9D sono congelate le versioni G1 e GS (`versioni/vix9d/`); anche il loro esame è solo scritto.
+
+## Il secondo indice: VIX9D (Fase 9D-1)
+
+Stesso metodo, altro indice: il **VIX9D** (volatilità implicita a 9 giorni, dati giornalieri ufficiali Cboe), su base settimanale,
+con previsione di **due candele** (settimane +1 e +2). Codice, dati, risultati e test stanno in cartelle proprie
+(`src/vix9d/`, `data/vix9d/`, `reports/vix9d/`, `tests/vix9d/`) e riusano le funzioni del VIX senza modificarle.
+
+| che cosa | dove |
+|---|---|
+| report della fase (audit, analisi, modelli, quanto aggiunge il VIX, confronto VIX / VIX9D) | [reports/vix9d/fase1_report.md](reports/vix9d/fase1_report.md) |
+| piano d'esame sull'holdout (scritto, non eseguito) | [reports/vix9d/piano_esame_holdout.md](reports/vix9d/piano_esame_holdout.md) |
+| previsione corrente | [reports/vix9d/previsione_corrente.md](reports/vix9d/previsione_corrente.md) |
+| versioni congelate | `versioni/vix9d/g1.json` (solo VIX9D), `versioni/vix9d/gs.json` (con il VIX) |
+
+```bash
+python -m src.vix9d.run_fase1                  # candele settimanali e audit, analisi, walk-forward, regole, report e piano d'esame (circa 90 secondi)
+python -m src.vix9d.congela                    # scrive versioni/vix9d/g1.json e gs.json: da eseguire dopo aver registrato il codice
+python -m src.vix9d.forecast                   # previsione dall'ultima chiusura settimanale completa, versione g1
+python -m src.vix9d.forecast --aggiorna        # come sopra, scaricando prima VIX9D e VIX giornalieri da Cboe
+python -m src.vix9d.forecast --versione gs     # versione con il VIX come principale; se il VIX manca, avvisa e ripiega su g1
+python -m src.vix9d.forecast --verifica        # confronta le previsioni registrate con le settimane completate
+python -m src.vix9d.prepara --scarica          # riscarica i file giornalieri Cboe e ricostruisce data/vix9d/ (non deterministico: dipende dal giorno)
+```
+
+- **Dati.** Il file Cboe ha apertura, massimo e minimo solo da metà novembre 2013: le chiusure sono usate dal 2011, le candele solo dove sono vere.
+  Stesso confine del VIX: sviluppo fino all'8 novembre 2024; le 104 settimane successive sono in `data/vix9d/vix9d_weekly_holdout.csv`, bloccate.
+- **Versioni.** `g1` usa solo lo storico del VIX9D (modello tipo HAR per la chiusura, regressione quantilica per le fasce, logistica per la direzione,
+  regressione sulla mediana per massimo e minimo). `gs` aggiunge ln(VIX9D / VIX) solo nei componenti in cui batte `g1` secondo la regola fissata prima.
+- **Guardia.** `run_fase1` legge solo i file di sviluppo; `src.vix9d.forecast` è l'unico comando del VIX9D che legge i dati successivi al confine, solo
+  come storia da cui prevedere. L'esame sull'holdout non è stato eseguito e non esiste un comando che lo esegua.
 
 ## Il programma di previsione
 
@@ -117,6 +149,8 @@ python -m src.run_phase4   # Fase 4: varianti delle candele, modelli a regimi e 
 python -m src.run_phase4b  # Fase 4b: prima candela (direzione, corpo, minimo), sfidante, report e piano d'esame aggiornato (meno di un minuto; richiede run_phase4)
 python -m src.run_phase4c  # Fase 4c: massimo e minimo diretti della prima candela, previsione incrociata con l'S&P 500, report e piano d'esame aggiornato (circa 2 minuti; richiede run_phase4b e i dati esterni)
 python -m src.fase4c.congela  # scrive versioni/f1.json e versioni/fs.json (parametri, impronte dei sorgenti, commit): da eseguire dopo aver registrato il codice
+python -m src.vix9d.run_fase1  # VIX9D, Fase 9D-1: candele e audit, analisi, modelli, versioni G1 e GS, report e piano d'esame (circa 90 secondi)
+python -m src.vix9d.congela    # scrive versioni/vix9d/g1.json e gs.json: da eseguire dopo aver registrato il codice
 python -m pytest           # test (anti look-ahead, integrità dell'holdout, metriche)
 ```
 
@@ -151,6 +185,7 @@ resta bloccata dalla guardia.
 ```
 data/raw/          file originale, mai modificato
 data/processed/    dataset puliti generati dal codice (+ TRASFORMAZIONI.md)
+data/vix9d/        VIX9D: candele settimanali costruite dai dati giornalieri Cboe (sviluppo, holdout bloccato, file completi letti solo dal programma)
 src/
   config.py        percorsi e costanti (holdout, soglie, orizzonti, seed)
   data_audit.py    audit del file grezzo, dataset clean / dev / holdout
@@ -240,8 +275,24 @@ src/
     testo.py           testi della scheda (usato da forecast.py)
     piano.py           scrive reports/piano_esame_holdout.md (solo testo: l'holdout non viene aperto)
     report.py          costruisce il report leggendo reports/fase4c/*.csv e *.json
-versioni/          configurazioni congelate delle due versioni che vanno all'esame (f1.json, fs.json)
-tests/             test automatici
+  vix9d/           secondo indice (Fase 9D-1); riusa le funzioni del VIX senza modificarle
+    config.py          percorsi e costanti (confine, orizzonti, soglie, finestre)
+    prepara.py         candele settimanali dai dati giornalieri Cboe, divisione sviluppo / holdout, audit
+    dati.py            lettura dei dati di sviluppo e guardia sui file con settimane successive al confine
+    analisi.py         Parte A: analisi compatta, confronto con il VIX, rapporto VIX9D / VIX
+    modelli.py         liste chiuse R0-R4, S0-S2, logistiche; candela comandata dagli estremi
+    valuta.py          Parti B-E: walk-forward, tabelle, regole di composizione delle versioni
+    versioni.py        G1 e GS: previsione completa a un'origine e configurazione (usato da forecast.py)
+    congela.py         scrive versioni/vix9d/*.json con impronte dei sorgenti e commit
+    lettura.py         lettura della situazione (livello, distanza dal VIX, dinamica, precedenti)
+    grafici.py         grafico principale e verifica visiva
+    verifica.py        12 origini equidistanti: candele previste accanto alle reali
+    forecast.py        programma di previsione del VIX9D (unico a leggere i dati dopo il confine)
+    piano.py           scrive reports/vix9d/piano_esame_holdout.md (solo testo)
+    report.py          costruisce il report leggendo reports/vix9d/*.csv e *.json
+    run_fase1.py       esegue tutta la fase
+versioni/          configurazioni congelate: f1.json e fs.json (VIX), vix9d/g1.json e vix9d/gs.json (VIX9D)
+tests/             test automatici (tests/vix9d/ per il VIX9D)
 reports/           report, tabelle (.csv/.json) e figure; i risultati delle Fasi 1 e 2 sono in reports/fase1/, reports/fase2/ e nelle rispettive cartelle di figure
 notebooks/         opzionale, vuota
 ```
@@ -253,6 +304,10 @@ notebooks/         opzionale, vuota
   `data/processed/vix_weekly_dev.csv`. In Fase 1 c'è anche un blocco a runtime: durante `run_phase1`
   l'apertura del file di holdout, del file clean o del file grezzo solleva un errore. Dalla Fase 2 la
   stessa guardia blocca anche gli originali dei dati esterni e la loro parte di holdout.
+- **VIX9D.** Stesse regole: `data/vix9d/vix9d_weekly_dev.csv` è l'unico file del VIX9D letto dalle misure; il file completo, il VIX
+  settimanale ricostruito da Cboe e il file di holdout sono bloccati da una guardia propria (`src/vix9d/dati.py`), aggiunta a quella del
+  progetto. `tests/vix9d/test_fase1.py` controlla costruzione delle candele, guardia, assenza di look-ahead in variabili, modelli e versioni,
+  regole di composizione, configurazioni congelate e programma.
 - **Nessun look-ahead.** Ogni previsione per la data t + h usa solo dati fino a t. Il motore walk-forward
   passa ai modelli esclusivamente la storia fino all'origine; `tests/test_no_lookahead.py` lo controlla
   stravolgendo i dati futuri e verificando che le previsioni passate non cambino; `tests/test_fase1.py`
