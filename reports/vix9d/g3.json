@@ -1,0 +1,6 @@
+{
+  "riga": "Su 24 candele: massimo entro il 5% dal reale in 4, minimo in 7; etichette non neutre 10, corrette 6.",
+  "n_pannelli": 12,
+  "regola": "12 origini equidistanti tra le origini comuni del periodo di valutazione (posizioni round(k x (n - 1) / 11))",
+  "versione": "g1"
+}
