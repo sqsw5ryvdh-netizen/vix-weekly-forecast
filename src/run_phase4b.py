@@ -24,7 +24,7 @@ def main() -> None:
         manifest = {"python": platform.python_version(), "pacchetti": {p: version(p) for p in ("numpy", "pandas", "scipy", "statsmodels", "matplotlib")},
                     "file_dati_letto": K.NOME_FILE_DATI, "guardia_holdout_attiva": True}
         (valuta.OUT / "run_manifest.json").write_text(json.dumps(manifest, indent=2))
-    print(f"[fase 4b] completata. Report: {C.REPORTS_DIR / 'fase4b_report.md'}; piano d'esame: {C.REPORTS_DIR / 'piano_esame_holdout.md'}")
+    print(f"[fase 4b] completata. Report: {C.REPORTS_DIR / 'fase4b_report.md'}; piano d'esame della Fase 4b (archivio): {valuta.OUT / 'piano_esame_holdout_fase4b.md'}")
 
 
 if __name__ == "__main__":
