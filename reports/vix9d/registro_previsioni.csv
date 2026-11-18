@@ -1,0 +1,5 @@
+data_origine,data_esecuzione,versione,chiusura_origine,h,data_prevista,costruzione,modello_direzione,apertura,massimo,minimo,chiusura,direzione,prob_direzione,mediana_d4,fascia_50_inf,fascia_50_sup,fascia_80_inf,fascia_80_sup,fascia_90_inf,fascia_90_sup,p_vix_sopra_20,p_vix_sopra_25,p_vix_sopra_30,p_chiusura_sopra_origine,etichetta_chiusura
+2026-11-13,2026-11-18,g1,17.8200,1,2026-11-20,V9-estremi,L0,19.7962,22.0613,15.6583,16.2469,ribasso,0.7271,17.0521,15.0161,20.3025,13.3206,22.4699,12.6404,24.1269,0.2366,0.0774,0.0342,0.4046,neutra
+2026-11-13,2026-11-18,g1,17.8200,2,2026-11-27,V9-estremi,L0,18.9432,21.7736,15.1061,15.5468,ribasso,0.7271,16.4485,14.1012,19.9845,12.2117,24.0065,11.6583,26.4255,0.2627,0.1030,0.0478,0.3860,ribasso
+2026-11-13,2026-11-18,gs,17.8200,1,2026-11-20,V9-estremi,L0,19.7962,22.0613,15.6583,16.2469,ribasso,0.7271,17.2291,14.9426,20.1103,13.4974,23.2070,12.8108,23.9490,0.2083,0.0744,0.0253,0.4046,neutra
+2026-11-13,2026-11-18,gs,17.8200,2,2026-11-27,V9-estremi,L0,19.1398,21.7736,14.7323,15.7082,ribasso,0.7271,16.5283,14.3046,19.8653,12.3298,24.0696,11.9261,27.9024,0.2299,0.0851,0.0418,0.4051,neutra

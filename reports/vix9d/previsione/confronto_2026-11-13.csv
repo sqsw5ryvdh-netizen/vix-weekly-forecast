@@ -1,0 +1,5 @@
+settimana,versione,chiusura_centrale,fascia_80_inf,fascia_80_sup,massimo,minimo,etichetta_chiusura,p_chiusura_sopra_origine
++1,g1,17.0521,13.3206,22.4699,22.0613,15.6583,neutra,0.4046
++1,gs,17.2291,13.4974,23.2070,22.0613,15.6583,neutra,0.4046
++2,g1,16.4485,12.2117,24.0065,21.7736,15.1061,ribasso 61%,0.3860
++2,gs,16.5283,12.3298,24.0696,21.7736,14.7323,neutra,0.4051

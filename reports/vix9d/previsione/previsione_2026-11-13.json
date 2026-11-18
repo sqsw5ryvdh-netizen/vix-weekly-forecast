@@ -1,0 +1,347 @@
+{
+  "file": {
+    "file": "/Users/lorenzobianchi/Desktop/VIX/data/vix9d/VIX9D_settimanale.csv",
+    "file_vix": "/Users/lorenzobianchi/Desktop/VIX/data/vix9d/VIX_settimanale_cboe.csv",
+    "settimane_complete": 828,
+    "prima_data": "2011-01-07",
+    "ultima_data_completa": "2026-11-13",
+    "settimane_con_candela": 678,
+    "avvisi": []
+  },
+  "versione": "g1",
+  "versione_richiesta": "g1",
+  "lettura": {
+    "data_origine": "2026-11-13",
+    "prima_data": "2011-01-07",
+    "settimane_di_storia": 828,
+    "livello": {
+      "chiusura": 17.82,
+      "percentile_storia": 69.20289855072464,
+      "percentile_5_anni": 62.30769230769231,
+      "quintile": 4,
+      "mediana_storia": 14.695,
+      "media_12_settimane": 15.756666666666668
+    },
+    "dinamica": {
+      "variazione_1_settimane": {
+        "punti": -9.36,
+        "pct": -34.437086092715234
+      },
+      "variazione_4_settimane": {
+        "punti": -2.3000000000000007,
+        "pct": -11.431411530815117
+      },
+      "variazione_12_settimane": {
+        "punti": 5.24,
+        "pct": 41.65341812400636
+      }
+    },
+    "vix": {
+      "chiusura_vix": 19.3,
+      "rapporto": 0.9233160621761658,
+      "distanza_punti": -1.4800000000000004,
+      "percentile_rapporto": 54.710144927536234,
+      "rapporto_mediano_storico": 0.911154813428471
+    },
+    "precedenti": {
+      "quintile": 4,
+      "direzione": "in calo",
+      "variazione_log_4_settimane": -0.12139292318887529,
+      "n": 50,
+      "meno_di_20_casi": false,
+      "dopo_1": {
+        "quota_piu_alto": 0.42,
+        "mediana_punti": -0.8300000000000001,
+        "p10_punti": -3.99,
+        "p90_punti": 5.9470000000000045
+      },
+      "dopo_2": {
+        "quota_piu_alto": 0.42,
+        "mediana_punti": -0.7699999999999996,
+        "p10_punti": -4.238000000000001,
+        "p90_punti": 10.559000000000001
+      }
+    }
+  },
+  "sintesi": [
+    "Il VIX9D ha chiuso a 17,82 il 13/11/2026: percentile 69 della storia, 2,06 punti sopra il livello recente (15,76).",
+    "Rispetto al VIX (19,30) è 1,48 punti sotto: rapporto 0,923, percentile 55 della sua storia.",
+    "Settimana +1 (G1 solo storico del VIX9D): chiusura centrale 17,1, fascia all'80% tra 13,3 e 22,5; massimo previsto 22,1, minimo 15,7; direzione della chiusura rispetto all'origine: neutra.",
+    "Settimana +2 (G1 solo storico del VIX9D): chiusura centrale 16,4, fascia all'80% tra 12,2 e 24,0; massimo previsto 21,8, minimo 15,1; direzione della chiusura rispetto all'origine: in ribasso (probabilità 61%)."
+  ],
+  "versioni": {
+    "g1": {
+      "previsione": {
+        "versione": "g1",
+        "data_origine": "2026-11-13",
+        "indice_origine": 827,
+        "chiusura_origine": 17.82,
+        "settimane_di_storia": 828,
+        "vix_origine": 19.3,
+        "settimane": [
+          {
+            "h": 1,
+            "data": "2026-11-20",
+            "quantili": {
+              "q05": 12.640406895890022,
+              "q10": 13.320585085394908,
+              "q25": 15.016061779160449,
+              "q50": 17.052131135808455,
+              "q75": 20.30252222863473,
+              "q90": 22.46990085436467,
+              "q95": 24.126925366562677
+            },
+            "centro": 17.61824363220764,
+            "chiusura": 17.052131135808455,
+            "probabilita": {
+              "VIX>20": 0.23660714285714285,
+              "VIX>25": 0.07738095238095238,
+              "VIX>30": 0.03422619047619048
+            },
+            "n_errori": 672,
+            "modello_chiusura": "R1",
+            "modello_direzione": "BASE",
+            "fasce": {
+              "50": [
+                15.016061779160449,
+                20.30252222863473
+              ],
+              "80": [
+                13.320585085394908,
+                22.46990085436467
+              ],
+              "90": [
+                12.640406895890022,
+                24.126925366562677
+              ]
+            }
+          },
+          {
+            "h": 2,
+            "data": "2026-11-27",
+            "quantili": {
+              "q05": 11.65826608927019,
+              "q10": 12.211655379805748,
+              "q25": 14.101241265098826,
+              "q50": 16.448503430123353,
+              "q75": 19.984523845909823,
+              "q90": 24.006450260867037,
+              "q95": 26.425516243070053
+            },
+            "centro": 17.331680938425702,
+            "chiusura": 16.448503430123353,
+            "probabilita": {
+              "VIX>20": 0.2626865671641791,
+              "VIX>25": 0.10298507462686567,
+              "VIX>30": 0.04776119402985075
+            },
+            "n_errori": 670,
+            "modello_chiusura": "R1",
+            "modello_direzione": "BASE",
+            "fasce": {
+              "50": [
+                14.101241265098826,
+                19.984523845909823
+              ],
+              "80": [
+                12.211655379805748,
+                24.006450260867037
+              ],
+              "90": [
+                11.65826608927019,
+                26.425516243070053
+              ]
+            }
+          }
+        ]
+      },
+      "candele": [
+        {
+          "apertura": 19.796214149139583,
+          "chiusura": 16.24685567708363,
+          "massimo": 22.061322907964687,
+          "minimo": 15.658318988320135,
+          "apertura_tagliata": false,
+          "chiusura_tagliata": false,
+          "estremi_scambiati": false,
+          "h": 1,
+          "versione": "g1",
+          "costruzione": "V9-estremi",
+          "modello_direzione": "L0",
+          "p_rialzo": 0.2728613569321534,
+          "direzione": "ribasso",
+          "prob_direzione": 0.7271386430678466,
+          "p_chiusura_su": 0.40460214027858316,
+          "direzione_chiusura": "neutra",
+          "etichetta": "neutra",
+          "colore": "neutra",
+          "chiusura_centrale": 17.052131135808455,
+          "rapporto_apertura": 1.1108986615678778,
+          "insieme_massimo": "S0",
+          "insieme_minimo": "S0"
+        },
+        {
+          "apertura": 18.943189655649547,
+          "chiusura": 15.54677404883188,
+          "massimo": 21.773633935902193,
+          "minimo": 15.106084566614111,
+          "apertura_tagliata": false,
+          "chiusura_tagliata": false,
+          "estremi_scambiati": false,
+          "h": 2,
+          "versione": "g1",
+          "costruzione": "V9-estremi",
+          "modello_direzione": "L0",
+          "p_rialzo": 0.2728613569321534,
+          "direzione": "ribasso",
+          "prob_direzione": 0.7271386430678466,
+          "p_chiusura_su": 0.38600705966004534,
+          "direzione_chiusura": "ribasso",
+          "etichetta": "ribasso 61%",
+          "colore": "ribasso",
+          "chiusura_centrale": 16.448503430123353,
+          "rapporto_apertura": 1.1108986615678778,
+          "insieme_massimo": "S0",
+          "insieme_minimo": "S0"
+        }
+      ]
+    },
+    "gs": {
+      "previsione": {
+        "versione": "gs",
+        "data_origine": "2026-11-13",
+        "indice_origine": 827,
+        "chiusura_origine": 17.82,
+        "settimane_di_storia": 828,
+        "vix_origine": 19.3,
+        "settimane": [
+          {
+            "h": 1,
+            "data": "2026-11-20",
+            "quantili": {
+              "q05": 12.810837054366655,
+              "q10": 13.497371506353623,
+              "q25": 14.942604344129732,
+              "q50": 17.22913626542076,
+              "q75": 20.1102761437625,
+              "q90": 23.20699176731341,
+              "q95": 23.94900260334002
+            },
+            "centro": 17.680241029410073,
+            "chiusura": 17.22913626542076,
+            "probabilita": {
+              "VIX>20": 0.20833333333333334,
+              "VIX>25": 0.0744047619047619,
+              "VIX>30": 0.025297619047619048
+            },
+            "n_errori": 672,
+            "modello_chiusura": "R2",
+            "modello_direzione": "BASE",
+            "fasce": {
+              "50": [
+                14.942604344129732,
+                20.1102761437625
+              ],
+              "80": [
+                13.497371506353623,
+                23.20699176731341
+              ],
+              "90": [
+                12.810837054366655,
+                23.94900260334002
+              ]
+            }
+          },
+          {
+            "h": 2,
+            "data": "2026-11-27",
+            "quantili": {
+              "q05": 11.926094986004749,
+              "q10": 12.329800638003913,
+              "q25": 14.30464379321992,
+              "q50": 16.528252464937857,
+              "q75": 19.865269882208395,
+              "q90": 24.069594783801406,
+              "q95": 27.90242999163304
+            },
+            "centro": 17.43145156339854,
+            "chiusura": 16.528252464937857,
+            "probabilita": {
+              "VIX>20": 0.2298507462686567,
+              "VIX>25": 0.08507462686567165,
+              "VIX>30": 0.041791044776119404
+            },
+            "n_errori": 670,
+            "modello_chiusura": "R2",
+            "modello_direzione": "RAPP",
+            "fasce": {
+              "50": [
+                14.30464379321992,
+                19.865269882208395
+              ],
+              "80": [
+                12.329800638003913,
+                24.069594783801406
+              ],
+              "90": [
+                11.926094986004749,
+                27.90242999163304
+              ]
+            }
+          }
+        ]
+      },
+      "candele": [
+        {
+          "apertura": 19.796214149139583,
+          "chiusura": 16.24685567708363,
+          "massimo": 22.061322907964687,
+          "minimo": 15.658318988320135,
+          "apertura_tagliata": false,
+          "chiusura_tagliata": false,
+          "estremi_scambiati": false,
+          "h": 1,
+          "versione": "gs",
+          "costruzione": "V9-estremi",
+          "modello_direzione": "L0",
+          "p_rialzo": 0.2728613569321534,
+          "direzione": "ribasso",
+          "prob_direzione": 0.7271386430678466,
+          "p_chiusura_su": 0.40460214027858316,
+          "direzione_chiusura": "neutra",
+          "etichetta": "neutra",
+          "colore": "neutra",
+          "chiusura_centrale": 17.22913626542076,
+          "rapporto_apertura": 1.1108986615678778,
+          "insieme_massimo": "S0",
+          "insieme_minimo": "S0"
+        },
+        {
+          "apertura": 19.139824417226507,
+          "chiusura": 15.708153218019007,
+          "massimo": 21.773633935902193,
+          "minimo": 14.732318816403621,
+          "apertura_tagliata": false,
+          "chiusura_tagliata": false,
+          "estremi_scambiati": false,
+          "h": 2,
+          "versione": "gs",
+          "costruzione": "V9-estremi",
+          "modello_direzione": "L0",
+          "p_rialzo": 0.2728613569321534,
+          "direzione": "ribasso",
+          "prob_direzione": 0.7271386430678466,
+          "p_chiusura_su": 0.4051444760611303,
+          "direzione_chiusura": "neutra",
+          "etichetta": "neutra",
+          "colore": "neutra",
+          "chiusura_centrale": 16.528252464937857,
+          "rapporto_apertura": 1.1108986615678778,
+          "insieme_massimo": "S0",
+          "insieme_minimo": "S2"
+        }
+      ]
+    }
+  },
+  "note": {}
+}
