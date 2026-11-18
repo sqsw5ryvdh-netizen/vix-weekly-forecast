@@ -1,0 +1,13 @@
+data_origine,massimo_previsto_1,massimo_reale_1,minimo_previsto_1,minimo_reale_1,massimo_entro_5,minimo_entro_5,dentro_50,dentro_80
+2013-10-25,14.3578,21.26,12.7852,13.06,False,True,False,True
+2014-10-24,17.8289,17.87,14.9816,13.72,True,False,False,False
+2015-10-23,16.0471,15.99,14.0423,12.8,True,False,True,True
+2016-10-21,14.9904,17.35,12.5917,12.73,False,True,True,True
+2017-10-20,11.2482,13.2,9.48231,9.74,False,True,True,True
+2018-10-19,21.4637,27.52,16.4158,18.82,False,False,True,True
+2019-10-18,16.0943,15.12,13.5186,12.62,False,False,False,False
+2020-10-16,30.2571,30.55,24.023,27.04,True,False,True,True
+2021-10-15,18.3913,17.93,15.1403,14.84,True,True,True,True
+2022-10-14,35.302,32.59,28.3811,29.24,False,True,False,True
+2023-10-13,21.6164,21.83,16.9214,16.97,True,True,False,True
+2024-10-11,22.9901,21.01,18.2781,17.99,False,True,False,False

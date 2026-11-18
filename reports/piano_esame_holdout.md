@@ -1,7 +1,7 @@
 # Piano d'esame sull'holdout
 
-*Aggiornato nella Fase 4b, prima di aprire l'holdout. Generato da `python -m src.run_phase4b` (modulo `src/fase4b/piano.py`). Sostituisce il piano della Fase 4, conservato in
-`reports/fase4/piano_esame_holdout_fase4.md`. L'esame non è stato eseguito: questo documento fissa che cosa verrà fatto e come verranno lette le risposte.*
+*Aggiornato nella Fase 4c, prima di aprire l'holdout. Generato da `python -m src.run_phase4c` (modulo `src/fase4c/piano.py`). Sostituisce i piani delle Fasi 4 e 4b, conservati in
+`reports/fase4/piano_esame_holdout_fase4.md` e `reports/fase4b/piano_esame_holdout_fase4b.md`. L'esame non è stato eseguito: questo documento fissa che cosa verrà fatto e come verranno lette le risposte.*
 
 ## 1. Che cosa viene esaminato
 
@@ -10,7 +10,8 @@ Due versioni, congelate in `versioni/*.json` (parametri, finestre, regole, impro
 - **F1 solo storico del VIX** (`versioni/f1.json`): chiusura centrale e fasce D4, probabilità ed etichetta D1, candele K2 con ampiezze A1.
 - **FS sfidante** (`versioni/fs.json`): costruita attorno al candidato P5 media di F2 e F3. Per la settimana +1 la probabilità che la chiusura superi quella dell'origine è la media semplice delle
   probabilità di F2 e F3; chiusura centrale, fasce, probabilità di livello ed etichette e candele delle settimane +2…+4 vengono dalla costruzione di F2.
-- In entrambe, la **prima candela** (settimana +1) usa la costruzione K2 con il colore legato all'etichetta e il minimo M1q.
+- In entrambe, nella **prima candela** (settimana +1) massimo e minimo sono previsti direttamente (regressione sulla mediana, finestra di 520 settimane) e comandano la candela; il corpo è K2,
+  tagliato dentro l'intervallo minimo-massimo; il colore segue l'etichetta. Insiemi di variabili: F1 massimo S0, minimo S1; FS massimo S0, minimo S0.
 
 Le versioni F2 e F3 della Fase 4 non vanno all'esame come versioni a sé: entrano solo come componenti di FS.
 Nessun parametro, nessuna finestra e nessuna regola potrà essere cambiata dopo l'apertura dell'holdout. Prima dell'esame si verifica che i file sorgente elencati nelle configurazioni abbiano ancora la stessa
@@ -39,9 +40,11 @@ Per ogni versione e per ogni orizzonte (h = 1 e h = 4 in evidenza; h = 2 e 3 rip
 | fasce | copertura e larghezza media (punti) delle fasce al 50%, 80% e 90%; CRPS sulla griglia di 19 quantili; perdita quantilica ai quantili riportati |
 | direzione ed etichetta | Brier della probabilità che la chiusura superi quella dell'origine; quota di etichette non neutre (probabilità fuori da 40%-60%); accuratezza delle non neutre, separatamente per «rialzo» e «ribasso», con il loro numero |
 | probabilità di livello | Brier delle probabilità di chiudere sopra 20, 25, 30, con la frequenza osservata dell'evento |
-| prima candela (+1) | errore assoluto medio e mediano su apertura, massimo, minimo e chiusura; quota di minimi entro il 5% e il 10%; quota di minimi previsti troppo bassi; quota di massimi reali sopra il previsto (riportata, non giudicata); sovrapposizione; chiusura reale nel corpo e nell'escursione |
+| prima candela (+1) | **quota di massimi e di minimi previsti entro il 5% dal valore reale ed errore percentuale mediano (misure principali)**; quota entro il 10%; quota di errori oltre il 5% per eccesso e per difetto; quota con entrambi gli estremi entro il 5%; errore assoluto medio su apertura, massimo, minimo e chiusura; sovrapposizione; chiusura reale nel corpo e nell'escursione; corpo ed escursione previsti rispetto ai reali |
 | candele +2…+4 | la pagella della Fase 2c |
 
+Ogni tabella della prima candela è riportata **su tutte le settimane e senza le settimane di strappo** (chiusura reale oltre +20% sulla chiusura all'origine): è un'etichetta nota solo a posteriori,
+serve a leggere i risultati e non entra nei test.
 Riferimenti riportati accanto, per orientarsi: «nessuna variazione» (chiusura centrale = chiusura dell'origine) e la frequenza storica per la direzione.
 Tutte le metriche anche per la **fascia 13-22** (chiusura all'origine tra 13 e 22, estremi inclusi), con il numero di casi; sotto 20 casi lo si scrive e non si commenta.
 Intervalli di confidenza: bootstrap a blocchi (26 settimane, 2000 repliche, seed del progetto), come nello sviluppo.
@@ -52,11 +55,11 @@ Intervalli di confidenza: bootstrap a blocchi (26 settimane, 2000 repliche, seed
 2. Fasce: copertura, larghezza, CRPS.
 3. Direzione ed etichetta, con «rialzo» e «ribasso» separati.
 4. Probabilità di superare 20, 25, 30.
-5. Prima candela: tutte le misure della riga dedicata, per versione.
+5. Prima candela: tutte le misure della riga dedicata, per versione, su tutte le settimane e senza strappi.
 6. Pagella delle candele +2…+4.
 7. Confronto FS contro F1 (sezione 5): differenze, intervalli bootstrap, test, p-value corretti, per i quattro criteri.
 8. Le stesse tabelle 1-5 per la fascia 13-22.
-9. Diagnostica: numero di ripieghi di FS, stime non valide del modello a regimi, quantili incrociati, minimi limitati dal corpo, origini usate.
+9. Diagnostica: numero di ripieghi di FS (versione ed estremi), stime non valide del modello a regimi, quantili incrociati, corpi tagliati dagli estremi, numero di settimane di strappo, origini usate.
 10. Figure: chiusura reale e chiusure centrali previste a 1 e a 4 settimane nel periodo d'esame; minimo previsto e reale della settimana +1.
 11. Accanto a ogni numero dell'esame, lo stesso numero misurato nello sviluppo (`reports/fase4b/`, `reports/fase4/c_confronto.csv` e fasi precedenti), per vedere quanto regge fuori campione.
 
@@ -73,16 +76,19 @@ I test sono di Diebold-Mariano a due code, con la correzione per piccoli campion
 | B. direzione | Brier della probabilità che la chiusura superi quella dell'origine |
 | C. fasce | CRPS sulla griglia di 19 quantili |
 
-**Criterio D, dedicato alla prima candela** (settimana +1), con tre test:
+**Criterio D, dedicato alla prima candela** (settimana +1), con cinque test:
 
 | componente | perdita, per ogni origine |
 |---|---|
 | D1. direzione quando non neutra | 0 se l'etichetta non è neutra ed è corretta; 1 se non è neutra ed è sbagliata; 0,5 se è neutra |
 | D2. minimo | errore assoluto in punti tra minimo previsto e minimo reale |
 | D3. chiusura | errore assoluto in punti tra chiusura della candela e chiusura reale |
+| D4. massimo entro il 5% | 0 se il massimo previsto è entro il 5% da quello reale, 1 altrimenti |
+| D5. minimo entro il 5% | 0 se il minimo previsto è entro il 5% da quello reale, 1 altrimenti |
 
 La perdita D1 dà mezzo punto all'etichetta neutra: un'etichetta non neutra conviene solo se è corretta più di una volta su due, e chi non si sbilancia mai non viene premiato né punito.
-Accanto a D1 vengono riportate comunque quota e accuratezza delle etichette non neutre, per «rialzo» e per «ribasso». Il massimo non entra nel criterio: un massimo reale sopra il previsto è accettato.
+Accanto a D1 vengono riportate comunque quota e accuratezza delle etichette non neutre, per «rialzo» e per «ribasso». La perdita D1 è stata confermata nella Fase 4c.
+D4 e D5 portano nel criterio le misure principali della prima candela (quota entro il 5% di massimo e minimo); il massimo è ora una previsione diretta e viene giudicato come il minimo.
 
 **Come si leggono i risultati:**
 
@@ -94,11 +100,12 @@ Accanto a D1 vengono riportate comunque quota e accuratezza delle etichette non 
 - **Verdetto sulla prima candela.** Il criterio D viene riportato anche da solo, perché le priorità dichiarate per la prima candela sono chiusura, minimo e direzione.
   Dove le due versioni danno per costruzione lo stesso valore (per esempio lo stesso minimo), il test non è calcolabile e lo si scrive.
 - **Coerenza con lo sviluppo.** Per ogni confronto si dice anche se il segno della differenza nell'esame è lo stesso misurato nello sviluppo.
-- Copertura delle fasce, candele +2…+4, probabilità di livello, massimo e fascia 13-22 sono **descrittivi**: si riportano con gli intervalli, ma non entrano nel verdetto.
+- Copertura delle fasce, candele +2…+4, probabilità di livello, tabelle senza strappi e fascia 13-22 sono **descrittivi**: si riportano con gli intervalli, ma non entrano nel verdetto.
 - La decisione su quale versione usare nel programma dopo l'esame resta a chi dirige il progetto: questo piano fissa solo che cosa l'esame potrà affermare.
 
 ## 6. Che cosa non verrà fatto
 
-- Nessuna ristima di iperparametri, nessuna variante nuova, nessuna ricalibrazione delle fasce o del massimo dopo aver visto l'holdout.
+- Nessuna ristima di iperparametri, nessuna variante nuova, nessuna ricalibrazione delle fasce o degli estremi dopo aver visto l'holdout.
+- Nessun calendario degli eventi e nessun modello linguistico.
 - Nessun sottoperiodo dentro l'holdout oltre alla fascia 13-22: 104 settimane sono troppo poche.
 - Nessuna selezione dei risultati: tutte le tabelle della sezione 4 vengono pubblicate.
