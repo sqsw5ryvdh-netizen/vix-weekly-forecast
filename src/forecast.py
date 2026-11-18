@@ -4,7 +4,7 @@
     python -m src.forecast --verifica [--file percorso_csv]
 
 Legge l'intero storico (stesso formato del file grezzo), esclude la settimana incompleta, parte dall'ultima chiusura
-settimanale completa (o dall'origine indicata) e calcola le due versioni congelate nella Fase 4b (versioni/*.json):
+settimanale completa (o dall'origine indicata) e calcola le due versioni congelate nella Fase 4c (versioni/*.json):
   f1  solo storico del VIX (predefinita);
   fs  sfidante: costruita attorno al candidato scelto nella Fase 4b; se usa la struttura a termine richiede i file
       giornalieri di VIX e VIX3M, che `--aggiorna` scarica e che vengono usati solo fino all'ultima seduta della
@@ -14,7 +14,7 @@ La scheda mostra la versione richiesta e una tabella di confronto con l'altra ve
 
 E' L'UNICO comando autorizzato a leggere i dati successivi al confine di sviluppo (VIX e, per fs, VIX3M), e solo come
 storia da cui prevedere. Errori e coperture «storici» mostrati accanto alla previsione sono quelli misurati sul
-campione di sviluppo e raccolti da `run_phase4b`, e qui vengono solo letti. Unica eccezione, esplicita: con
+campione di sviluppo e raccolti da `run_phase4c`, e qui vengono solo letti. Unica eccezione, esplicita: con
 `--verifica` le previsioni gia' scritte nel registro vengono confrontate con le settimane completate.
 """
 from __future__ import annotations
@@ -37,10 +37,12 @@ from .fase2b import testo as T2B
 from .fase2c import settimana as SE
 from .fase4 import esterni as ES
 from .fase4 import registro as RG
-from .fase4b import testo
-from .fase4b import versioni as VS
+from .fase4c import esterni as ES4C
+from .fase4c import testo
+from .fase4c import variabili as VAR
+from .fase4c import versioni as VS
 
-STAT_3, STAT_4B = C.REPORTS_DIR / "fase3", C.REPORTS_DIR / "fase4b"
+STAT_3, STAT_4C = C.REPORTS_DIR / "fase3", C.REPORTS_DIR / "fase4c"
 OUT_DIR = C.REPORTS_DIR / "previsione"
 COLONNE_FILE = ["week_start", "last_trading_day", "open", "high", "low", "close", "trading_days", "note"]
 CAMPI = ("apertura", "massimo", "minimo", "chiusura")
@@ -87,19 +89,19 @@ def carica_versioni() -> dict:
     """Configurazioni congelate (versioni/f1.json e versioni/fs.json). Senza f1 il programma non parte."""
     cfg = {v: json.loads((VS.CARTELLA / f"{v}.json").read_text()) for v in VS.VERSIONI if (VS.CARTELLA / f"{v}.json").exists()}
     if "f1" not in cfg:
-        raise SystemExit("Mancano le versioni congelate (versioni/f1.json): eseguire `python -m src.run_phase4b` e poi `python -m src.fase4b.congela`.")
+        raise SystemExit("Mancano le versioni congelate (versioni/f1.json): eseguire `python -m src.run_phase4c` e poi `python -m src.fase4c.congela`.")
     return cfg
 
 
 def statistiche_sviluppo() -> dict:
-    """Misure del walk-forward di sviluppo, per versione e orizzonte (raccolte da run_phase4b). Qui vengono solo lette."""
+    """Misure del walk-forward di sviluppo, per versione e orizzonte (raccolte da run_phase4c). Qui vengono solo lette."""
     try:
-        sp = pd.read_csv(STAT_4B / "statistiche_programma.csv")
+        sp = pd.read_csv(STAT_4C / "statistiche_programma.csv")
         p0 = json.loads((STAT_3 / "p0_info.json").read_text())
-        g3 = json.loads((STAT_4B / "info.json").read_text())["g3"]
+        g3 = json.loads((STAT_4C / "info.json").read_text())["g3"]
     except FileNotFoundError:
         raise SystemExit("Mancano le misure del walk-forward di sviluppo: eseguire prima `python -m src.run_phase2b`, `python -m src.run_phase2c`, "
-                         "`python -m src.run_phase3`, `python -m src.run_phase4` e `python -m src.run_phase4b`.")
+                         "`python -m src.run_phase3`, `python -m src.run_phase4`, `python -m src.run_phase4b` e `python -m src.run_phase4c`.")
     st = {}
     for v, g in sp.groupby("versione"):
         righe = {int(r["h"]): r | {"quota_neutra": 1 - r["quota_non_neutre"]} for r in g.to_dict("records")}
@@ -111,18 +113,30 @@ def calcola(df: pd.DataFrame, t: int, cfg: dict, cartella_esterni: Path | None) 
     """Le versioni calcolabili all'origine t (solo df.iloc[: t + 1] e, per fs, dati giornalieri fino all'origine).
 
     Restituisce ({versione: (previsione, candele)}, {versione: informazioni o motivo dell'assenza})."""
-    scelte = cfg["f1"]["scelte"]
-    ris, note = {"f1": VS.prevedi_f1(df, t, scelte)}, {}
+    ris, note = {"f1": VS.prevedi_f1(df, t, cfg["f1"]["scelte"])}, {}
     if "fs" in cfg:
+        sc = cfg["fs"]["scelte"]
         z, info = None, {"disponibile": True, "avvisi": []}
-        if "f2" in VS.CANDIDATI[cfg["fs"]["scelte"]["candidato"]]:
+        if "f2" in VS.CANDIDATI[sc["candidato"]]:
             z, info = ES.x1_per_previsione(df, t, cartella_esterni)
         note["fs"] = info
         if info["disponibile"]:
+            origine, inizio = pd.Timestamp(df["date"].iloc[t]), pd.Timestamp(df["date"].iloc[t - 1])
+            giorn, stato = ES4C.leggi(cartella_esterni, ES4C.serie_di_fs(sc), origine, inizio)
+            VV = VAR.costruisci(df.iloc[: t + 1], giorn)
+            info["serie"] = stato
             try:
-                ris["fs"] = VS.prevedi_fs(df, t, z, cfg["fs"]["scelte"])
+                ris["fs"] = VS.prevedi_fs(df, t, z, VV, sc)
             except VS.NonDisponibile as e:
                 note["fs"] = info | {"disponibile": False, "motivo": str(e)}
+            else:
+                if ris["fs"][1][0]["estremi_da_ripiego"]:                # una serie dell'insieme di FS manca o e' piu' vecchia dell'origine
+                    vecchie = [k for k, v in stato.items() if not v["aggiornata"]]
+                    info["avvisi"].append("ATTENZIONE: per massimo e minimo della prima candela FS ripiega sull'insieme di F1"
+                                          + (f" (serie mancanti o più vecchie dell'origine: {', '.join(vecchie)})." if vecchie else " (variabili non calcolabili all'origine)."))
+                colonne = [c for k in ("insieme_massimo_fs", "insieme_minimo_fs") for c in (VAR.INSIEMI.get(sc[k]) or ()) if not c.startswith("s1_")]
+                if colonne and not ris["fs"][1][0]["estremi_da_ripiego"]:
+                    info["variabili_usate"] = VV[sorted(set(colonne))].assign(data_settimanale=pd.to_datetime(df["date"].iloc[: t + 1]).to_numpy()).dropna()
     return ris, note
 
 
@@ -139,7 +153,7 @@ def scrivi_md(path: Path, v: str, ris: dict, note: dict, L: dict, tab: pd.DataFr
     sv, k = st["versioni"][v], st["candele"]
     c4, e1, e4 = sv["chiusura"][4], sv["etichetta"][1], sv["etichetta"][4]
     centrale, prob = testo.da_dove(v, cfg)
-    prima = cfg[v]["candele"]["prima_candela"]
+    p1 = sv["pagella"][1]
     t_cand, t_fasce = testo.tabella_md(tab)
     if len(ris) > 1:
         s_conf = (f"In questa scheda la versione principale è **{VS.NOMI[v]}**. Le due versioni sono quelle che andranno all'esame sull'holdout.\n\n" + testo.confronto_md(conf))
@@ -174,7 +188,7 @@ la previsione si fa una sola volta, alla chiusura settimanale. Progetto universi
 
 Valori in punti VIX. Due livelli, da leggere insieme.
 
-**Candele previste.** La prima (settimana +1) è colorata secondo l'etichetta della chiusura{' e il suo minimo viene da un modello dedicato' if prima['minimo'] == 'M1q' else ''}; le altre sono settimane di dimensioni medie.
+**Candele previste.** Nella prima (settimana +1) massimo e minimo sono previsti direttamente e comandano la candela, che è colorata secondo l'etichetta della chiusura; le altre sono settimane di dimensioni medie.
 La colonna «chiusura rispetto all'origine» è l'etichetta scritta sopra le candele nel grafico: «neutra» tra 40% e 60%.
 
 {t_cand}
@@ -194,7 +208,7 @@ cioè la frequenza con cui la chiusura reale vi è caduta nel walk-forward di sv
 {(chr(10) + chr(10).join(assenti)) if assenti else ''}{dettagli}
 
 Le versioni sono congelate (`versioni/f1.json`, `versioni/fs.json`) e saranno confrontate sull'holdout secondo `reports/piano_esame_holdout.md`.
-Sul campione di sviluppo le differenze tra le versioni sono piccole (`reports/fase4_report.md`, `reports/fase4b_report.md`).
+Sul campione di sviluppo le differenze tra le versioni sono piccole (`reports/fase4_report.md`, `reports/fase4b_report.md`, `reports/fase4c_report.md`).
 
 ## 4. Grafico
 
@@ -212,11 +226,11 @@ di previsione sono troppo strette per ospitarli).
 ![Verifica sul passato]({rel(g3)})
 
 Dodici origini scelte con regola fissa ({st['g3']['regola']}), tutte nel campione di sviluppo, con la versione F1. {st['g3']['riga']}
-Dodici casi sono pochi: servono a vedere come si comporta la previsione, non a misurarla. Le misure sono in `fase4b_report.md`.
+Dodici casi sono pochi: servono a vedere come si comporta la previsione, non a misurarla. Le misure sono in `fase4c_report.md`.
 
 ## 6. Avvertenze
 
-- Prima candela, misure di sviluppo a 1 settimana: errore medio sul minimo {n(sv['pagella'][1]['mae_minimo'], 2)} punti, sulla chiusura della candela {n(sv['pagella'][1]['mae_chiusura'], 2)}, sul massimo {n(sv['pagella'][1]['mae_massimo'], 2)}. Il massimo non è ricalibrato.
+- Prima candela, misure di sviluppo: il massimo previsto è stato entro il 5% da quello reale nel {n(100 * p1['massimo_entro_5'], 0)}% dei casi, il minimo nel {n(100 * p1['minimo_entro_5'], 0)}%; errore medio {n(p1['mae_massimo'], 2)} punti sul massimo, {n(p1['mae_minimo'], 2)} sul minimo, {n(p1['mae_chiusura'], 2)} sulla chiusura della candela. Nelle settimane di strappo (chiusura oltre +20%) il massimo reale finisce molto sopra quello previsto.
 - La chiusura della candela **non** è la previsione centrale della chiusura: quella è la chiusura centrale (linea viola).
 - Copertura misurata delle fasce a 4 settimane: quella al 50% ha contenuto la chiusura reale nel {n(100 * c4['copertura_50'], 0)}% dei casi, quella all'80% nel {n(100 * c4['copertura_80'], 0)}%, quella al 90% nel {n(100 * c4['copertura_90'], 0)}%.
 - Candele, fasce e probabilità vengono da pezzi diversi del modello e possono non essere perfettamente coerenti tra loro.
@@ -276,7 +290,7 @@ def main(argv: list[str] | None = None, out_dir: Path | None = None, oggi: str |
         if cartella is None:
             raise SystemExit("--aggiorna richiede una cartella per i dati esterni")
         try:
-            agg = ES.aggiorna(cartella)
+            agg = ES4C.aggiorna(cartella, ES4C.serie_di_fs(cfg["fs"]["scelte"]) if "fs" in cfg else ())
             print("Dati giornalieri scaricati: " + "; ".join(f"{k} ({v['bytes']} byte)" for k, v in agg.items()) + f" in {cartella}")
         except Exception as e:                                  # rete assente o fonte non raggiungibile: si prosegue con i file gia' presenti, se ci sono
             print(f"ATTENZIONE: scarico dei dati giornalieri non riuscito ({e}). Si usano i file già presenti, se ci sono.")
@@ -302,11 +316,13 @@ def main(argv: list[str] | None = None, out_dir: Path | None = None, oggi: str |
     tab.to_csv(out / f"tabella_{d0}{suff}.csv", index=False, float_format="%.4f")
     conf.to_csv(out / f"confronto_{d0}.csv", index=False, float_format="%.4f")
     frasi = testo.sintesi(L, prev, cand)
-    pulite = {k: {kk: vv for kk, vv in x.items() if kk != "valori_usati"} for k, x in note.items()}
+    pulite = {k: {kk: vv for kk, vv in x.items() if kk not in ("valori_usati", "variabili_usate")} for k, x in note.items()}
     (out / f"previsione_{d0}{suff}.json").write_text(json.dumps({"file": info, "versione": v, "versione_richiesta": a.versione, "lettura": L, "sintesi": frasi,
                                                                   "versioni": {k: {"previsione": p, "candele": c} for k, (p, c) in ris.items()}, "note": pulite}, indent=2, ensure_ascii=False))
     if "fs" in ris and "valori_usati" in note["fs"]:            # valori di X1 usati da fs (tutta la serie settimanale fino all'origine)
         note["fs"]["valori_usati"].to_csv(out / f"fs_valori_usati_{d0}.csv", index=False, float_format="%.6f", date_format="%Y-%m-%d")
+    if "fs" in ris and "variabili_usate" in note["fs"]:         # variabili giornaliere usate da fs per massimo e minimo della prima candela
+        note["fs"]["variabili_usate"].to_csv(out / f"fs_variabili_estremi_{d0}.csv", index=False, float_format="%.6f", date_format="%Y-%m-%d")
     storia, vista = df.iloc[: t + 1], vista_grafico(prev, cand)
     g1, g2 = out / f"g1_{d0}{suff}.png", out / f"g2_{d0}{suff}.png"
     etichetta_centrale = f"chiusura centrale ({testo.da_dove(v, cfg)[0]})"
@@ -314,7 +330,7 @@ def main(argv: list[str] | None = None, out_dir: Path | None = None, oggi: str |
     grafici.g2(storia, vista, g2, mediana=True, recente=True)
     corrente = a.origine is None and out_dir is None and v == "f1"
     md = (C.REPORTS_DIR / "previsione_corrente.md") if corrente else (out / f"previsione_{d0}{suff}.md")
-    scrivi_md(md, v, ris, note, L, tab, conf, st, cfg, info, g1, C.FIG_DIR / "fase4b" / "g3_verifica_passato.png", nota)
+    scrivi_md(md, v, ris, note, L, tab, conf, st, cfg, info, g1, C.FIG_DIR / "fase4c" / "g3_verifica_passato.png", nota)
     msg_reg, registrate = ["Registro: non aggiornato (con --origine la previsione non è una previsione dal vivo)."], []
     if a.origine is None:
         msg_reg = []
