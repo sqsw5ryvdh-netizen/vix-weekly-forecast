@@ -407,7 +407,7 @@ def test_update_downloads_only_vix_and_vix3m_and_failure_is_not_fatal(df, tmp_pa
         pytest.skip("eseguire prima python -m src.fase4.congela")
     base = tmp_path / "base.csv"
     _file_grezzo(df, base)
-    monkeypatch.setattr(ES, "aggiorna", lambda cartella: (_ for _ in ()).throw(RuntimeError("rete assente")))
+    monkeypatch.setattr(F.ES4C, "aggiorna", lambda cartella, serie: (_ for _ in ()).throw(RuntimeError("rete assente")))     # dalla Fase 4c lo scarico e' quello di fase4c.esterni
     r = F.main(["--file", str(base), "--aggiorna", "--versione", "fs", "--origine", str(df["date"].iloc[-1].date())], out_dir=tmp_path / "o", esterni_dir=tmp_path / "vuota")
     testo = capsys.readouterr().out
     assert r["versione"] == "f1" and "scarico dei dati giornalieri non riuscito" in testo and "Si ripiega su f1" in testo

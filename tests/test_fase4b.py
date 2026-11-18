@@ -1,5 +1,5 @@
-"""Fase 4b: prima candela (mosse medie, K4, minimo M1q), candidati e regole di scelta, sfidante FS, configurazioni
-congelate (f1, fs), programma con --versione f1|fs, piano d'esame aggiornato.
+"""Fase 4b: prima candela (mosse medie, K4, minimo M1q), candidati e regole di scelta, sfidante FS, piano d'esame della
+Fase 4b. Configurazioni congelate e programma: vedi test_fase4c.py.
 
 Anti look-ahead di ogni componente nuovo; regole delle Parti B, C, D; ripiego di fs; guardia sull'holdout.
 I test che richiedono file prodotti da `run_phase4b` vengono saltati se mancano."""
@@ -23,8 +23,8 @@ from src.fase1 import comune as K
 from src.fase2b import dati as dati2b, grafici
 from src.fase2c import componenti as CP
 from src.fase3 import candele as K3
-from src.fase4 import candele as KA, esterni as ES, versioni as V4
-from src.fase4b import congela, prima as PR, valuta as VA, versioni as VS
+from src.fase4 import candele as KA, versioni as V4
+from src.fase4b import prima as PR, valuta as VA, versioni as VS
 
 DIR = pathlib.Path(C.ROOT) / "src" / "fase4b"
 OUT = C.REPORTS_DIR / "fase4b"
@@ -232,86 +232,7 @@ def test_development_file_matches_program(df):
     assert set(st["versione"]) == {"f1", "fs"} and set(st["h"]) == {1, 2, 3, 4} and st[["copertura_80", "mae_minimo", "accuratezza_non_neutre"]].notna().all().all()
 
 
-# ------------------------------------------------------------------ configurazioni congelate
-
-def test_frozen_configurations_match_the_code():
-    files = sorted(VS.CARTELLA.glob("f*.json"))
-    if not files or not (OUT / "info.json").exists():
-        pytest.skip("eseguire prima python -m src.run_phase4b e python -m src.fase4b.congela")
-    attese = congela.costruisci()
-    assert [f.stem for f in files] == ["f1", "fs"] == sorted(attese), "all'esame vanno solo F1 e FS"
-    for f in files:
-        cfg = json.loads(f.read_text())
-        assert re.fullmatch(r"[0-9a-f]{40}", cfg["commit"]) and cfg["congelata_il"] and isinstance(cfg["sorgenti_identici_al_commit"], bool)
-        resto = {k: v for k, v in cfg.items() if k not in congela.VARIABILI_ESECUZIONE}
-        assert resto == json.loads(json.dumps(attese[f.stem])), f"{f.name} non coincide con la configurazione ricostruita dal codice"
-        assert cfg["sha256_sorgenti"] == congela.impronte(), "un sorgente congelato e' cambiato dopo il congelamento: rieseguire congela PRIMA dell'esame"
-        assert {"src/fase4b/prima.py", "src/fase4b/versioni.py", "src/fase4/versioni.py", "src/fase4/regimi.py"} <= set(cfg["sha256_sorgenti"])
-        pc = cfg["candele"]["prima_candela"]
-        assert pc["costruzione"] == cfg["scelte"]["prima_candela"] and pc["minimo"] == cfg["scelte"]["minimo"] and cfg["orizzonti_settimane"] == [1, 2, 3, 4]
-    fs = json.loads((VS.CARTELLA / "fs.json").read_text())
-    info = json.loads((OUT / "info.json").read_text())
-    assert fs["candidato"]["sigla"] == info["scelte"]["candidato"] and fs["costruzione_di_base"] == VS.base_di(info["scelte"]["candidato"])
-    assert fs["candidato"]["componenti"] == list(VS.CANDIDATI[info["scelte"]["candidato"]]) and set(fs["componenti"]) == set(fs["candidato"]["componenti"])
-
-
 # ------------------------------------------------------------------ programma
-
-def _file_grezzo(df, path):
-    rows = [{"week_start": (r.date - pd.Timedelta(days=r.date.weekday())).date(), "last_trading_day": r.date.date(), "open": r.open, "high": r.high,
-             "low": r.low, "close": r.close, "trading_days": 5, "note": ""} for r in df.itertuples()]
-    pd.DataFrame(rows).to_csv(path, index=False)
-
-
-def _file_cboe(df, cartella, fino_a=None, vix3m_da=600):
-    cartella.mkdir(parents=True, exist_ok=True)
-    rng = np.random.default_rng(9)
-    d = df if fino_a is None else df[df["date"] <= fino_a]
-    for nome, val, da in (("vix", d["close"].to_numpy(), 0), ("vix3m", d["close"].to_numpy() * (1.10 + 0.04 * rng.standard_normal(len(d))), vix3m_da)):
-        t = pd.DataFrame({"DATE": d["date"].dt.strftime("%m/%d/%Y"), "OPEN": val, "HIGH": val, "LOW": val, "CLOSE": np.round(val, 2)}).iloc[da:]
-        t.to_csv(cartella / ES.FILE[nome], index=False)
-
-
-def test_forecast_two_versions_fallback_and_registry(df, tmp_path, capsys):
-    if not (VS.CARTELLA / "fs.json").exists():
-        pytest.skip("eseguire prima python -m src.fase4b.congela")
-    cfg = F.carica_versioni()
-    assert sorted(cfg) == ["f1", "fs"] and cfg["f1"]["scelte"] == cfg["fs"]["scelte"]
-    usa_x1 = "f2" in VS.CANDIDATI[cfg["fs"]["scelte"]["candidato"]]
-    base, out = tmp_path / "base.csv", tmp_path / "out"
-    _file_grezzo(df, base)
-    r = F.main(["--file", str(base), "--versione", "fs"], out_dir=out, oggi="2024-11-09")                 # nessun file giornaliero
-    testo = capsys.readouterr().out
-    if not usa_x1:
-        pytest.skip("la sfidante congelata non usa VIX3M: il ripiego non si applica")
-    assert r["versione"] == "f1" and list(r["versioni"]) == ["f1"] and "ATTENZIONE" in testo and "Si ripiega su f1" in testo
-    assert r["candele"] == VS.prevedi_f1(df, len(df) - 1, cfg["f1"]["scelte"])[1] and r["candele"][0]["colore"] in ("rialzo", "ribasso", "neutra")
-    est = tmp_path / "esterni"
-    _file_cboe(df, est)
-    r2 = F.main(["--file", str(base), "--versione", "fs"], out_dir=out, esterni_dir=est, oggi="2024-11-10")
-    assert r2["versione"] == "fs" and list(r2["versioni"]) == ["f1", "fs"] and r2["md"].name.endswith("_fs.md") and r2["versioni"]["f1"] == r["versioni"]["f1"]
-    usati = pd.read_csv(out / f"fs_valori_usati_{r2['previsione']['data_origine']}.csv")
-    assert usati["data_settimanale"].max() == r2["previsione"]["data_origine"] and r2["note"]["fs"]["x1_origine"]["x1"] == pytest.approx(usati["x1"].iloc[-1], abs=1e-6)
-    conf, md = r2["confronto"], r2["md"].read_text()
-    assert set(conf["versione"]) == {"f1", "fs"} and len(conf) == 8 and "Confronto tra le versioni" in md and VS.NOMI["fs"] in md and "piano_esame_holdout.md" in md
-    assert "colorata secondo l'etichetta" in md and "una sola volta" in md
-    reg = pd.read_csv(out / "registro_previsioni.csv")
-    assert set(reg["versione"]) == {"f1", "fs"} and len(reg) == 8 and r2["registrate"] == ["fs"] and (reg["costruzione"] == VS.nome_costruzione(cfg["f1"]["scelte"])).all()
-    assert set(reg.loc[reg["versione"] == "f1", "data_esecuzione"]) == {"2024-11-09"} and set(reg.loc[reg["versione"] == "fs", "data_esecuzione"]) == {"2024-11-10"}
-    vecchio = tmp_path / "vecchio"                                                                         # VIX3M piu' vecchio dell'origine: avviso e ripiego
-    _file_cboe(df, vecchio, fino_a=df["date"].iloc[-2])
-    capsys.readouterr()
-    r3 = F.main(["--file", str(base), "--versione", "fs", "--origine", str(df["date"].iloc[-1].date())], out_dir=tmp_path / "o3", esterni_dir=vecchio)
-    testo = capsys.readouterr().out
-    assert r3["versione"] == "f1" and "VIX3M manca nella settimana di origine" in testo and str(df["date"].iloc[-2].date()) in testo
-    r4 = F.main(["--file", str(base), "--origine", str(df["date"].iloc[-30].date())], out_dir=tmp_path / "o4", esterni_dir=est)   # dati successivi all'origine: ignorati
-    tronco = tmp_path / "tronco"
-    _file_cboe(df, tronco, fino_a=df["date"].iloc[-30])
-    r5 = F.main(["--file", str(base), "--origine", str(df["date"].iloc[-30].date())], out_dir=tmp_path / "o5", esterni_dir=tronco)
-    assert r4["versioni"]["fs"] == r5["versioni"]["fs"] and r4["versione"] == "f1"
-    with pytest.raises(SystemExit):
-        F.main(["--file", str(base), "--versione", "f2"], out_dir=tmp_path / "o6")                         # f2 e f3 non sono piu' versioni del programma
-
 
 def test_first_predicted_candle_is_coloured_by_label():
     fig, ax = plt.subplots()
@@ -344,7 +265,7 @@ def test_phase4b_measures_read_only_dev_and_never_touch_the_holdout():
 
 
 def test_exam_plan_has_two_versions_and_first_candle_criterion():
-    piano = C.REPORTS_DIR / "piano_esame_holdout.md"
+    piano = OUT / "piano_esame_holdout_fase4b.md"                    # piano della Fase 4b, in archivio: quello in vigore e' della Fase 4c
     if not piano.exists() or not (OUT / "info.json").exists():
         pytest.skip("eseguire prima python -m src.run_phase4b")
     testo = piano.read_text()
