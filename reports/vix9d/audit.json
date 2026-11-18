@@ -1,0 +1,88 @@
+{
+  "fonte": "Cboe Global Markets, VIX9D_History.csv (dati giornalieri ufficiali, OHLC)",
+  "confine_sviluppo": "2024-11-08",
+  "giornaliero_sviluppo": {
+    "prima_data": "2011-01-04",
+    "ultima_data": "2024-11-08",
+    "n_sedute": 3486,
+    "valori_mancanti": 0,
+    "valori_non_positivi": 0,
+    "date_duplicate": 0,
+    "giorni_feriali_senza_seduta": 128,
+    "sedute_ohlc_incoerenti": 0,
+    "sedute_con_solo_chiusura": 722,
+    "ultima_seduta_con_solo_chiusura": "2013-11-15",
+    "prima_seduta_con_ohlc": "2013-10-07",
+    "variazione_log_giornaliera": {
+      "min": -0.5399164255309925,
+      "max": 1.1462403376573649,
+      "n_oltre_30pct_in_valore_assoluto": 149,
+      "date_oltre_50pct": [
+        "2011-08-04",
+        "2011-08-08",
+        "2011-08-09",
+        "2011-11-09",
+        "2013-01-02",
+        "2013-04-15",
+        "2014-07-17",
+        "2015-08-21",
+        "2016-09-09",
+        "2016-11-09",
+        "2017-04-24",
+        "2017-05-17",
+        "2017-05-19",
+        "2017-08-10",
+        "2017-08-17",
+        "2018-02-05",
+        "2018-02-06",
+        "2018-05-29",
+        "2018-10-10",
+        "2019-08-05",
+        "2019-09-24",
+        "2020-02-24",
+        "2020-02-27",
+        "2020-03-12",
+        "2020-03-16",
+        "2020-06-11",
+        "2021-01-27",
+        "2021-02-25",
+        "2021-11-26",
+        "2024-08-05",
+        "2024-09-03",
+        "2024-11-06"
+      ]
+    },
+    "chiusura_min_max": [
+      7.1,
+      106.66
+    ]
+  },
+  "settimanale_sviluppo": {
+    "n_settimane": 723,
+    "prima_data": "2011-01-07",
+    "ultima_data": "2024-11-08",
+    "settimane_mancanti": 0,
+    "settimane_con_meno_di_5_sedute": 128,
+    "settimane_con_solo_chiusure": 150,
+    "settimane_con_candela_vera": 573,
+    "prima_settimana_con_candela_vera": "2013-11-22",
+    "apertura_su_chiusura_precedente": {
+      "n": 572,
+      "mediana": 1.1098737383758615,
+      "media": 1.1117770574284822,
+      "p10": 0.9977924936420625,
+      "p90": 1.2212676126001454,
+      "quota_sopra_1": 0.8548951048951049
+    },
+    "settimane_senza_vix": 0,
+    "settimane_con_ultima_seduta_diversa_dal_vix": 0
+  },
+  "nota": "nessuna statistica è calcolata sui valori successivi al confine di sviluppo",
+  "sha256_originale": "b4923aafa5549b9159d22755994987806a27138751c6fcf5a2eb54e69ede815e",
+  "n_settimane_holdout": 104,
+  "file": {
+    "sviluppo": "data/vix9d/vix9d_weekly_dev.csv",
+    "holdout_bloccato": "data/vix9d/vix9d_weekly_holdout.csv",
+    "completo_solo_per_il_programma": "data/vix9d/VIX9D_settimanale.csv"
+  }
+}
