@@ -1,8 +1,8 @@
 {
   "versione": "fs",
   "nome": "FS sfidante",
-  "congelata_il": "2026-11-17",
-  "commit": "5624daa98901b465a4e9582d574968f7bd00b7a8",
+  "congelata_il": "2026-11-18",
+  "commit": "826dc42e3e8d5b0263657d4245548949cee9f66f",
   "sorgenti_identici_al_commit": true,
   "candidato": {
     "sigla": "P5",
@@ -323,19 +323,42 @@
     "esclusioni": "settimane con apertura fuori dall'intervallo minimo-massimo (8 novembre 2004)",
     "prima_candela": {
       "settimana": 1,
-      "costruzione": "K2",
-      "apertura": "chiusura all'origine x rapporto di apertura",
-      "chiusura": "come K2 (corpo dalla regressione, direzione dalla frequenza storica)",
-      "ombre": "come K2, sopra e sotto il corpo",
-      "minimo": "M1q",
-      "minimo_m1q": {
-        "obiettivo": "ln(minimo della settimana +1 / chiusura all'origine)",
-        "modello": "regressione sulla mediana sulle variabili di M1",
-        "finestra_settimane": 520,
-        "vincolo": "il minimo non supera il corpo"
+      "apertura": "chiusura all'origine x rapporto di apertura (come K2)",
+      "massimo": {
+        "insieme": "S0",
+        "variabili": [
+          "x_t",
+          "media4",
+          "media12"
+        ],
+        "serie_giornaliere": []
       },
+      "minimo": {
+        "insieme": "S0",
+        "variabili": [
+          "x_t",
+          "media4",
+          "media12"
+        ],
+        "serie_giornaliere": []
+      },
+      "modello_degli_estremi": {
+        "obiettivo": "ln(estremo della settimana +1 / chiusura all'origine)",
+        "stima": "regressione sulla mediana",
+        "finestra_settimane": 520,
+        "minimo_coppie": 156,
+        "variabili_standardizzate_nella_finestra": true
+      },
+      "ripiego_estremi": {
+        "se": "una serie giornaliera dell'insieme manca o è più vecchia dell'origine",
+        "insieme_massimo": "S0",
+        "insieme_minimo": "S1"
+      },
+      "corpo": "K2",
+      "chiusura_k5": null,
+      "taglio": "apertura e chiusura sono riportate dentro l'intervallo minimo-massimo previsto; gli estremi non si spostano",
       "colore": "secondo l'etichetta della chiusura; grigio se neutra",
-      "nome_nel_registro": "K2+M1q/K2m-A1"
+      "nome_nel_registro": "K2+estremi/K2m-A1"
     },
     "settimane_2_4": "K2, come nella Fase 4"
   },
@@ -352,41 +375,49 @@
     "src/fase4/regimi.py",
     "src/fase4/versioni.py",
     "src/fase4b/prima.py",
-    "src/fase4b/versioni.py"
+    "src/fase4b/versioni.py",
+    "src/fase4c/variabili.py",
+    "src/fase4c/estremi.py",
+    "src/fase4c/incrociata.py",
+    "src/fase4c/candela.py",
+    "src/fase4c/versioni.py"
   ],
   "scelte": {
     "variante": "A1",
     "prima_candela": "K2",
-    "minimo": "M1q",
-    "candidato": "P5"
+    "minimo": "diretto",
+    "candidato": "P5",
+    "insieme_massimo_f1": "S0",
+    "insieme_minimo_f1": "S1",
+    "insieme_massimo_fs": "S0",
+    "insieme_minimo_fs": "S0",
+    "corpo": "K2"
   },
   "scelte_delle_regole": {
     "variante_ampiezze (Fase 4, Parte A)": "A1",
-    "candidato della sfidante (Parte B)": {
+    "candidato della sfidante (Fase 4b, Parte B)": {
       "regola": "Brier più basso a h = 1 tra P2, P3, P4, P5; a parità il primo dell'elenco",
-      "scelta": "P5",
-      "brier": {
-        "P1": 0.2410488481771484,
-        "P2": 0.2339049238246758,
-        "P3": 0.23756678256843833,
-        "P4": 0.23499714968843555,
-        "P5": 0.2327429936880845
+      "scelta": "P5"
+    },
+    "massimo e minimo della prima candela (Fase 4c, Parte A)": {
+      "regola": "per ciascun estremo, tra gli insiemi significativamente migliori di S0 (DM sull'errore assoluto in log, p < 0,05 dopo Holm) e con quota entro il 5% non più bassa di S0, quello con l'errore più basso; se nessuno, S0; a parità meno variabili. F1: S1 contro S0 su tutte le origini; FS: S1-S5 e B3 contro S0 sulle origini comuni",
+      "scelte": {
+        "f1": {
+          "massimo": "S0",
+          "minimo": "S1"
+        },
+        "fs": {
+          "massimo": "S0",
+          "minimo": "S0"
+        }
       }
     },
-    "prima candela (Parte C)": {
-      "regola": "K4 se la sovrapposizione media non è più bassa di quella di K2 e l'errore sulla chiusura della candela non è significativamente peggiore (DM, p < 0,05); altrimenti K2 con il colore legato all'etichetta. Applicata a F1 su tutte le sue origini",
+    "corpo della prima candela (Fase 4c, Parte C)": {
+      "regola": "K5 se l'errore sulla chiusura della candela è significativamente più basso (DM, p < 0,05) e la sovrapposizione non è significativamente più bassa; altrimenti K2. Applicata a F1 su tutte le origini",
       "scelta": "K2",
-      "sovrapposizione": {
-        "K2": 0.5185228428710236,
-        "K4": 0.5029530471913005
-      }
-    },
-    "minimo della prima candela (Parte D)": {
-      "regola": "M1q se l'errore assoluto medio è più basso con DM p < 0,05; altrimenti M0. Applicata a F1 su tutte le sue origini",
-      "scelta": "M1q",
-      "mae": {
-        "M0": 1.3859686345123259,
-        "M1q": 1.2057030484865892
+      "mae_chiusura": {
+        "K2": 2.358065818510419,
+        "K5": 2.3484064468566985
       }
     }
   },
@@ -404,6 +435,11 @@
     "src/fase4/regimi.py": "70f6095c6f24adfbee5a8639765944bad2f89e791c29e11d4787c6d044cf507c",
     "src/fase4/versioni.py": "b6b9b03523607377564579cec45380222d8388b6e61e3317e5c99a1a11e0529b",
     "src/fase4b/prima.py": "9eac770eaceff9913be6e4a0b60c846766a9d0b07df9a6202408f0c7bbbea741",
-    "src/fase4b/versioni.py": "58bf0f4991a4975fe61372c47d65a81cc57f7446b5028b9f41f5a63862dea8c9"
+    "src/fase4b/versioni.py": "58bf0f4991a4975fe61372c47d65a81cc57f7446b5028b9f41f5a63862dea8c9",
+    "src/fase4c/variabili.py": "25c6f1277434c540a673bad1d28f3ae07e29a4b6b8ad735d87a80146587029d8",
+    "src/fase4c/estremi.py": "73bc399d1310b0211fe7f718e8ac9350abe47155bdbca3ac39bf62916ecf7267",
+    "src/fase4c/incrociata.py": "5a426c55d9e156b87821ba73d7c86dbe7b07123535ced42d5b1d15e2c8ca4dbc",
+    "src/fase4c/candela.py": "1332455d52c1424ec5df17ab0bd1926e6a5bae183a69cd0706061c7fb8d5b707",
+    "src/fase4c/versioni.py": "a58c5590af9e59900be5956c3f0e968aa8749a3c18190c0c85d7bf2ba9a37d4a"
   }
 }
