@@ -1,0 +1,17 @@
+famiglia,chiave,riferimento,candidato,test,stat,p,errore,errore_riferimento,p_holm,batte
+chiusura senza VIX,1,R1,R3,Clark-West,-1.22771,0.890223,0.232289,0.228028,1,False
+chiusura senza VIX,2,R1,R3,Clark-West,-1.49448,0.932475,0.293429,0.285603,1,False
+chiusura con VIX,1,R1,R2,Clark-West,3.21052,0.000662476,0.224014,0.228028,0.00182935,True
+chiusura con VIX,1,R1,R4,Clark-West,2.50652,0.00609622,0.22672,0.228028,0.00609622,True
+chiusura con VIX,2,R1,R2,Clark-West,4.01488,2.97379e-05,0.274808,0.285603,0.000118951,True
+chiusura con VIX,2,R1,R4,Clark-West,3.23426,0.000609782,0.280516,0.285603,0.00182935,True
+estremi senza VIX,massimo|1,S0,S1,Diebold-Mariano,-0.481919,0.630112,0.140085,0.139579,1,False
+estremi senza VIX,minimo|1,S0,S1,Diebold-Mariano,0.520036,0.60331,0.109483,0.109912,1,False
+estremi senza VIX,massimo|2,S0,S1,Diebold-Mariano,-1.99141,0.0470803,0.221257,0.217527,0.188321,False
+estremi senza VIX,minimo|2,S0,S1,Diebold-Mariano,0.20895,0.834588,0.157326,0.157657,1,False
+estremi con VIX,massimo|1,S0,S2,Diebold-Mariano,0.431947,0.666,0.138887,0.139579,0.666,False
+estremi con VIX,minimo|1,S0,S2,Diebold-Mariano,1.65244,0.0991851,0.106921,0.109912,0.19837,False
+estremi con VIX,massimo|2,S0,S2,Diebold-Mariano,1.85831,0.0638216,0.210191,0.217527,0.191465,False
+estremi con VIX,minimo|2,S0,S2,Diebold-Mariano,3.06449,0.00232032,0.148926,0.157657,0.00928127,True
+direzione con VIX,1,BASE,RAPP,Diebold-Mariano,1.57785,0.115347,0.22469,0.230892,0.115347,False
+direzione con VIX,2,BASE,RAPP,Diebold-Mariano,2.86715,0.00434937,0.212406,0.223025,0.00869874,True

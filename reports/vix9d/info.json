@@ -1,0 +1,81 @@
+{
+  "scelte": {
+    "chiusura": {
+      "g1": {
+        "1": "R1",
+        "2": "R1"
+      },
+      "gs": {
+        "1": "R2",
+        "2": "R2"
+      }
+    },
+    "estremi": {
+      "g1": {
+        "massimo": {
+          "1": "S0",
+          "2": "S0"
+        },
+        "minimo": {
+          "1": "S0",
+          "2": "S0"
+        }
+      },
+      "gs": {
+        "massimo": {
+          "1": "S0",
+          "2": "S0"
+        },
+        "minimo": {
+          "1": "S0",
+          "2": "S2"
+        }
+      }
+    },
+    "direzione": {
+      "g1": {
+        "1": "BASE",
+        "2": "BASE"
+      },
+      "gs": {
+        "1": "BASE",
+        "2": "RAPP"
+      }
+    }
+  },
+  "n_settimane": 723,
+  "campione": [
+    "2011-01-07",
+    "2024-11-08"
+  ],
+  "prima_settimana_con_candela": "2013-11-22",
+  "origini": {
+    "1": {
+      "tutte_chiusura": 567,
+      "prima_origine_chiusura": "2013-12-27",
+      "comuni": 425,
+      "prima_origine_comune": "2016-09-16",
+      "ultima_data_obiettivo": "2024-11-08",
+      "strappi_tra_le_comuni": 83
+    },
+    "2": {
+      "tutte_chiusura": 565,
+      "prima_origine_chiusura": "2014-01-03",
+      "comuni": 423,
+      "prima_origine_comune": "2016-09-23",
+      "ultima_data_obiettivo": "2024-11-08",
+      "strappi_tra_le_comuni": 103
+    }
+  },
+  "componenti_ultima_origine": {
+    "rapporto_apertura": 1.109865470852018,
+    "p_su": 0.270979020979021,
+    "corpo": 0.19486120369860357
+  },
+  "min_settimane": 156,
+  "min_coppie": 144,
+  "min_errori": 52,
+  "finestra_corpo": 260,
+  "strappo": 0.2,
+  "alfa": 0.05
+}
