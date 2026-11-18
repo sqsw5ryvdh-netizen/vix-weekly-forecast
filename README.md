@@ -12,7 +12,8 @@ Il lavoro procede per fasi; ogni fase si chiude con un report in `reports/`.
 | 2c | candele previste realistiche e misurabili, registro delle previsioni | [reports/fase2c_report.md](reports/fase2c_report.md) |
 | 3 | nuova definizione delle candele (Parte 0); quanto aggiungono il VIX giornaliero e i dati di mercato a chiusura, direzione e fasce | [reports/fase3_report.md](reports/fase3_report.md) |
 | 4 | ultima fase di costruzione: dimensioni delle candele, modelli a regimi e gradient boosting, versioni finaliste | [reports/fase4_report.md](reports/fase4_report.md) |
-| 4b | la prima candela (direzione, corpo e colore, minimo), scelta della sfidante, nuovo congelamento (`versioni/`), piano d'esame aggiornato | [reports/fase4b_report.md](reports/fase4b_report.md) · [piano d'esame](reports/piano_esame_holdout.md) · previsione corrente: [reports/previsione_corrente.md](reports/previsione_corrente.md) |
+| 4b | la prima candela (direzione, corpo e colore, minimo), scelta della sfidante | [reports/fase4b_report.md](reports/fase4b_report.md) |
+| 4c | massimo e minimo della prima candela previsti direttamente (candela del VIX, VVIX, S&P 500, VIX3M, previsione incrociata), nuovo congelamento (`versioni/`), piano d'esame aggiornato | [reports/fase4c_report.md](reports/fase4c_report.md) · [piano d'esame](reports/piano_esame_holdout.md) · previsione corrente: [reports/previsione_corrente.md](reports/previsione_corrente.md) |
 
 **Stato:** i modelli sono chiusi. All'esame vanno due versioni, F1 e la sfidante FS, congelate in `versioni/f1.json` e `versioni/fs.json`; resta solo
 l'esame sull'holdout, descritto in `reports/piano_esame_holdout.md` e non ancora eseguito. L'holdout non è mai stato aperto.
@@ -29,15 +30,16 @@ python -m src.forecast --verifica                        # confronta le previsio
 ```
 
 La previsione si fa **una sola volta, alla chiusura settimanale**, e non si aggiorna durante la settimana. Le due versioni (congelate nella
-Fase 4b, `versioni/*.json`):
+Fase 4c, `versioni/*.json`):
 
 | versione | informazioni usate | chiusura centrale e fasce | direzione della settimana +1 |
 |---|---|---|---|
 | `f1` (predefinita) | solo lo storico settimanale del VIX | regressione quantilica sulle variabili di M1 (D4) | errori passati attorno a M1 (D1) |
 | `fs` (sfidante) | in più VIX3M / VIX − 1 (struttura a termine), dai file giornalieri Cboe | regressione quantilica con la variabile in più | media della probabilità con VIX3M/VIX e di quella di un modello a 2 regimi |
 
-La **prima candela** (settimana +1) è colorata secondo l'etichetta della chiusura (rossa «rialzo», blu «ribasso», grigia «neutra») e il suo
-minimo viene da un modello dedicato; il massimo non è ricalibrato. Le candele +2…+4 sono settimane di dimensioni medie.
+Nella **prima candela** (settimana +1) massimo e minimo sono previsti direttamente (regressione sulla mediana del rapporto con la chiusura
+dell'origine) e comandano la candela: se il corpo uscirebbe dall'intervallo viene accorciato. La candela è colorata secondo l'etichetta della
+chiusura (rossa «rialzo», blu «ribasso», grigia «neutra»). Le candele +2…+4 sono settimane di dimensioni medie.
 `--aggiorna` scarica i due file giornalieri ufficiali in `data/external/forecast/` (non pubblicata); vengono usati solo i valori fino
 all'ultima seduta della settimana di origine. Sul campione di sviluppo le differenze tra le versioni sono piccole: quale sia migliore lo
 dirà l'esame sull'holdout.
@@ -46,8 +48,8 @@ Cosa fa: legge l'intero storico, esclude la settimana incompleta (riga con la co
 ultima riga con meno sedute di quelle attese: in questo caso avvisa a schermo), stima i modelli sulla storia fino
 all'origine e produce, per le settimane +1 … +4:
 
-- una **candela prevista** (apertura, massimo, minimo, chiusura): la prima colorata secondo l'etichetta e con il minimo
-  da un modello dedicato, le altre settimane di dimensioni medie con il corpo nella direzione storicamente più frequente;
+- una **candela prevista** (apertura, massimo, minimo, chiusura): la prima colorata secondo l'etichetta e con massimo e
+  minimo previsti direttamente, le altre settimane di dimensioni medie con il corpo nella direzione storicamente più frequente;
 - la **direzione della chiusura rispetto alla chiusura dell'origine**, con la sua probabilità: «rialzo», «ribasso»
   oppure «neutra» quando la probabilità è tra 40% e 60% (è la scritta sopra ogni candela nel grafico);
 - la **chiusura centrale** (mediana), cioè il centro di tutti gli esiti possibili;
@@ -63,6 +65,7 @@ Cosa scrive:
 | `reports/previsione/previsione_AAAA-MM-GG.md` | la stessa scheda quando si indica `--origine`; con `--versione fs` i file hanno il suffisso `_fs` |
 | `reports/previsione/confronto_AAAA-MM-GG.csv` | chiusura centrale, fasce, etichetta e probabilità delle due versioni |
 | `reports/previsione/fs_valori_usati_AAAA-MM-GG.csv` | la serie settimanale di VIX3M / VIX − 1 usata da fs per quell'origine |
+| `reports/previsione/fs_variabili_estremi_AAAA-MM-GG.csv` | solo se gli insiemi di fs usano altre serie giornaliere: le variabili usate per massimo e minimo della prima candela |
 | `reports/previsione/tabella_AAAA-MM-GG.csv` | tabella della previsione (stampata anche a schermo) |
 | `reports/previsione/previsione_AAAA-MM-GG.json` | lettura della situazione e previsione in formato JSON |
 | `reports/previsione/g1_AAAA-MM-GG.png` | grafico principale: ultimi 2 anni a candele, 4 candele previste, fasce, casi simili |
@@ -91,7 +94,7 @@ quelle precedenti.
 Limiti: non anticipa i picchi; è un progetto universitario, non un consiglio di investimento. `src.forecast` è
 l'unico comando che legge i dati successivi all'8 novembre 2024 (il VIX e, per fs, VIX3M), e solo come storia da cui
 prevedere: errori e coperture mostrati nella scheda sono quelli misurati sul campione di sviluppo e raccolti da
-`python -m src.run_phase4b`. Solo `--verifica` confronta
+`python -m src.run_phase4c`. Solo `--verifica` confronta
 previsioni e dati recenti, e solo per le previsioni già scritte nel registro. Le previsioni registrate prima della
 Fase 4 restano nel registro senza versione, con le candele di allora (colonna `costruzione`).
 
@@ -112,7 +115,8 @@ python -m src.run_phase2c  # Fase 2c: componenti e pagella delle candele, regola
 python -m src.run_phase3   # Fase 3: nuove candele, blocchi con VIX giornaliero e dati di mercato, report (circa 3 minuti; richiede run_phase2c e i dati esterni)
 python -m src.run_phase4   # Fase 4: varianti delle candele, modelli a regimi e boosting, confronto tra le versioni, report e piano d'esame (circa 7 minuti; richiede run_phase3 e i dati esterni)
 python -m src.run_phase4b  # Fase 4b: prima candela (direzione, corpo, minimo), sfidante, report e piano d'esame aggiornato (meno di un minuto; richiede run_phase4)
-python -m src.fase4b.congela  # scrive versioni/f1.json e versioni/fs.json (parametri, impronte dei sorgenti, commit): da eseguire dopo aver registrato il codice
+python -m src.run_phase4c  # Fase 4c: massimo e minimo diretti della prima candela, previsione incrociata con l'S&P 500, report e piano d'esame aggiornato (circa 2 minuti; richiede run_phase4b e i dati esterni)
+python -m src.fase4c.congela  # scrive versioni/f1.json e versioni/fs.json (parametri, impronte dei sorgenti, commit): da eseguire dopo aver registrato il codice
 python -m pytest           # test (anti look-ahead, integrità dell'holdout, metriche)
 ```
 
@@ -120,7 +124,7 @@ I comandi sono deterministici: rieseguendoli si ottengono gli stessi file. `run_
 richiedono `data/processed/vix_weekly_dev.csv`, prodotto da `run_phase0`. Versioni e seed sono in
 `reports/run_manifest.json`, `reports/fase1/run_manifest.json` e `reports/fase2/run_manifest.json`.
 
-`run_phase3` e `run_phase4` leggono anche `data/external/dev/esterni_giornalieri_dev.csv`, che **non è nel
+`run_phase3`, `run_phase4` e `run_phase4c` leggono anche `data/external/dev/esterni_giornalieri_dev.csv`, che **non è nel
 repository**: va prodotto prima con `python -m src.fetch_external` (vedi sotto). Senza i dati esterni si possono
 rigenerare le sole parti sulle candele (`python -m src.fase3.valuta_candele`, `python -m src.fase4.valuta_a`), e i
 test che richiedono i dati esterni vengono saltati.
@@ -218,10 +222,24 @@ src/
     prima.py           componenti della prima candela: mosse medie, costruzione K4, minimo M1q
     versioni.py        le due versioni che vanno all'esame, F1 e FS, e loro configurazione (usato da forecast.py)
     valuta.py          Parti A-D: candidati per la direzione, scelta della sfidante, K4 contro K2, M1q contro M0
+    congela.py         congelamento della Fase 4b (superato da quello della Fase 4c)
+    testo.py           testi della scheda
+    piano.py           scrive il piano d'esame della Fase 4b, ora in archivio (reports/fase4b/piano_esame_holdout_fase4b.md)
+    report.py          costruisce il report leggendo reports/fase4b/*.csv e *.json
+  run_phase4c.py   misure di sviluppo della Fase 4c, sotto la guardia
+  fase4c/
+    variabili.py       variabili degli insiemi S1-S5 (candela del VIX, VVIX, S&P 500, VIX3M/VIX) e dell'S&P 500 per la previsione incrociata
+    estremi.py         previsione diretta di massimo e minimo della settimana +1 (regressione sulla mediana, finestra di 520 settimane)
+    incrociata.py      previsione incrociata con l'S&P 500: legame B1 e versione reale B3
+    tetto.py           B2, tetto teorico con l'S&P 500 futuro: solo misura, mai nel programma
+    candela.py         prima candela comandata dagli estremi: corpo K2 o K5, tagliato dentro l'intervallo minimo-massimo
+    versioni.py        F1 e FS con la nuova prima candela e loro configurazione (usato da forecast.py)
+    valuta.py          Parti A-D: insiemi, regole di scelta, previsione incrociata, corpo, pagella prima e dopo
+    esterni.py         serie giornaliere che servono a FS nel programma (usato solo da forecast.py)
     congela.py         scrive versioni/f1.json e versioni/fs.json con impronte dei sorgenti e commit
     testo.py           testi della scheda (usato da forecast.py)
     piano.py           scrive reports/piano_esame_holdout.md (solo testo: l'holdout non viene aperto)
-    report.py          costruisce il report leggendo reports/fase4b/*.csv e *.json
+    report.py          costruisce il report leggendo reports/fase4c/*.csv e *.json
 versioni/          configurazioni congelate delle due versioni che vanno all'esame (f1.json, fs.json)
 tests/             test automatici
 reports/           report, tabelle (.csv/.json) e figure; i risultati delle Fasi 1 e 2 sono in reports/fase1/, reports/fase2/ e nelle rispettive cartelle di figure
@@ -243,7 +261,10 @@ notebooks/         opzionale, vuota
   `tests/test_fase3.py` lo fa per tutte le variabili della Fase 3 (ogni riga settimanale non cambia se si tolgono o
   si stravolgono i dati giornalieri successivi all'ultima seduta della settimana) e per tutti i modelli dei blocchi;
   `tests/test_fase4.py` per il modello a regimi, il gradient boosting, le varianti delle candele e le tre versioni;
-  `tests/test_fase4b.py` per i componenti della prima candela e per le due versioni che vanno all'esame.
+  `tests/test_fase4b.py` per i componenti della prima candela; `tests/test_fase4c.py` per le variabili degli insiemi
+  S1-S5, i modelli diretti di massimo e minimo, la previsione incrociata e le due versioni che vanno all'esame. Il
+  «tetto teorico» della Fase 4c usa per definizione un dato futuro (l'S&P 500 della settimana prevista): è solo una
+  misura, e un test verifica che non entri nel programma né nelle versioni congelate.
 - **Elenco chiuso dei modelli.** In Fase 1 i modelli e i loro parametri sono fissati in
   `src/fase1/modelli.py` prima della valutazione; un test ne controlla l'elenco. Lo stesso vale per i
   modelli di densità della Fase 2 (`src/fase2/densita.py`) e per i blocchi della Fase 3 (`src/fase3/modelli.py`,

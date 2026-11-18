@@ -389,7 +389,7 @@
     "Nei 61 precedenti con la stessa fascia e direzione (25-30, in rialzo) il VIX era più alto dopo 4 settimane nel 30% dei casi, con variazione mediana di −2,07 punti.",
     "Versione F1 solo storico del VIX: per la settimana +4 la chiusura centrale è 21,0, con fascia all'80% tra 15,8 e 31,4; la probabilità di una chiusura sopra 20 è 63%, sopra 30 è 8%.",
     "Rispetto alla chiusura dell'origine (25,64), la direzione della chiusura è in ribasso (probabilità 74%) per la settimana +1 e in ribasso (probabilità 81%) per la settimana +4.",
-    "Prima candela (settimana +1): apertura 26,5, chiusura 21,8, minimo previsto 20,9, massimo 28,4; colore secondo l'etichetta («ribasso»)."
+    "Prima candela (settimana +1): massimo previsto 28,8, minimo previsto 20,4, apertura 26,5, chiusura 21,8; colore secondo l'etichetta («ribasso»)."
   ],
   "versioni": {
     "f1": {
@@ -594,10 +594,10 @@
         {
           "apertura": 26.4554911131899,
           "chiusura": 21.798130400431226,
-          "massimo": 28.410863575830877,
-          "minimo": 20.907136321596546,
+          "massimo": 28.788228219989985,
+          "minimo": 20.37365477544937,
           "h": 1,
-          "costruzione": "K2+M1q/K2m-A1",
+          "costruzione": "K2+estremi/K2m-A1",
           "variante_ampiezze": "A1",
           "modello_direzione": "L0",
           "p_rialzo": 0.35025017869907077,
@@ -610,10 +610,14 @@
           "chiusura_centrale": 23.612239930518896,
           "mediana_d4": 23.612239930518896,
           "versione": "f1",
-          "minimo_limitato_dal_corpo": false,
           "prima_candela": "K2",
-          "minimo_da": "M1q",
-          "colore": "ribasso"
+          "minimo_da": "S1",
+          "colore": "ribasso",
+          "apertura_tagliata": false,
+          "chiusura_tagliata": false,
+          "estremi_scambiati": false,
+          "massimo_da": "S0",
+          "estremi_da_ripiego": false
         },
         {
           "apertura": 24.363237271620527,
@@ -621,7 +625,7 @@
           "massimo": 26.163967526745658,
           "minimo": 19.466592736760752,
           "h": 2,
-          "costruzione": "K2+M1q/K2m-A1",
+          "costruzione": "K2+estremi/K2m-A1",
           "variante_ampiezze": "A1",
           "modello_direzione": "L0",
           "p_rialzo": 0.35025017869907077,
@@ -641,7 +645,7 @@
           "massimo": 25.047011332030188,
           "minimo": 19.893872990312836,
           "h": 3,
-          "costruzione": "K2+M1q/K2m-A1",
+          "costruzione": "K2+estremi/K2m-A1",
           "variante_ampiezze": "A1",
           "modello_direzione": "L0",
           "p_rialzo": 0.35025017869907077,
@@ -661,7 +665,7 @@
           "massimo": 23.76782962446465,
           "minimo": 18.877868402599912,
           "h": 4,
-          "costruzione": "K2+M1q/K2m-A1",
+          "costruzione": "K2+estremi/K2m-A1",
           "variante_ampiezze": "A1",
           "modello_direzione": "L0",
           "p_rialzo": 0.35025017869907077,
@@ -838,10 +842,10 @@
         {
           "apertura": 26.4554911131899,
           "chiusura": 21.798130400431226,
-          "massimo": 28.410863575830877,
+          "massimo": 28.788228219989985,
           "minimo": 20.907136321596546,
           "h": 1,
-          "costruzione": "K2+M1q/K2m-A1",
+          "costruzione": "K2+estremi/K2m-A1",
           "variante_ampiezze": "A1",
           "modello_direzione": "L0",
           "p_rialzo": 0.35025017869907077,
@@ -858,10 +862,14 @@
             "f2": 0.1996904024767802,
             "f3": 0.2952537083477211
           },
-          "minimo_limitato_dal_corpo": false,
           "prima_candela": "K2",
-          "minimo_da": "M1q",
-          "colore": "ribasso"
+          "minimo_da": "S0",
+          "colore": "ribasso",
+          "apertura_tagliata": false,
+          "chiusura_tagliata": false,
+          "estremi_scambiati": false,
+          "massimo_da": "S0",
+          "estremi_da_ripiego": false
         },
         {
           "apertura": 23.744066025317643,
@@ -869,7 +877,7 @@
           "massimo": 25.49903223094924,
           "minimo": 18.971865605398335,
           "h": 2,
-          "costruzione": "K2+M1q/K2m-A1",
+          "costruzione": "K2+estremi/K2m-A1",
           "variante_ampiezze": "A1",
           "modello_direzione": "L0",
           "p_rialzo": 0.35025017869907077,
@@ -889,7 +897,7 @@
           "massimo": 24.116463611622045,
           "minimo": 19.154774903286732,
           "h": 3,
-          "costruzione": "K2+M1q/K2m-A1",
+          "costruzione": "K2+estremi/K2m-A1",
           "variante_ampiezze": "A1",
           "modello_direzione": "L0",
           "p_rialzo": 0.35025017869907077,
@@ -909,7 +917,7 @@
           "massimo": 22.267296077937495,
           "minimo": 17.686052604834817,
           "h": 4,
-          "costruzione": "K2+M1q/K2m-A1",
+          "costruzione": "K2+estremi/K2m-A1",
           "variante_ampiezze": "A1",
           "modello_direzione": "L0",
           "p_rialzo": 0.35025017869907077,
@@ -931,18 +939,34 @@
       "disponibile": true,
       "avvisi": [],
       "ultima_data_nei_file": {
-        "vix": "2026-11-13",
-        "vix3m": "2026-11-16"
+        "vix": "2026-11-16",
+        "vix3m": "2026-11-17"
       },
       "sha256": {
-        "vix": "d4e2b1199951501b7757814b6e1c2356394922a7ea8ef16d85c3a4596e6e2c2d",
-        "vix3m": "bdf570f6f1ec23f68055f3fb6c0c9a479062693cf37136e8f599174fcdc5308c"
+        "vix": "311c6cf4c34f712b60c3604747652aa47df0ba25058d35651ac1cf8d93bf5119",
+        "vix3m": "922a5f591d424d8cb7bc23eec4490f27c6272907ad92d744f400ca418d0c0fc5"
       },
       "x1_origine": {
         "data_osservazione": "2026-11-06",
         "vix3m": 24.6,
         "vix": 25.64,
         "x1": -0.040561622464898583
+      },
+      "serie": {
+        "vix": {
+          "presente": true,
+          "aggiornata": true,
+          "ultima_data_entro_origine": "2026-11-06",
+          "ultimo_valore": 25.64,
+          "sha256": "311c6cf4c34f712b60c3604747652aa47df0ba25058d35651ac1cf8d93bf5119"
+        },
+        "vix3m": {
+          "presente": true,
+          "aggiornata": true,
+          "ultima_data_entro_origine": "2026-11-06",
+          "ultimo_valore": 24.6,
+          "sha256": "922a5f591d424d8cb7bc23eec4490f27c6272907ad92d744f400ca418d0c0fc5"
+        }
       }
     }
   }

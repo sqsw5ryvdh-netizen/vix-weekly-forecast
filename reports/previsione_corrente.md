@@ -11,7 +11,7 @@ la previsione si fa una sola volta, alla chiusura settimanale. Progetto universi
 - Nei 61 precedenti con la stessa fascia e direzione (25-30, in rialzo) il VIX era più alto dopo 4 settimane nel 30% dei casi, con variazione mediana di −2,07 punti.
 - Versione F1 solo storico del VIX: per la settimana +4 la chiusura centrale è 21,0, con fascia all'80% tra 15,8 e 31,4; la probabilità di una chiusura sopra 20 è 63%, sopra 30 è 8%.
 - Rispetto alla chiusura dell'origine (25,64), la direzione della chiusura è in ribasso (probabilità 74%) per la settimana +1 e in ribasso (probabilità 81%) per la settimana +4.
-- Prima candela (settimana +1): apertura 26,5, chiusura 21,8, minimo previsto 20,9, massimo 28,4; colore secondo l'etichetta («ribasso»).
+- Prima candela (settimana +1): massimo previsto 28,8, minimo previsto 20,4, apertura 26,5, chiusura 21,8; colore secondo l'etichetta («ribasso»).
 
 ## 1. Lettura della situazione
 
@@ -68,12 +68,12 @@ Dopo 4 settimane il VIX era più alto nel 30% dei casi; variazione mediana −18
 
 Valori in punti VIX. Due livelli, da leggere insieme.
 
-**Candele previste.** La prima (settimana +1) è colorata secondo l'etichetta della chiusura e il suo minimo viene da un modello dedicato; le altre sono settimane di dimensioni medie.
+**Candele previste.** Nella prima (settimana +1) massimo e minimo sono previsti direttamente e comandano la candela, che è colorata secondo l'etichetta della chiusura; le altre sono settimane di dimensioni medie.
 La colonna «chiusura rispetto all'origine» è l'etichetta scritta sopra le candele nel grafico: «neutra» tra 40% e 60%.
 
 |   settimana | data       | apertura   | massimo   | minimo   | chiusura   | chiusura rispetto all'origine   | probabilità che chiuda sopra l'origine   | chiusura centrale   | errore medio storico della candela: apertura / massimo / minimo / chiusura   |
 |------------:|:-----------|:-----------|:----------|:---------|:-----------|:--------------------------------|:-----------------------------------------|:--------------------|:-----------------------------------------------------------------------------|
-|          +1 | 13/11/2026 | 26,46      | 28,41     | 20,91    | 21,80      | ribasso 74%                     | 26%                                      | 23,61               | 0,7 / 2,1 / 1,2 / 2,4                                                        |
+|          +1 | 13/11/2026 | 26,46      | 28,79     | 20,37    | 21,80      | ribasso 74%                     | 26%                                      | 23,61               | 0,7 / 2,1 / 1,2 / 2,4                                                        |
 |          +2 | 20/11/2026 | 24,36      | 26,16     | 19,47    | 20,38      | ribasso 79%                     | 21%                                      | 22,60               | 2,3 / 3,4 / 1,9 / 3,0                                                        |
 |          +3 | 27/11/2026 | 23,32      | 25,05     | 19,89    | 20,83      | ribasso 79%                     | 21%                                      | 21,45               | 2,9 / 3,9 / 2,3 / 3,4                                                        |
 |          +4 | 04/12/2026 | 22,13      | 23,77     | 18,88    | 19,77      | ribasso 81%                     | 19%                                      | 21,03               | 3,2 / 4,3 / 2,5 / 3,6                                                        |
@@ -108,10 +108,10 @@ In questa scheda la versione principale è **F1 solo storico del VIX**. Le due v
 |          +4 | FS sfidante             | 19,94               | 16,7 – 23,7  | 15,3 – 31,2  | ribasso 85%                     | 15%                                      | 51%           | 7%            |
 
 
-FS è costruita attorno al candidato P5 media di F2 e F3: per la settimana +1 la probabilità che la chiusura superi quella dell'origine è la media di F2 20%, F3 30%; chiusura centrale, fasce e settimane +2…+4 vengono dalla costruzione di F2. Dati usati per l'origine: VIX3M 24,60 e VIX 25,64 del 06/11/2026 (VIX3M / VIX − 1 = −0,041); file Cboe aggiornati fino al 16/11/2026, usati solo fino all'origine.
+FS è costruita attorno al candidato P5 media di F2 e F3: per la settimana +1 la probabilità che la chiusura superi quella dell'origine è la media di F2 20%, F3 30%; chiusura centrale, fasce e settimane +2…+4 vengono dalla costruzione di F2. Dati usati per l'origine: VIX3M 24,60 e VIX 25,64 del 06/11/2026 (VIX3M / VIX − 1 = −0,041); file Cboe aggiornati fino al 17/11/2026, usati solo fino all'origine.
 
 Le versioni sono congelate (`versioni/f1.json`, `versioni/fs.json`) e saranno confrontate sull'holdout secondo `reports/piano_esame_holdout.md`.
-Sul campione di sviluppo le differenze tra le versioni sono piccole (`reports/fase4_report.md`, `reports/fase4b_report.md`).
+Sul campione di sviluppo le differenze tra le versioni sono piccole (`reports/fase4_report.md`, `reports/fase4b_report.md`, `reports/fase4c_report.md`).
 
 ## 4. Grafico
 
@@ -123,10 +123,11 @@ di previsione sono troppo strette per ospitarli).
 ### Come leggere il grafico
 
 - **Candele piene dal bordo continuo** = settimane reali (apertura ufficiale della prima seduta, massimo, minimo, chiusura). Rosso: chiusura sopra l'apertura; blu: chiusura sotto l'apertura.
-- **La prima candela prevista (settimana +1) è colorata secondo l'etichetta della chiusura**: rossa se «rialzo», blu se «ribasso», **grigia se «neutra»**; il bordo tratteggiato ricorda che è una previsione. Il corpo resta di dimensioni medie e disegnato verso il basso (frequenza storica): **per la prima candela il colore dice la direzione prevista della chiusura rispetto all'origine, non il verso del corpo**. Il suo **minimo** viene da un modello dedicato (regressione sulla mediana del rapporto tra minimo della settimana e chiusura dell'origine) e non sta mai sopra il corpo.
+- **La prima candela prevista (settimana +1) è colorata secondo l'etichetta della chiusura**: rossa se «rialzo», blu se «ribasso», **grigia se «neutra»**; il bordo tratteggiato ricorda che è una previsione.
+- **Massimo e minimo della prima candela sono previsti direttamente** (regressione sulla mediana del rapporto con la chiusura dell'origine; variabili: S0 variabili di M1 per il massimo, S1 = S0 + candela del VIX per il minimo) **e comandano la candela**: se il corpo uscirebbe dall'intervallo, viene accorciato. Il corpo è quello di una settimana media, disegnato verso il basso (frequenza storica): **per la prima candela il colore dice la direzione prevista della chiusura rispetto all'origine, non il verso del corpo**.
+  Nel walk-forward di sviluppo il massimo previsto è stato entro il 5% da quello reale nel 43% dei casi e il minimo nel 52%.
 - **Candele vuote con bordo tratteggiato** = settimane +2, +3 e +4: una settimana di dimensioni medie (medie delle ultime settimane), con il corpo nella direzione storicamente più frequente. Sono blu perché l'apertura ufficiale del VIX è di norma più alta della chiusura precedente (mediana storica: +3,1%) e la settimana chiude sotto la propria apertura nel 65% dei casi: il loro colore non dice dove chiuderà il VIX rispetto a oggi.
 - **La scritta sopra ogni candela dice dove chiuderà il VIX rispetto alla chiusura dell'origine**: «rialzo» o «ribasso» con la sua probabilità (modello D1), oppure **«neutra» quando la probabilità è tra 40% e 60%**. Nel walk-forward di sviluppo l'etichetta è stata «neutra» nel 69% dei casi a 1 settimana e nel 57% a 4; quando non era neutra è stata corretta nel 64% dei casi a 1 settimana e nel 71% a 4.
-- **Il massimo non è ricalibrato**: nel passato il massimo reale della settimana +1 ha superato quello previsto in circa metà dei casi; è un limite accettato.
 - **La linea arancione spessa è il livello recente (media delle chiusure delle ultime 12 settimane): è il riferimento principale.** Il tratteggio la prolunga fino alla settimana +4. La mediana storica (linea grigia punteggiata) resta in secondo piano.
 - **La linea viola con i punti è la chiusura centrale (mediana D4).** Dove la candela si allontana dalla linea si vede la differenza tra «una settimana di dimensioni medie» e «il centro di tutte le chiusure possibili».
 - **Le fasce colorate sullo sfondo indicano l'incertezza sulla chiusura**: la più scura è la fascia al 50%, la più chiara quella all'80%. La copertura misurata nel passato è in tabella.
@@ -135,14 +136,14 @@ di previsione sono troppo strette per ospitarli).
 
 ## 5. Verifica visiva sul passato
 
-![Verifica sul passato](figures/fase4b/g3_verifica_passato.png)
+![Verifica sul passato](figures/fase4c/g3_verifica_passato.png)
 
-Dodici origini scelte con regola fissa (12 origini, una ogni 52 settimane a ritroso a partire da 4 settimane prima dell'ultima data di sviluppo), tutte nel campione di sviluppo, con la versione F1. Prima candela: etichetta non neutra in 6 pannelli su 12, corretta in 3. Chiusura reale a 4 settimane dentro la fascia al 50%: 6 su 12; dentro la fascia all'80%: 9 su 12.
-Dodici casi sono pochi: servono a vedere come si comporta la previsione, non a misurarla. Le misure sono in `fase4b_report.md`.
+Dodici origini scelte con regola fissa (12 origini, una ogni 52 settimane a ritroso a partire da 4 settimane prima dell'ultima data di sviluppo), tutte nel campione di sviluppo, con la versione F1. Prima candela: massimo entro il 5% dal reale in 5 pannelli su 12, minimo in 7. Chiusura reale a 4 settimane dentro la fascia all'80%: 9 su 12.
+Dodici casi sono pochi: servono a vedere come si comporta la previsione, non a misurarla. Le misure sono in `fase4c_report.md`.
 
 ## 6. Avvertenze
 
-- Prima candela, misure di sviluppo a 1 settimana: errore medio sul minimo 1,21 punti, sulla chiusura della candela 2,41, sul massimo 2,12. Il massimo non è ricalibrato.
+- Prima candela, misure di sviluppo: il massimo previsto è stato entro il 5% da quello reale nel 43% dei casi, il minimo nel 52%; errore medio 2,13 punti sul massimo, 1,20 sul minimo, 2,36 sulla chiusura della candela. Nelle settimane di strappo (chiusura oltre +20%) il massimo reale finisce molto sopra quello previsto.
 - La chiusura della candela **non** è la previsione centrale della chiusura: quella è la chiusura centrale (linea viola).
 - Copertura misurata delle fasce a 4 settimane: quella al 50% ha contenuto la chiusura reale nel 44% dei casi, quella all'80% nel 73%, quella al 90% nel 84%.
 - Candele, fasce e probabilità vengono da pezzi diversi del modello e possono non essere perfettamente coerenti tra loro.
