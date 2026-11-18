@@ -1,0 +1,218 @@
+{
+  "versione": "gs",
+  "nome": "GS con il VIX",
+  "congelata_il": "2026-11-18",
+  "commit": "4c10c424883f3b3241fd8f982b89b7f72081d761",
+  "sorgenti_identici_al_commit": true,
+  "indice": "VIX9D (Cboe, volatilità a 9 giorni), candele settimanali",
+  "dati": [
+    "VIX9D settimanale (apertura, massimo, minimo, chiusura)",
+    "VIX settimanale (chiusura)"
+  ],
+  "orizzonti_settimane": [
+    1,
+    2
+  ],
+  "finestra": "espandibile, ristima a ogni origine",
+  "min_settimane_di_storia": 156,
+  "min_coppie_valide": 144,
+  "settimane_senza_candela": "prima di metà novembre 2013 il file Cboe ha solo le chiusure: quelle settimane entrano nei modelli della chiusura e della direzione, non in estremi, apertura e corpo",
+  "chiusura": {
+    "modello_per_orizzonte": {
+      "1": "R2",
+      "2": "R2"
+    },
+    "candidati": {
+      "R1": [
+        "x_t",
+        "media4",
+        "media12"
+      ],
+      "R2": [
+        "x_t",
+        "media4",
+        "media12",
+        "ln_rapporto_vix"
+      ],
+      "R3": [
+        "x_t",
+        "media4",
+        "media12",
+        "escursione",
+        "escursione_4",
+        "posizione"
+      ],
+      "R4": [
+        "x_t",
+        "media4",
+        "media12",
+        "escursione",
+        "escursione_4",
+        "posizione",
+        "ln_rapporto_vix"
+      ]
+    },
+    "centro": "regressione diretta ai minimi quadrati di x_{t+h}, x = log della chiusura",
+    "chiusura_centrale_e_fasce": "regressione quantilica sulle stesse variabili; quantili 5, 10, 25, 50, 75, 90, 95; riordinati se incrociati"
+  },
+  "fasce": {
+    "50": [
+      0.25,
+      0.75
+    ],
+    "80": [
+      0.1,
+      0.9
+    ],
+    "90": [
+      0.05,
+      0.95
+    ]
+  },
+  "probabilita_soglie": {
+    "soglie": [
+      20.0,
+      25.0,
+      30.0
+    ],
+    "metodo": "centro + errori passati dello stesso modello con esito noto",
+    "min_errori": 52
+  },
+  "direzione": {
+    "modello_per_orizzonte": {
+      "1": "BASE",
+      "2": "RAPP"
+    },
+    "evento": "chiusura a t + h sopra la chiusura all'origine",
+    "stima": "logistica con penalità L2 = 1 su variabili standardizzate",
+    "variabili": {
+      "BASE": [
+        "x_t",
+        "media4",
+        "media12"
+      ],
+      "RAPP": [
+        "x_t",
+        "media4",
+        "media12",
+        "ln_rapporto_vix"
+      ]
+    },
+    "neutra_tra": [
+      0.4,
+      0.6
+    ]
+  },
+  "estremi": {
+    "insieme_per_estremo_e_orizzonte": {
+      "massimo": {
+        "1": "S0",
+        "2": "S0"
+      },
+      "minimo": {
+        "1": "S0",
+        "2": "S2"
+      }
+    },
+    "obiettivo": "ln(estremo della settimana t + h / chiusura all'origine)",
+    "stima": "regressione sulla mediana",
+    "insiemi": {
+      "S0": [
+        "x_t",
+        "media4",
+        "media12"
+      ],
+      "S1": [
+        "x_t",
+        "media4",
+        "media12",
+        "escursione",
+        "escursione_4",
+        "posizione"
+      ],
+      "S2": [
+        "x_t",
+        "media4",
+        "media12",
+        "escursione",
+        "escursione_4",
+        "posizione",
+        "ln_rapporto_vix"
+      ]
+    }
+  },
+  "candele": {
+    "apertura": "chiusura precedente (per +2: chiusura centrale di +1) x rapporto mediano storico di apertura / chiusura precedente",
+    "corpo": {
+      "direzione": "frequenza storica delle settimane con chiusura sopra l'apertura; rialzo se >= 0,5",
+      "ampiezza": "media di |ln(chiusura / apertura)|",
+      "finestra_settimane": 260
+    },
+    "estremi": "massimo e minimo previsti comandano: il corpo è tagliato dentro l'intervallo",
+    "colore": "secondo l'etichetta della chiusura; grigio se neutra",
+    "nome_nel_registro": "V9-estremi"
+  },
+  "ripiego": "se il VIX della settimana di origine manca, si usa G1 e lo si segnala",
+  "file_sorgenti_congelati": [
+    "src/baselines.py",
+    "src/fase2/densita.py",
+    "src/fase3/modelli.py",
+    "src/vix9d/config.py",
+    "src/vix9d/modelli.py",
+    "src/vix9d/versioni.py"
+  ],
+  "scelte": {
+    "chiusura": {
+      "g1": {
+        "1": "R1",
+        "2": "R1"
+      },
+      "gs": {
+        "1": "R2",
+        "2": "R2"
+      }
+    },
+    "estremi": {
+      "g1": {
+        "massimo": {
+          "1": "S0",
+          "2": "S0"
+        },
+        "minimo": {
+          "1": "S0",
+          "2": "S0"
+        }
+      },
+      "gs": {
+        "massimo": {
+          "1": "S0",
+          "2": "S0"
+        },
+        "minimo": {
+          "1": "S0",
+          "2": "S2"
+        }
+      }
+    },
+    "direzione": {
+      "g1": {
+        "1": "BASE",
+        "2": "BASE"
+      },
+      "gs": {
+        "1": "BASE",
+        "2": "RAPP"
+      }
+    }
+  },
+  "regola": "un candidato entra se batte il riferimento: errore più basso con p < 0,05 dopo Holm (Clark-West se annidato, Diebold-Mariano altrimenti), per componente e per orizzonte, sulle origini comuni a tutti i candidati",
+  "piano_d_esame": "reports/vix9d/piano_esame_holdout.md",
+  "sha256_sorgenti": {
+    "src/baselines.py": "bd22098a3e0be67c152f83eff1176c0c4ad49b5a3c820603f519783c4ae31cc4",
+    "src/fase2/densita.py": "45ad202fdcfea5ecd112964447107a1d2da9e81486dd4e3302dc10903ba22bc4",
+    "src/fase3/modelli.py": "1e6452541ef4c9dc68a74955c9ca8de2204ce0bf6800d73124c77ba826d921f4",
+    "src/vix9d/config.py": "e1c142068d52b2c99335dcd0c7b8fdfa59832d21e9e39040f918c300ec1f8a52",
+    "src/vix9d/modelli.py": "c7652f132e33fa308f1325768895c3f9ef4c395e29b211af35d09d70900a3ec3",
+    "src/vix9d/versioni.py": "195955c193c0d0d0b5ab9d84fffb2abd7a3de81e52c2d67b078c2b82e48dbdf6"
+  }
+}
